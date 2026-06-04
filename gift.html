@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هديتي لكِ — شهد</title>
+    <title>ذكرياتنا — شهد</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
 <style>
 
@@ -513,348 +513,391 @@ body {
     }
 }
 
-/* === gift.css === */
-/* ===== صفحة الهدية ===== */
-.gift-page {
+/* === gallery.css === */
+/* ===== صفحة المعرض ===== */
+.gallery-page {
     min-height: 100vh;
     padding: 60px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 50px;
 }
 
-/* ===== صندوق الهدية ===== */
-.gift-box-container {
+/* ===== الفيلم التلقائي ===== */
+.film-section {
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+}
+
+.film-frame {
     position: relative;
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: rgba(200,162,200,0.1);
+    border: 3px solid rgba(200,162,200,0.3);
+    border-radius: 15px;
+    overflow: hidden;
     cursor: pointer;
-    perspective: 1000px;
+    transition: all 0.3s;
 }
 
-.gift-box {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: 25px auto;
-    transform-style: preserve-3d;
-    animation: giftShake 3s ease-in-out infinite;
-    transition: transform 0.3s;
+.film-frame:hover {
+    border-color: rgba(200,162,200,0.6);
+    box-shadow: 0 10px 40px rgba(200,162,200,0.3);
 }
 
-.gift-box:hover {
-    transform: scale(1.05);
-}
-
-@keyframes giftShake {
-    0%, 100% { transform: rotate(0deg); }
-    5% { transform: rotate(-3deg); }
-    10% { transform: rotate(3deg); }
-    15% { transform: rotate(-2deg); }
-    20% { transform: rotate(2deg); }
-    25% { transform: rotate(0deg); }
-}
-
-.box-body {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 140px;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border-radius: 5px;
-    box-shadow: 0 10px 30px rgba(155,89,182,0.4);
-}
-
-.box-pattern {
-    position: absolute;
+.film-photo {
     width: 100%;
     height: 100%;
-    background: 
-        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px),
-        repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
-    border-radius: 5px;
-}
-
-.box-lid {
-    position: absolute;
-    top: 0;
-    width: 220px;
-    height: 70px;
-    left: -10px;
-    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 5px 5px 3px 3px;
-    transform-origin: bottom;
-    transition: transform 0.6s ease;
-    box-shadow: 0 5px 20px rgba(155,89,182,0.3);
-    z-index: 10;
-}
-
-.box-lid.open {
-    transform: rotateX(-110deg);
-}
-
-.lid-bow {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 40px;
-}
-
-.bow-loop {
-    position: absolute;
-    width: 30px;
-    height: 40px;
-    border: 4px solid var(--lilac-light);
-    border-radius: 50% 50% 0 50%;
-    top: 0;
-}
-
-.bow-loop.left {
-    left: 0;
-    transform: rotate(-30deg);
-    border-radius: 50% 50% 50% 0;
-}
-
-.bow-loop.right {
-    right: 0;
-    transform: rotate(30deg);
-}
-
-.bow-knot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15px;
-    height: 15px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(200,162,200,0.6);
-}
-
-.box-ribbon {
-    position: absolute;
-    background: linear-gradient(90deg, var(--lilac-light), var(--lilac-main));
-    z-index: 5;
-}
-
-.box-ribbon.vertical {
-    width: 20px;
-    height: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.box-ribbon.horizontal {
-    width: 100%;
-    height: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.gift-shake {
-    position: absolute;
-    top: -30px;
-    right: -20px;
-    font-size: 2rem;
-    animation: bellRing 2s ease-in-out infinite;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.gift-box-container:hover .gift-shake {
-    opacity: 1;
-}
-
-@keyframes bellRing {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(20deg); }
-    75% { transform: rotate(-20deg); }
-}
-
-/* ===== التعليمات ===== */
-.gift-instructions {
-    text-align: center;
-    transition: opacity 0.5s;
-}
-
-.gift-instructions.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.instruction-text.sub {
-    font-size: 0.9rem;
-    color: var(--lilac-main);
-    margin-top: 5px;
-}
-
-/* ===== محتوى الهدية ===== */
-.gift-content {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    animation: fadeInUp 1s ease-out;
-}
-
-.gift-content.show {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* ===== الورقة ===== */
-.gift-letter {
-    max-width: 500px;
-    width: 100%;
-    perspective: 1000px;
+.film-placeholder {
+    text-align: center;
+    color: var(--lilac-main);
+    font-size: 1.2rem;
 }
 
-.letter-paper {
-    background: linear-gradient(135deg, #FFF8DC, #FFEFD5);
-    border-radius: 15px;
-    padding: 40px;
-    position: relative;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    transform-origin: top;
-    animation: letterUnfold 1s ease-out 0.5s both;
+.film-placeholder span {
+    display: block;
+    margin-top: 10px;
 }
 
-@keyframes letterUnfold {
-    from { transform: rotateX(-90deg); opacity: 0; }
-    to { transform: rotateX(0deg); opacity: 1; }
-}
-
-.letter-fold {
+.film-overlay {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 60px 60px 0;
-    border-color: transparent rgba(200,162,200,0.2) transparent transparent;
-    border-radius: 0 15px 0 0;
-}
-
-.letter-title {
-    font-family: 'Amiri', serif;
-    font-size: 1.8rem;
-    color: var(--lilac-deep);
-    text-align: center;
-    margin-bottom: 25px;
-    border-bottom: 2px solid rgba(200,162,200,0.3);
-    padding-bottom: 15px;
-}
-
-.letter-body {
-    font-family: 'Amiri', serif;
-    font-size: 1.1rem;
-    color: #4a4a4a;
-    line-height: 2.2;
-    text-align: center;
-}
-
-.letter-signature {
-    font-family: 'Amiri', serif;
-    font-size: 1.2rem;
-    color: var(--lilac-dark);
-    text-align: left;
-    margin-top: 20px;
-    font-style: italic;
-}
-
-.letter-date {
-    font-size: 0.85rem;
-    color: #888;
-    text-align: center;
-    margin-top: 15px;
-}
-
-/* ===== الصورة السرية ===== */
-.secret-photo {
-    position: relative;
-    width: 280px;
-    height: 280px;
-    animation: photoReveal 1s ease-out 1.5s both;
-}
-
-@keyframes photoReveal {
-    from { transform: scale(0) rotate(-10deg); opacity: 0; }
-    to { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-
-.photo-frame {
+    left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border-radius: 20px;
-    padding: 15px;
-    position: relative;
-    box-shadow: 0 15px 40px rgba(155,89,182,0.4);
-}
-
-.photo-placeholder {
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.1);
-    border-radius: 15px;
+    background: rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--lilac-light);
-    font-size: 1.2rem;
+    opacity: 1;
+    transition: opacity 0.3s;
 }
 
-.photo-sub {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.6);
-    margin-top: 10px;
+.film-frame.playing .film-overlay {
+    opacity: 0;
+    pointer-events: none;
 }
 
-.photo-glow {
+.film-play {
+    font-size: 4rem;
+    opacity: 0.9;
+    transition: transform 0.3s;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.film-frame:hover .film-play {
+    transform: scale(1.2);
+}
+
+.film-progress {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: radial-gradient(circle, rgba(200,162,200,0.3), transparent);
-    border-radius: 25px;
-    z-index: -1;
-    animation: glowPulse 3s ease-in-out infinite;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--lilac-main), var(--lilac-light));
+    transition: width 0.3s;
 }
 
-/* ===== Confetti ===== */
-.gift-confetti {
+.film-vintage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle, transparent 50%, rgba(139,69,19,0.1) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.03) 2px, rgba(139,69,19,0.03) 4px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.film-frame.playing .film-vintage {
+    opacity: 1;
+    animation: vintageFlicker 0.5s ease-in-out infinite;
+}
+
+@keyframes vintageFlicker {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+.film-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.film-btn {
+    padding: 10px 25px;
+    background: rgba(200,162,200,0.15);
+    border: 1px solid rgba(200,162,200,0.3);
+    border-radius: 20px;
+    color: var(--lilac-light);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.film-btn:hover {
+    background: rgba(200,162,200,0.3);
+    transform: translateY(-2px);
+}
+
+.film-status {
+    font-size: 0.85rem;
+    color: var(--lilac-main);
+}
+
+/* ===== معرض الصور ===== */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    background: rgba(200,162,200,0.1);
+    border: 2px solid rgba(200,162,200,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(200,162,200,0.5);
+    box-shadow: 0 15px 40px rgba(200,162,200,0.3);
+}
+
+.item-photo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--lilac-main);
+}
+
+.item-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.item-text {
+    font-size: 0.9rem;
+}
+
+.item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(10,10,26,0.9));
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover .item-overlay {
+    transform: translateY(0);
+}
+
+.item-date,
+.item-place,
+.item-memory {
+    font-size: 0.85rem;
+    color: var(--lilac-light);
+    margin-bottom: 5px;
+}
+
+/* ===== قصة الصورة (Modal) ===== */
+.story-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(10,10,26,0.95);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
     pointer-events: none;
-    z-index: 100;
+    transition: opacity 0.3s;
+}
+
+.story-modal.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.story-content {
+    background: rgba(200,162,200,0.1);
+    border: 2px solid rgba(200,162,200,0.3);
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 500px;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    transform: scale(0.9);
+    transition: transform 0.3s;
+}
+
+.story-modal.show .story-content {
+    transform: scale(1);
+}
+
+.story-title {
+    font-family: 'Amiri', serif;
+    font-size: 1.5rem;
+    color: var(--lilac-light);
+    margin-bottom: 20px;
+}
+
+.story-text {
+    font-size: 1.1rem;
+    color: var(--white);
+    line-height: 2;
+    margin-bottom: 25px;
+}
+
+.story-close {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
+    border: none;
+    border-radius: 20px;
+    color: var(--white);
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.story-close:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(155,89,182,0.4);
+}
+
+/* ===== مقارنة قبل/بعد ===== */
+.compare-section {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.compare-slider {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: rgba(200,162,200,0.1);
+    border: 2px solid rgba(200,162,200,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: col-resize;
+}
+
+.compare-before,
+.compare-after {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.compare-before {
+    left: 0;
+    width: 50%;
+    background: linear-gradient(135deg, rgba(200,162,200,0.2), rgba(155,89,182,0.2));
+    z-index: 2;
+}
+
+.compare-after {
+    right: 0;
+    width: 50%;
+    background: linear-gradient(135deg, rgba(255,105,180,0.2), rgba(255,20,147,0.2));
+    z-index: 1;
+}
+
+.compare-photo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lilac-main);
+    font-size: 1.2rem;
+}
+
+.compare-handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 100%;
+    z-index: 3;
+    cursor: col-resize;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.handle-line {
+    width: 2px;
+    height: 100%;
+    background: var(--lilac-light);
+    box-shadow: 0 0 10px rgba(200,162,200,0.6);
+}
+
+.handle-circle {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: var(--lilac-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 0 20px rgba(200,162,200,0.6);
+    animation: pulse 2s ease-in-out infinite;
 }
 
 /* ===== متجاوب ===== */
 @media (max-width: 768px) {
-    .gift-box {
-        transform: scale(0.8);
+    .gallery-grid {
+        grid-template-columns: 1fr 1fr;
     }
     
-    .letter-paper {
+    .film-frame {
+        aspect-ratio: 4/3;
+    }
+    
+    .story-content {
+        margin: 20px;
         padding: 25px;
-    }
-    
-    .letter-title {
-        font-size: 1.4rem;
-    }
-    
-    .secret-photo {
-        width: 220px;
-        height: 220px;
     }
 }
 </style>
@@ -868,77 +911,105 @@ body {
     </div>
 
     <div class="page-container">
-        <a href="fireworks.html" class="nav-back">← رجوع</a>
+        <a href="lily.html" class="nav-back">← رجوع</a>
         
-        <div class="gift-page">
-            <h1 class="page-title">🎁 هدية خاصة</h1>
+        <div class="gallery-page">
+            <h1 class="page-title">📸 ذكرياتنا الجميلة</h1>
             
-            <!-- صندوق الهدية -->
-            <div class="gift-box-container" id="giftBoxContainer">
-                <div class="gift-box" id="giftBox">
-                    <div class="box-body">
-                        <div class="box-pattern"></div>
-                    </div>
-                    <div class="box-lid" id="boxLid">
-                        <div class="lid-bow">
-                            <div class="bow-loop left"></div>
-                            <div class="bow-loop right"></div>
-                            <div class="bow-knot"></div>
+            <!-- فيلم تلقائي -->
+            <div class="film-section">
+                <div class="film-frame" id="filmFrame">
+                    <div class="film-photo" id="filmPhoto">
+                        <div class="photo-placeholder film-placeholder">
+                            <span>🎬 اضغط لتشغيل الفيلم</span>
                         </div>
                     </div>
-                    <div class="box-ribbon vertical"></div>
-                    <div class="box-ribbon horizontal"></div>
+                    <div class="film-overlay">
+                        <div class="film-play" id="filmPlay">▶️</div>
+                        <div class="film-progress" id="filmProgress"></div>
+                    </div>
+                    <div class="film-vintage" id="filmVintage"></div>
                 </div>
-                <div class="gift-shake" id="giftShake">🔔</div>
+                <div class="film-controls">
+                    <button class="film-btn" id="playBtn">▶️ تشغيل</button>
+                    <button class="film-btn" id="pauseBtn">⏸️ إيقاف</button>
+                    <div class="film-status" id="filmStatus">جاهز للعرض</div>
+                </div>
             </div>
 
-            <!-- تعليمات -->
-            <div class="gift-instructions" id="giftInstructions">
-                <p class="instruction-text">🖱️ اضغط على الصندوق لفتح الهدية!</p>
-                <p class="instruction-text sub">الصندوق يهتز بشوق 💜</p>
+            <!-- معرض الصور -->
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- الصور تُضاف ديناميكياً -->
+                <div class="gallery-item" data-story="أول لقاء - المكان: ... التاريخ: ...">
+                    <div class="item-photo">
+                        <span class="item-icon">📷</span>
+                        <span class="item-text">أضف صورة هنا</span>
+                    </div>
+                    <div class="item-overlay">
+                        <div class="item-date">📅 التاريخ</div>
+                        <div class="item-place">📍 المكان</div>
+                        <div class="item-memory">💭 الذكرى</div>
+                    </div>
+                </div>
+                <!-- نسخ المزيد -->
+                <div class="gallery-item" data-story="رحلة معاً - أجمل أيام العمر">
+                    <div class="item-photo">
+                        <span class="item-icon">📷</span>
+                        <span class="item-text">أضف صورة هنا</span>
+                    </div>
+                    <div class="item-overlay">
+                        <div class="item-date">📅 التاريخ</div>
+                        <div class="item-place">📍 المكان</div>
+                        <div class="item-memory">💭 الذكرى</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-story="يوم لا يُنسى - ضحكنا كثيراً">
+                    <div class="item-photo">
+                        <span class="item-icon">📷</span>
+                        <span class="item-text">أضف صورة هنا</span>
+                    </div>
+                    <div class="item-overlay">
+                        <div class="item-date">📅 التاريخ</div>
+                        <div class="item-place">📍 المكان</div>
+                        <div class="item-memory">💭 الذكرى</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-story="لحظة سعيدة - القلب يدق بقوة">
+                    <div class="item-photo">
+                        <span class="item-icon">📷</span>
+                        <span class="item-text">أضف صورة هنا</span>
+                    </div>
+                    <div class="item-overlay">
+                        <div class="item-date">📅 التاريخ</div>
+                        <div class="item-place">📍 المكان</div>
+                        <div class="item-memory">💭 الذكرى</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- محتوى الهدية -->
-            <div class="gift-content" id="giftContent">
-                <!-- الورقة -->
-                <div class="gift-letter" id="giftLetter">
-                    <div class="letter-paper">
-                        <div class="letter-fold"></div>
-                        <div class="letter-text">
-                            <h2 class="letter-title">إلى شهد الحبيبة</h2>
-                            <p class="letter-body">
-                                في هذا اليوم المميز، أهديكِ كل حبي وكل شعوري.<br>
-                                أنتِ أجمل هدية منحتني إياها الحياة،<<br>
-                                وكل يوم معكِ هو عيد بحد ذاته.<br><br>
-                                أعدكِ أن أكون دائماً بجانبكِ،<<br>
-                                في الفرح والحزن، في السراء والضراء.<br><br>
-                                أحبكِ أكثر مما تتخيلين 💜
-                            </p>
-                            <div class="letter-signature">
-                                — من قلب يدق باسمكِ
-                            </div>
-                            <div class="letter-date" id="letterDate"></div>
+            <!-- مقارنة قبل/بعد -->
+            <div class="compare-section">
+                <h3 class="section-title">⏳ قبل وبعد</h3>
+                <div class="compare-slider" id="compareSlider">
+                    <div class="compare-before">
+                        <div class="compare-photo">
+                            <span>📷 قبل</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- الصورة السرية -->
-                <div class="secret-photo" id="secretPhoto">
-                    <div class="photo-frame">
-                        <div class="photo-placeholder">
-                            <span>📸 صورة سرية</span>
-                            <span class="photo-sub">(ضع صورتكما هنا)</span>
+                    <div class="compare-after">
+                        <div class="compare-photo">
+                            <span>📷 بعد</span>
                         </div>
-                        <div class="photo-glow"></div>
+                    </div>
+                    <div class="compare-handle" id="compareHandle">
+                        <div class="handle-line"></div>
+                        <div class="handle-circle">↔️</div>
                     </div>
                 </div>
-
-                <!-- Confetti -->
-                <div class="gift-confetti" id="giftConfetti"></div>
             </div>
         </div>
 
-        <a href="letters.html" class="nav-next">التالي →</a>
+        <a href="balloons.html" class="nav-next">التالي →</a>
     </div>
 
     <script>
@@ -1072,7 +1143,7 @@ function initStartButton() {
         
         // الانتقال للصفحة التالية
         setTimeout(() => {
-            window.location.href = 'countdown.html';
+            window.location.href = 'balloons.html';
         }, 2000);
     });
 }
@@ -1133,132 +1204,199 @@ function pad(num) {
     return num.toString().padStart(2, '0');
 }
 
-/* === gift.js === */
+/* === gallery.js === */
 // ===== عند التحميل =====
 document.addEventListener('DOMContentLoaded', () => {
-    initGiftBox();
+    initFilm();
+    initGalleryItems();
+    initCompareSlider();
     initLilac();
     initParticles();
 });
 
-// ===== صندوق الهدية =====
-function initGiftBox() {
-    const container = document.getElementById('giftBoxContainer');
-    const box = document.getElementById('giftBox');
-    const lid = document.getElementById('boxLid');
-    const instructions = document.getElementById('giftInstructions');
-    const content = document.getElementById('giftContent');
-    const letterDate = document.getElementById('letterDate');
+// ===== الفيلم التلقائي =====
+let isPlaying = false;
+let filmInterval = null;
+const filmPhotos = [
+    { icon: '💑', text: 'أول لقاء' },
+    { icon: '🌅', text: 'غروب الشمس' },
+    { icon: '🎉', text: 'احتفال' },
+    { icon: '🌸', text: 'ورد الليلك' },
+    { icon: '💍', text: 'لحظة مميزة' },
+    { icon: '🌙', text: 'ليلة هادئة' }
+];
+let currentPhotoIndex = 0;
+
+function initFilm() {
+    const frame = document.getElementById('filmFrame');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const filmPlay = document.getElementById('filmPlay');
     
-    // تعيين التاريخ
-    const today = new Date();
-    letterDate.textContent = today.toLocaleDateString('ar-SA', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+    frame.addEventListener('click', () => {
+        if (!isPlaying) startFilm();
+        else pauseFilm();
     });
     
-    container.addEventListener('click', () => {
-        if (content.classList.contains('show')) return;
-        
-        // فتح الغطاء
-        lid.classList.add('open');
-        
-        // إخفاء التعليمات
-        instructions.classList.add('hidden');
-        
-        // إيقاف الاهتزاز
-        box.style.animation = 'none';
-        
-        // Confetti
-        createGiftConfetti();
-        
-        // إظهار المحتوى
-        setTimeout(() => {
-            content.classList.add('show');
-        }, 600);
-        
-        // صوت (اختياري)
-        playGiftSound();
+    playBtn.addEventListener('click', startFilm);
+    pauseBtn.addEventListener('click', pauseFilm);
+    filmPlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startFilm();
     });
 }
 
-// ===== Confetti =====
-function createGiftConfetti() {
-    const container = document.getElementById('giftConfetti');
-    const colors = ['#C8A2C8', '#E6E6FA', '#FFD700', '#FF69B4', '#9B59B6', '#FF6347'];
-    const shapes = ['circle', 'heart', 'star'];
+function startFilm() {
+    if (isPlaying) return;
     
-    for (let i = 0; i < 150; i++) {
-        setTimeout(() => {
-            const confetti = document.createElement('div');
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const shape = shapes[Math.floor(Math.random() * shapes.length)];
-            
-            let style = `
-                position: absolute;
-                left: ${50 + (Math.random() - 0.5) * 60}%;
-                top: 40%;
-                width: ${8 + Math.random() * 10}px;
-                height: ${8 + Math.random() * 10}px;
-                background: ${color};
-                pointer-events: none;
-                z-index: 100;
-                box-shadow: 0 0 10px ${color};
-            `;
-            
-            if (shape === 'circle') {
-                style += 'border-radius: 50%;';
-            } else if (shape === 'heart') {
-                confetti.innerHTML = '💜';
-                style += 'background: transparent; font-size: 16px;';
-            } else if (shape === 'star') {
-                confetti.innerHTML = '✨';
-                style += 'background: transparent; font-size: 16px;';
-            }
-            
-            confetti.style.cssText = style;
-            container.appendChild(confetti);
-            
-            // حركة الانفجار
-            const angle = Math.random() * Math.PI * 2;
-            const velocity = 5 + Math.random() * 10;
-            let x = 0, y = 0;
-            let vx = Math.cos(angle) * velocity;
-            let vy = Math.sin(angle) * velocity - 15;
-            let gravity = 0.4;
-            let rotation = 0;
-            let opacity = 1;
-            
-            function animate() {
-                x += vx;
-                y += vy;
-                vy += gravity;
-                vx *= 0.98;
-                rotation += 5;
-                opacity -= 0.008;
-                
-                confetti.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
-                confetti.style.opacity = opacity;
-                
-                if (opacity > 0 && y < window.innerHeight) {
-                    requestAnimationFrame(animate);
-                } else {
-                    confetti.remove();
-                }
-            }
-            
-            requestAnimationFrame(animate);
-        }, i * 10);
+    isPlaying = true;
+    const frame = document.getElementById('filmFrame');
+    const status = document.getElementById('filmStatus');
+    
+    frame.classList.add('playing');
+    status.textContent = 'جارٍ العرض...';
+    
+    filmInterval = setInterval(() => {
+        currentPhotoIndex = (currentPhotoIndex + 1) % filmPhotos.length;
+        updateFilmPhoto();
+        updateProgress();
+    }, 2000);
+    
+    updateFilmPhoto();
+    updateProgress();
+}
+
+function pauseFilm() {
+    isPlaying = false;
+    const frame = document.getElementById('filmFrame');
+    const status = document.getElementById('filmStatus');
+    
+    frame.classList.remove('playing');
+    status.textContent = 'متوقف مؤقتاً';
+    
+    if (filmInterval) {
+        clearInterval(filmInterval);
+        filmInterval = null;
     }
 }
 
-// ===== صوت الهدية (اختياري) =====
-function playGiftSound() {
-    // يمكن إضافة صوت هنا
-    // const audio = new Audio('path/to/sound.mp3');
-    // audio.play().catch(e => console.log('Audio blocked:', e));
+function updateFilmPhoto() {
+    const photo = document.getElementById('filmPhoto');
+    const current = filmPhotos[currentPhotoIndex];
+    
+    photo.innerHTML = `
+        <div style="text-align: center; animation: fadeIn 0.5s;">
+            <div style="font-size: 4rem; margin-bottom: 15px;">${current.icon}</div>
+            <div style="font-size: 1.3rem; color: var(--lilac-light);">${current.text}</div>
+        </div>
+    `;
 }
+
+function updateProgress() {
+    const progress = document.getElementById('filmProgress');
+    const percentage = ((currentPhotoIndex + 1) / filmPhotos.length) * 100;
+    progress.style.width = percentage + '%';
+}
+
+// ===== عناصر المعرض =====
+function initGalleryItems() {
+    const items = document.querySelectorAll('.gallery-item');
+    
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            const story = item.getAttribute('data-story');
+            showStoryModal(story);
+        });
+    });
+}
+
+function showStoryModal(story) {
+    // إزالة أي modal سابق
+    const existing = document.querySelector('.story-modal');
+    if (existing) existing.remove();
+    
+    const modal = document.createElement('div');
+    modal.className = 'story-modal';
+    modal.innerHTML = `
+        <div class="story-content">
+            <div class="story-title">💭 قصة هذه اللحظة</div>
+            <div class="story-text">${story}</div>
+            <button class="story-close">أغلق ✨</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // إظهار
+    requestAnimationFrame(() => {
+        modal.classList.add('show');
+    });
+    
+    // إغلاق
+    modal.querySelector('.story-close').addEventListener('click', () => {
+        modal.classList.remove('show');
+        setTimeout(() => modal.remove(), 300);
+    });
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            setTimeout(() => modal.remove(), 300);
+        }
+    });
+}
+
+// ===== مقارنة قبل/بعد =====
+function initCompareSlider() {
+    const slider = document.getElementById('compareSlider');
+    const handle = document.getElementById('compareHandle');
+    const before = slider.querySelector('.compare-before');
+    
+    let isDragging = false;
+    
+    handle.addEventListener('mousedown', () => isDragging = true);
+    document.addEventListener('mouseup', () => isDragging = false);
+    
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        const rect = slider.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percentage = (x / rect.width) * 100;
+        
+        const clamped = Math.max(5, Math.min(95, percentage));
+        
+        before.style.width = clamped + '%';
+        handle.style.left = clamped + '%';
+    });
+    
+    // للمس
+    handle.addEventListener('touchstart', () => isDragging = true);
+    document.addEventListener('touchend', () => isDragging = false);
+    
+    slider.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        
+        const rect = slider.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const percentage = (x / rect.width) * 100;
+        
+        const clamped = Math.max(5, Math.min(95, percentage));
+        
+        before.style.width = clamped + '%';
+        handle.style.left = clamped + '%';
+    });
+}
+
+// ===== إضافة أنماط CSS ديناميكية =====
+const galleryStyles = document.createElement('style');
+galleryStyles.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+`;
+document.head.appendChild(galleryStyles);
 </script>
 </body>
 </html>
