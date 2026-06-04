@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملكتي — شهد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
+<style>
+
+/* === styles.css === */
+/* ===== Reset & Base ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --lilac-light: #E6E6FA;
+    --lilac-main: #C8A2C8;
+    --lilac-dark: #9B59B6;
+    --lilac-deep: #663399;
+    --night-bg: #0a0a1a;
+    --night-mid: #1a1a3e;
+    --gold: #FFD700;
+    --pink: #FF69B4;
+    --white: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--night-bg);
+    color: var(--white);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* ===== خلفية حية ===== */
+.live-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
+    overflow: hidden;
+}
+
+/* نجوم */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 230px 80px, white, transparent),
+        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
+    background-size: 350px 200px;
+    animation: twinkle 5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.3; }
+}
+
+/* سحاب */
+.clouds {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+}
+
+.clouds::before,
+.clouds::after {
+    content: '';
+    position: absolute;
+    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out infinite;
+}
+
+.clouds::before {
+    width: 400px;
+    height: 150px;
+    top: 20%;
+    left: -10%;
+    animation-delay: 0s;
+}
+
+.clouds::after {
+    width: 300px;
+    height: 120px;
+    top: 60%;
+    right: -5%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(50px) translateY(-20px); }
+    50% { transform: translateX(100px) translateY(10px); }
+    75% { transform: translateX(30px) translateY(-10px); }
+}
+
+/* القمر */
+.moon {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
+    animation: moonPulse 4s ease-in-out infinite;
+}
+
+@keyframes moonPulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
+    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
+}
+
+/* ===== ورد الليلك ===== */
+.lilac-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.lilac-branch {
+    position: absolute;
+    bottom: -20px;
+    width: 200px;
+    height: 400px;
+    opacity: 0.7;
+}
+
+.lilac-branch.left {
+    left: -30px;
+    transform: rotate(-15deg);
+    transform-origin: bottom center;
+    animation: swayLeft 6s ease-in-out infinite;
+}
+
+.lilac-branch.right {
+    right: -30px;
+    transform: rotate(15deg) scaleX(-1);
+    transform-origin: bottom center;
+    animation: swayRight 7s ease-in-out infinite;
+}
+
+@keyframes swayLeft {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(-10deg); }
+}
+
+@keyframes swayRight {
+    0%, 100% { transform: rotate(15deg) scaleX(-1); }
+    50% { transform: rotate(10deg) scaleX(-1); }
+}
+
+/* أزهار الليلك */
+.lilac-flower {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 0 8px rgba(200,162,200,0.6);
+    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
+    opacity: 0;
+}
+
+@keyframes bloom {
+    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
+}
+
+@keyframes floatFlower {
+    0%, 100% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-10px); }
+}
+
+/* بتلات متساقطة */
+.falling-petal {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
+    border-radius: 50% 0 50% 50%;
+    opacity: 0.8;
+    animation: fall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
+    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
+}
+
+/* جزيئات عطر الليلك */
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--lilac-light);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 6s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--lilac-main);
+}
+
+@keyframes particleFloat {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+}
+
+/* ===== المحتوى الرئيسي ===== */
+.start-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.intro-content {
+    text-align: center;
+    padding: 40px;
+    position: relative;
+}
+
+/* العناوين */
+.main-title {
+    margin-bottom: 30px;
+}
+
+.title-line {
+    display: block;
+    font-family: 'Amiri', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(200,162,200,0.5);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.title-line.highlight {
+    font-size: 4rem;
+    color: var(--lilac-light);
+    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
+    animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* القلب النابض */
+.heart-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 30px auto;
+}
+
+.heart {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--pink), #FF1493);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: heartbeat 1.2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(255,105,180,0.6);
+}
+
+.heart::before,
+.heart::after {
+    content: '';
+    width: 80px;
+    height: 80px;
+    background: inherit;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before { top: -40px; left: 0; }
+.heart::after { top: 0; left: 40px; }
+
+@keyframes heartbeat {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+}
+
+.heart-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
+    border-radius: 50%;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* تأثير الكتابة */
+.subtitle {
+    font-size: 1.3rem;
+    color: var(--lilac-light);
+    margin: 20px 0 40px;
+    min-height: 40px;
+    text-shadow: 0 0 10px rgba(200,162,200,0.3);
+}
+
+/* زر البداية */
+.start-btn {
+    position: relative;
+    padding: 18px 50px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
+}
+
+.start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
+}
+
+.btn-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.start-btn:hover .btn-glow {
+    opacity: 1;
+}
+
+/* قلوب طائرة */
+.floating-hearts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    color: var(--pink);
+    font-size: 20px;
+    opacity: 0;
+    animation: floatUp 4s ease-in forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; transform: scale(1); }
+    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
+}
+
+/* ===== تصميم متجاوب ===== */
+@media (max-width: 768px) {
+    .title-line { font-size: 2rem; }
+    .title-line.highlight { font-size: 2.5rem; }
+    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
+    .lilac-branch { width: 120px; height: 250px; }
+}
+/* ===== أزرار التنقل المُحسَّنة ===== */
+.nav-back,
+.nav-next {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 14px 28px;
+    background: rgba(200, 162, 200, 0.2);
+    border: 2px solid rgba(200, 162, 200, 0.4);
+    border-radius: 50px;
+    color: var(--lilac-light);
+    text-decoration: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.4s ease;
+    z-index: 1000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-back {
+    left: 25px;
+}
+
+.nav-next {
+    right: 25px;
+}
+
+.nav-back:hover,
+.nav-next:hover {
+    background: rgba(200, 162, 200, 0.4);
+    border-color: rgba(200, 162, 200, 0.8);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
+}
+
+.nav-back::before {
+    content: '←';
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+    display: inline-block;
+}
+
+.nav-next::after {
+    content: '→';
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+    display: inline-block;
+}
+
+.nav-back:hover::before {
+    transform: translateX(-5px);
+}
+
+.nav-next:hover::after {
+    transform: translateX(5px);
+}
+
+/* ===== للموبايل ===== */
+@media (max-width: 768px) {
+    .nav-back,
+    .nav-next {
+        position: fixed;
+        top: auto;
+        bottom: 20px;
+        transform: none;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        border-radius: 30px;
+    }
+    
+    .nav-back {
+        left: 15px;
+    }
+    
+    .nav-next {
+        right: 15px;
+    }
+    
+    .nav-back:hover,
+    .nav-next:hover {
+        transform: scale(1.05);
+    }
+    
+    .page-container {
+        padding-bottom: 100px;
+    }
+}
+
+/* === hero.css === */
+/* ===== صفحة الهيرو ===== */
+.hero-page {
+    min-height: 100vh;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+/* ===== القلب النابض الكبير ===== */
+.hero-heart-section {
+    text-align: center;
+}
+
+.hero-heart-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+}
+
+.hero-heart {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 40px rgba(200,162,200,0.6);
+    animation: heroHeartbeat 1.5s ease-in-out infinite;
+}
+
+.hero-heart:hover {
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1.2);
+    box-shadow: 0 0 60px rgba(200,162,200,0.9), 0 0 100px rgba(155,89,182,0.4);
+}
+
+.hero-heart::before,
+.hero-heart::after {
+    content: '';
+    width: 150px;
+    height: 150px;
+    background: inherit;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.hero-heart::before { top: -75px; left: 0; }
+.hero-heart::after { top: 0; left: 75px; }
+
+@keyframes heroHeartbeat {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.1); }
+    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+    60% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+}
+
+.heart-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: 10;
+    text-align: center;
+}
+
+.heart-text {
+    font-family: 'Amiri', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(255,255,255,0.8);
+}
+
+.heart-rings {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(200,162,200,0.3);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.ring-1 {
+    width: 200px;
+    height: 200px;
+    animation: ringPulse 2s ease-out infinite;
+}
+
+.ring-2 {
+    width: 250px;
+    height: 250px;
+    animation: ringPulse 2s ease-out infinite 0.5s;
+}
+
+.ring-3 {
+    width: 300px;
+    height: 300px;
+    animation: ringPulse 2s ease-out infinite 1s;
+}
+
+@keyframes ringPulse {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+.heart-caption {
+    font-size: 0.9rem;
+    color: var(--lilac-main);
+    opacity: 0.7;
+}
+
+/* ===== الكتابة التلقائية ===== */
+.typewriter-section {
+    max-width: 600px;
+    width: 100%;
+}
+
+.typewriter-box {
+    background: rgba(200,162,200,0.1);
+    border: 1px solid rgba(200,162,200,0.3);
+    border-radius: 20px;
+    padding: 30px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.typewriter-line {
+    font-family: 'Amiri', serif;
+    font-size: 1.4rem;
+    color: var(--lilac-light);
+    line-height: 1.8;
+    text-align: center;
+}
+
+.typewriter-cursor {
+    font-size: 1.4rem;
+    color: var(--lilac-main);
+    animation: cursorBlink 0.8s infinite;
+    margin-right: 5px;
+}
+
+@keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ===== إطار القلب ===== */
+.heart-frame-section {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.heart-frame {
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
+    position: relative;
+    transform: rotate(-45deg);
+    box-shadow: 0 0 30px rgba(155,89,182,0.5);
+    animation: frameFloat 4s ease-in-out infinite;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.heart-frame::before,
+.heart-frame::after {
+    content: '';
+    width: 250px;
+    height: 250px;
+    background: inherit;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart-frame::before { top: -125px; left: 0; }
+.heart-frame::after { top: 0; left: 125px; }
+
+@keyframes frameFloat {
+    0%, 100% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-15px); }
+}
+
+.frame-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 200px;
+    height: 200px;
+    background: rgba(10,10,26,0.8);
+    border-radius: 15px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.photo-placeholder {
+    text-align: center;
+}
+
+.photo-text {
+    font-size: 1rem;
+    color: var(--lilac-main);
+}
+
+.frame-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(200,162,200,0.2), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* ===== زمن التعرف ===== */
+.time-together-section {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.time-title {
+    font-family: 'Amiri', serif;
+    font-size: 1.8rem;
+    color: var(--lilac-light);
+    margin-bottom: 25px;
+    text-shadow: 0 0 20px rgba(200,162,200,0.4);
+}
+
+.time-counters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.time-unit {
+    background: rgba(200,162,200,0.1);
+    border: 1px solid rgba(200,162,200,0.2);
+    border-radius: 15px;
+    padding: 20px 10px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+.time-unit:hover {
+    transform: translateY(-5px);
+    border-color: rgba(200,162,200,0.5);
+    box-shadow: 0 10px 25px rgba(200,162,200,0.2);
+}
+
+.time-value {
+    display: block;
+    font-family: 'Cairo', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--lilac-light);
+    text-shadow: 0 0 15px rgba(200,162,200,0.6);
+}
+
+.time-label {
+    font-size: 0.85rem;
+    color: var(--lilac-main);
+    margin-top: 5px;
+    display: block;
+}
+
+.time-message {
+    font-family: 'Amiri', serif;
+    font-size: 1.2rem;
+    color: var(--lilac-main);
+    margin-top: 15px;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards 2s;
+}
+
+/* ===== متجاوب ===== */
+@media (max-width: 768px) {
+    .hero-heart-wrapper {
+        transform: scale(0.8);
+    }
+    
+    .heart-frame-section {
+        transform: scale(0.8);
+    }
+    
+    .time-counters {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .typewriter-line {
+        font-size: 1.1rem;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="live-background">
+        <div class="stars"></div>
+        <div class="clouds"></div>
+        <div class="lilac-container" id="lilacContainer"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <div class="page-container">
+        <a href="countdown.html" class="nav-back">← رجوع</a>
+        
+        <div class="hero-page">
+            <!-- قلب نابض كبير -->
+            <div class="hero-heart-section">
+                <div class="hero-heart-wrapper">
+                    <div class="hero-heart" id="heroHeart">
+                        <div class="heart-inner">
+                            <span class="heart-text">شهد</span>
+                        </div>
+                    </div>
+                    <div class="heart-rings">
+                        <div class="ring ring-1"></div>
+                        <div class="ring ring-2"></div>
+                        <div class="ring ring-3"></div>
+                    </div>
+                </div>
+                <p class="heart-caption">ضع المؤشر على القلب 💜</p>
+            </div>
+
+            <!-- رسالة تكتب نفسها -->
+            <div class="typewriter-section">
+                <div class="typewriter-box">
+                    <p class="typewriter-line" id="heroTypewriter"></p>
+                    <div class="typewriter-cursor">|</div>
+                </div>
+            </div>
+
+            <!-- إطار القلب -->
+            <div class="heart-frame-section">
+                <div class="heart-frame" id="heartFrame">
+                    <div class="frame-inner">
+                        <div class="photo-placeholder">
+                            <span class="photo-text">📸 ضع صورة شهد هنا</span>
+                        </div>
+                    </div>
+                    <div class="frame-glow"></div>
+                </div>
+                <div class="frame-particles" id="frameParticles"></div>
+            </div>
+
+            <!-- زمن التعرف -->
+            <div class="time-together-section">
+                <h3 class="time-title">⏰ منذ أن عرفتُكِ</h3>
+                <div class="time-counters">
+                    <div class="time-unit">
+                        <span class="time-value" id="togetherDays">0</span>
+                        <span class="time-label">يوم</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value" id="togetherHours">0</span>
+                        <span class="time-label">ساعة</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value" id="togetherMinutes">0</span>
+                        <span class="time-label">دقيقة</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value" id="togetherSeconds">0</span>
+                        <span class="time-label">ثانية</span>
+                    </div>
+                </div>
+                <div class="time-message" id="timeMessage">
+                    وكل ثانية تزيد حُبّي لكِ 💜
+                </div>
+            </div>
+        </div>
+
+        <a href="lily.html" class="nav-next">التالي →</a>
+    </div>
+
+    <script>
+
+/* === main.js === */
+// ===== متغيرات عامة =====
+let audioContext = null;
+let bgMusic = null;
+
+// ===== عند تحميل الصفحة =====
+document.addEventListener('DOMContentLoaded', () => {
+    initLilac();
+    initParticles();
+    initTypewriter();
+    initStartButton();
+    createFallingPetals();
+});
+
+// ===== ورد الليلك =====
+function initLilac() {
+    const container = document.getElementById('lilacContainer');
+    
+    // إنشاء أزهار على الأغصان
+    const branches = document.querySelectorAll('.lilac-branch');
+    
+    branches.forEach(branch => {
+        for (let i = 0; i < 25; i++) {
+            const flower = document.createElement('div');
+            flower.className = 'lilac-flower';
+            
+            // موقع عشوائي على الغصن
+            const top = 20 + Math.random() * 70;
+            const left = 30 + Math.random() * 40;
+            const delay = Math.random() * 3;
+            const size = 8 + Math.random() * 8;
+            
+            flower.style.cssText = `
+                top: ${top}%;
+                left: ${left}%;
+                width: ${size}px;
+                height: ${size}px;
+                animation-delay: ${delay}s;
+            `;
+            
+            branch.appendChild(flower);
+        }
+    });
+}
+
+// ===== بتلات متساقطة =====
+function createFallingPetals() {
+    setInterval(() => {
+        const petal = document.createElement('div');
+        petal.className = 'falling-petal';
+        
+        const startX = Math.random() * window.innerWidth;
+        const duration = 5 + Math.random() * 5;
+        const size = 6 + Math.random() * 6;
+        
+        petal.style.cssText = `
+            left: ${startX}px;
+            top: -20px;
+            width: ${size}px;
+            height: ${size}px;
+            animation-duration: ${duration}s;
+        `;
+        
+        document.querySelector('.live-background').appendChild(petal);
+        
+        setTimeout(() => petal.remove(), duration * 1000);
+    }, 1500);
+}
+
+// ===== جزيئات العطر =====
+function initParticles() {
+    const container = document.getElementById('particles');
+    
+    setInterval(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const x = Math.random() * window.innerWidth;
+        const y = window.innerHeight - Math.random() * 200;
+        const delay = Math.random() * 2;
+        
+        particle.style.cssText = `
+            left: ${x}px;
+            top: ${y}px;
+            animation-delay: ${delay}s;
+        `;
+        
+        container.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 6000);
+    }, 800);
+}
+
+// ===== تأثير الكتابة =====
+function initTypewriter() {
+    const text = "في كل نبضة قلب... أنتِ";
+    const element = document.getElementById('typewriterText');
+    let index = 0;
+    
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, 150);
+        } else {
+            setTimeout(() => {
+                element.textContent = '';
+                index = 0;
+                type();
+            }, 4000);
+        }
+    }
+    
+    setTimeout(type, 1500);
+}
+
+// ===== زر البداية =====
+function initStartButton() {
+    const btn = document.getElementById('startBtn');
+    
+    btn.addEventListener('click', async () => {
+        // تشغيل الموسيقى
+        await initAudio();
+        
+        // تأثير القلوب الطائرة
+        createBurstHearts();
+        
+        // الانتقال للصفحة التالية
+        setTimeout(() => {
+            window.location.href = 'countdown.html';
+        }, 2000);
+    });
+}
+
+// ===== تشغيل الصوت =====
+async function initAudio() {
+    bgMusic = document.getElementById('bgMusic');
+    
+    try {
+        await bgMusic.play();
+        bgMusic.volume = 0.3;
+    } catch (e) {
+        console.log('Audio autoplay blocked:', e);
+    }
+}
+
+// ===== انفجار قلوب =====
+function createBurstHearts() {
+    const container = document.getElementById('floatingHearts');
+    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
+    
+    for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
+        
+        const x = 30 + Math.random() * 40;
+        const delay = Math.random() * 1;
+        
+        heart.style.cssText = `
+            left: ${x}%;
+            bottom: 20%;
+            animation-delay: ${delay}s;
+            font-size: ${15 + Math.random() * 20}px;
+        `;
+        
+        container.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 5000);
+    }
+}
+
+// ===== أداة مساعدة: عداد الوقت =====
+function getTimeSince(date) {
+    const now = new Date();
+    const diff = now - new Date(date);
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    return { days, hours, minutes, seconds };
+}
+
+// ===== أداة مساعدة: تنسيق الأرقام =====
+function pad(num) {
+    return num.toString().padStart(2, '0');
+}
+
+/* === hero.js === */
+// ===== إعدادات زمن التعرف =====
+const FIRST_MEETING = new Date('2026-01-01T00:00:00'); // ✅ تاريخ التعارف: 1/1/2026
+
+// ===== الرسائل الدوارة =====
+const loveMessages = [
+    "أنتِ نبضة القلب التي لا تتوقف",
+    "في عينيكِ أجد عالماً كاملاً",
+    "كل لحظة معكِ هي كنز لا يُقدّر بثمن",
+    "أحبكِ أكثر مما يمكن للكلمات أن تعبّر",
+    "أنتِ ضوء القمر في لياليّ",
+    "معكِ يصبح كل شيء أجمل",
+    "قلبي ملككِ اليوم وغداً وإلى الأبد",
+    "أنتِ الحلم الذي تحقق في حياتي"
+];
+
+// ===== عند التحميل =====
+document.addEventListener('DOMContentLoaded', () => {
+    initHeroHeart();
+    initTypewriter();
+    initHeartFrame();
+    initTimeTogether();
+    initLilac();
+    initParticles();
+});
+
+// ===== القلب النابض =====
+function initHeroHeart() {
+    const heart = document.getElementById('heroHeart');
+    if (!heart) return;
+    
+    heart.addEventListener('mouseenter', () => {
+        createHeartBurst();
+    });
+    
+    heart.addEventListener('click', () => {
+        createHeartBurst();
+        heart.style.animation = 'none';
+        heart.offsetHeight; // trigger reflow
+        heart.style.animation = 'heroHeartbeat 0.8s ease-in-out infinite';
+        
+        setTimeout(() => {
+            heart.style.animation = 'heroHeartbeat 1.5s ease-in-out infinite';
+        }, 2000);
+    });
+}
+
+function createHeartBurst() {
+    const wrapper = document.querySelector('.hero-heart-wrapper');
+    if (!wrapper) return;
+    
+    const colors = ['💜', '💖', '💕', '✨', '🪻', '💗'];
+    
+    for (let i = 0; i < 12; i++) {
+        const particle = document.createElement('div');
+        particle.textContent = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 100;
+        `;
+        
+        wrapper.appendChild(particle);
+        
+        const angle = (Math.PI * 2 * i) / 12;
+        const velocity = 80 + Math.random() * 60;
+        let x = 0, y = 0;
+        let opacity = 1;
+        
+        function animate() {
+            x += Math.cos(angle) * velocity * 0.016;
+            y += Math.sin(angle) * velocity * 0.016 - 30 * 0.016;
+            opacity -= 0.015;
+            
+            particle.style.transform = `translate(${x}px, ${y}px)`;
+            particle.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animate);
+            } else {
+                particle.remove();
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
+}
+
+// ===== الكتابة التلقائية =====
+function initTypewriter() {
+    const element = document.getElementById('heroTypewriter');
+    if (!element) return;
+    
+    let messageIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    
+    function type() {
+        const currentMessage = loveMessages[messageIndex];
+        
+        if (isDeleting) {
+            element.textContent = currentMessage.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            element.textContent = currentMessage.substring(0, charIndex + 1);
+            charIndex++;
+        }
+        
+        let typeSpeed = isDeleting ? 50 : 100;
+        
+        if (!isDeleting && charIndex === currentMessage.length) {
+            typeSpeed = 2000; // انتظر قبل الحذف
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            messageIndex = (messageIndex + 1) % loveMessages.length;
+            typeSpeed = 500;
+        }
+        
+        setTimeout(type, typeSpeed);
+    }
+    
+    setTimeout(type, 1000);
+}
+
+// ===== إطار القلب =====
+function initHeartFrame() {
+    const frame = document.getElementById('heartFrame');
+    const particlesContainer = document.getElementById('frameParticles');
+    
+    if (!frame) return;
+    
+    frame.addEventListener('mouseenter', () => {
+        frame.style.transform = 'rotate(-45deg) scale(1.05)';
+        createFrameParticles();
+    });
+    
+    frame.addEventListener('mouseleave', () => {
+        frame.style.transform = 'rotate(-45deg) scale(1)';
+    });
+}
+
+function createFrameParticles() {
+    const container = document.getElementById('frameParticles');
+    if (!container) return;
+    
+    for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--lilac-light);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--lilac-main);
+            pointer-events: none;
+        `;
+        
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 100 + Math.random() * 100;
+        
+        particle.style.left = (150 + Math.cos(angle) * distance) + 'px';
+        particle.style.top = (150 + Math.sin(angle) * distance) + 'px';
+        
+        container.appendChild(particle);
+        
+        let opacity = 1;
+        let scale = 1;
+        
+        function animate() {
+            opacity -= 0.02;
+            scale += 0.02;
+            
+            particle.style.opacity = opacity;
+            particle.style.transform = `scale(${scale})`;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animate);
+            } else {
+                particle.remove();
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
+}
+
+// ===== زمن التعرف =====
+function initTimeTogether() {
+    updateTimeTogether();
+    setInterval(updateTimeTogether, 1000);
+}
+
+function updateTimeTogether() {
+    const now = new Date();
+    const diff = now - FIRST_MEETING;
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    const daysEl = document.getElementById('togetherDays');
+    const hoursEl = document.getElementById('togetherHours');
+    const minutesEl = document.getElementById('togetherMinutes');
+    const secondsEl = document.getElementById('togetherSeconds');
+    
+    if (daysEl) daysEl.textContent = Math.max(0, days).toLocaleString('ar-SA');
+    if (hoursEl) hoursEl.textContent = pad(hours);
+    if (minutesEl) minutesEl.textContent = pad(minutes);
+    if (secondsEl) secondsEl.textContent = pad(seconds);
+}
+
+// ===== أداة مساعدة =====
+function pad(num) {
+    return num.toString().padStart(2, '0');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شهد — كل الحب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
+<style>
+
+/* === styles.css === */
+/* ===== Reset & Base ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --lilac-light: #E6E6FA;
+    --lilac-main: #C8A2C8;
+    --lilac-dark: #9B59B6;
+    --lilac-deep: #663399;
+    --night-bg: #0a0a1a;
+    --night-mid: #1a1a3e;
+    --gold: #FFD700;
+    --pink: #FF69B4;
+    --white: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--night-bg);
+    color: var(--white);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* ===== خلفية حية ===== */
+.live-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
+    overflow: hidden;
+}
+
+/* نجوم */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 230px 80px, white, transparent),
+        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
+    background-size: 350px 200px;
+    animation: twinkle 5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.3; }
+}
+
+/* سحاب */
+.clouds {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+}
+
+.clouds::before,
+.clouds::after {
+    content: '';
+    position: absolute;
+    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out infinite;
+}
+
+.clouds::before {
+    width: 400px;
+    height: 150px;
+    top: 20%;
+    left: -10%;
+    animation-delay: 0s;
+}
+
+.clouds::after {
+    width: 300px;
+    height: 120px;
+    top: 60%;
+    right: -5%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(50px) translateY(-20px); }
+    50% { transform: translateX(100px) translateY(10px); }
+    75% { transform: translateX(30px) translateY(-10px); }
+}
+
+/* القمر */
+.moon {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
+    animation: moonPulse 4s ease-in-out infinite;
+}
+
+@keyframes moonPulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
+    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
+}
+
+/* ===== ورد الليلك ===== */
+.lilac-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.lilac-branch {
+    position: absolute;
+    bottom: -20px;
+    width: 200px;
+    height: 400px;
+    opacity: 0.7;
+}
+
+.lilac-branch.left {
+    left: -30px;
+    transform: rotate(-15deg);
+    transform-origin: bottom center;
+    animation: swayLeft 6s ease-in-out infinite;
+}
+
+.lilac-branch.right {
+    right: -30px;
+    transform: rotate(15deg) scaleX(-1);
+    transform-origin: bottom center;
+    animation: swayRight 7s ease-in-out infinite;
+}
+
+@keyframes swayLeft {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(-10deg); }
+}
+
+@keyframes swayRight {
+    0%, 100% { transform: rotate(15deg) scaleX(-1); }
+    50% { transform: rotate(10deg) scaleX(-1); }
+}
+
+/* أزهار الليلك */
+.lilac-flower {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 0 8px rgba(200,162,200,0.6);
+    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
+    opacity: 0;
+}
+
+@keyframes bloom {
+    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
+}
+
+@keyframes floatFlower {
+    0%, 100% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-10px); }
+}
+
+/* بتلات متساقطة */
+.falling-petal {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
+    border-radius: 50% 0 50% 50%;
+    opacity: 0.8;
+    animation: fall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
+    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
+}
+
+/* جزيئات عطر الليلك */
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--lilac-light);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 6s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--lilac-main);
+}
+
+@keyframes particleFloat {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+}
+
+/* ===== المحتوى الرئيسي ===== */
+.start-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.intro-content {
+    text-align: center;
+    padding: 40px;
+    position: relative;
+}
+
+/* العناوين */
+.main-title {
+    margin-bottom: 30px;
+}
+
+.title-line {
+    display: block;
+    font-family: 'Amiri', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(200,162,200,0.5);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.title-line.highlight {
+    font-size: 4rem;
+    color: var(--lilac-light);
+    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
+    animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* القلب النابض */
+.heart-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 30px auto;
+}
+
+.heart {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--pink), #FF1493);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: heartbeat 1.2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(255,105,180,0.6);
+}
+
+.heart::before,
+.heart::after {
+    content: '';
+    width: 80px;
+    height: 80px;
+    background: inherit;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before { top: -40px; left: 0; }
+.heart::after { top: 0; left: 40px; }
+
+@keyframes heartbeat {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+}
+
+.heart-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
+    border-radius: 50%;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* تأثير الكتابة */
+.subtitle {
+    font-size: 1.3rem;
+    color: var(--lilac-light);
+    margin: 20px 0 40px;
+    min-height: 40px;
+    text-shadow: 0 0 10px rgba(200,162,200,0.3);
+}
+
+/* زر البداية */
+.start-btn {
+    position: relative;
+    padding: 18px 50px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
+}
+
+.start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
+}
+
+.btn-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.start-btn:hover .btn-glow {
+    opacity: 1;
+}
+
+/* قلوب طائرة */
+.floating-hearts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    color: var(--pink);
+    font-size: 20px;
+    opacity: 0;
+    animation: floatUp 4s ease-in forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; transform: scale(1); }
+    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
+}
+
+/* ===== تصميم متجاوب ===== */
+@media (max-width: 768px) {
+    .title-line { font-size: 2rem; }
+    .title-line.highlight { font-size: 2.5rem; }
+    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
+    .lilac-branch { width: 120px; height: 250px; }
+}
+/* ===== أزرار التنقل المُحسَّنة ===== */
+.nav-back,
+.nav-next {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 14px 28px;
+    background: rgba(200, 162, 200, 0.2);
+    border: 2px solid rgba(200, 162, 200, 0.4);
+    border-radius: 50px;
+    color: var(--lilac-light);
+    text-decoration: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.4s ease;
+    z-index: 1000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-back {
+    left: 25px;
+}
+
+.nav-next {
+    right: 25px;
+}
+
+.nav-back:hover,
+.nav-next:hover {
+    background: rgba(200, 162, 200, 0.4);
+    border-color: rgba(200, 162, 200, 0.8);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
+}
+
+.nav-back::before {
+    content: '←';
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+    display: inline-block;
+}
+
+.nav-next::after {
+    content: '→';
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+    display: inline-block;
+}
+
+.nav-back:hover::before {
+    transform: translateX(-5px);
+}
+
+.nav-next:hover::after {
+    transform: translateX(5px);
+}
+
+/* ===== للموبايل ===== */
+@media (max-width: 768px) {
+    .nav-back,
+    .nav-next {
+        position: fixed;
+        top: auto;
+        bottom: 20px;
+        transform: none;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        border-radius: 30px;
+    }
+    
+    .nav-back {
+        left: 15px;
+    }
+    
+    .nav-next {
+        right: 15px;
+    }
+    
+    .nav-back:hover,
+    .nav-next:hover {
+        transform: scale(1.05);
+    }
+    
+    .page-container {
+        padding-bottom: 100px;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- خلفية حية -->
+    <div class="live-background">
+        <div class="stars"></div>
+        <div class="clouds"></div>
+        <div class="lilac-container" id="lilacContainer"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- صفحة البداية -->
+    <div class="start-page">
+        <div class="moon"></div>
+        
+        <div class="intro-content">
+            <div class="lilac-branch left"></div>
+            <div class="lilac-branch right"></div>
+            
+            <h1 class="main-title">
+                <span class="title-line">إلى من ملكت</span>
+                <span class="title-line highlight">قلبي كله</span>
+            </h1>
+            
+            <div class="heart-container">
+                <div class="heart"></div>
+                <div class="heart-glow"></div>
+            </div>
+            
+            <p class="subtitle typewriter" id="typewriterText"></p>
+            
+            <button class="start-btn" id="startBtn">
+                <span class="btn-text">✨ ابدأ رحلتنا</span>
+                <div class="btn-glow"></div>
+            </button>
+            
+            <div class="floating-hearts" id="floatingHearts"></div>
+        </div>
+    </div>
+
+    <!-- تحميل الصوت -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+
+/* === main.js === */
+// ===== متغيرات عامة =====
+let audioContext = null;
+let bgMusic = null;
+
+// ===== عند تحميل الصفحة =====
+document.addEventListener('DOMContentLoaded', () => {
+    initLilac();
+    initParticles();
+    initTypewriter();
+    initStartButton();
+    createFallingPetals();
+});
+
+// ===== ورد الليلك =====
+function initLilac() {
+    const container = document.getElementById('lilacContainer');
+    
+    // إنشاء أزهار على الأغصان
+    const branches = document.querySelectorAll('.lilac-branch');
+    
+    branches.forEach(branch => {
+        for (let i = 0; i < 25; i++) {
+            const flower = document.createElement('div');
+            flower.className = 'lilac-flower';
+            
+            // موقع عشوائي على الغصن
+            const top = 20 + Math.random() * 70;
+            const left = 30 + Math.random() * 40;
+            const delay = Math.random() * 3;
+            const size = 8 + Math.random() * 8;
+            
+            flower.style.cssText = `
+                top: ${top}%;
+                left: ${left}%;
+                width: ${size}px;
+                height: ${size}px;
+                animation-delay: ${delay}s;
+            `;
+            
+            branch.appendChild(flower);
+        }
+    });
+}
+
+// ===== بتلات متساقطة =====
+function createFallingPetals() {
+    setInterval(() => {
+        const petal = document.createElement('div');
+        petal.className = 'falling-petal';
+        
+        const startX = Math.random() * window.innerWidth;
+        const duration = 5 + Math.random() * 5;
+        const size = 6 + Math.random() * 6;
+        
+        petal.style.cssText = `
+            left: ${startX}px;
+            top: -20px;
+            width: ${size}px;
+            height: ${size}px;
+            animation-duration: ${duration}s;
+        `;
+        
+        document.querySelector('.live-background').appendChild(petal);
+        
+        setTimeout(() => petal.remove(), duration * 1000);
+    }, 1500);
+}
+
+// ===== جزيئات العطر =====
+function initParticles() {
+    const container = document.getElementById('particles');
+    
+    setInterval(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const x = Math.random() * window.innerWidth;
+        const y = window.innerHeight - Math.random() * 200;
+        const delay = Math.random() * 2;
+        
+        particle.style.cssText = `
+            left: ${x}px;
+            top: ${y}px;
+            animation-delay: ${delay}s;
+        `;
+        
+        container.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 6000);
+    }, 800);
+}
+
+// ===== تأثير الكتابة =====
+function initTypewriter() {
+    const text = "في كل نبضة قلب... أنتِ";
+    const element = document.getElementById('typewriterText');
+    let index = 0;
+    
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, 150);
+        } else {
+            setTimeout(() => {
+                element.textContent = '';
+                index = 0;
+                type();
+            }, 4000);
+        }
+    }
+    
+    setTimeout(type, 1500);
+}
+
+// ===== زر البداية =====
+function initStartButton() {
+    const btn = document.getElementById('startBtn');
+    
+    btn.addEventListener('click', async () => {
+        // تشغيل الموسيقى
+        await initAudio();
+        
+        // تأثير القلوب الطائرة
+        createBurstHearts();
+        
+        // الانتقال للصفحة التالية
+        setTimeout(() => {
+            window.location.href = 'countdown.html';
+        }, 2000);
+    });
+}
+
+// ===== تشغيل الصوت =====
+async function initAudio() {
+    bgMusic = document.getElementById('bgMusic');
+    
+    try {
+        await bgMusic.play();
+        bgMusic.volume = 0.3;
+    } catch (e) {
+        console.log('Audio autoplay blocked:', e);
+    }
+}
+
+// ===== انفجار قلوب =====
+function createBurstHearts() {
+    const container = document.getElementById('floatingHearts');
+    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
+    
+    for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
+        
+        const x = 30 + Math.random() * 40;
+        const delay = Math.random() * 1;
+        
+        heart.style.cssText = `
+            left: ${x}%;
+            bottom: 20%;
+            animation-delay: ${delay}s;
+            font-size: ${15 + Math.random() * 20}px;
+        `;
+        
+        container.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 5000);
+    }
+}
+
+// ===== أداة مساعدة: عداد الوقت =====
+function getTimeSince(date) {
+    const now = new Date();
+    const diff = now - new Date(date);
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    return { days, hours, minutes, seconds };
+}
+
+// ===== أداة مساعدة: تنسيق الأرقام =====
+function pad(num) {
+    return num.toString().padStart(2, '0');
+}
+</script>
+</body>
+</html>
