@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="بوابة الأمان — عيد ميلاد شودي">
+  <meta name="theme-color" content="#e91e63">
+  <meta property="og:title" content="البوابة السرية — شودي">
+  <meta property="og:description" content="أدخل الرمز السري للدخول إلى عالم شودي">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>البوابة السرية — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
+    .pin-page {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+      position: relative;
+      z-index: var(--z-content);
+    }
+
+    .pin-card {
+      width: 100%;
+      max-width: 28rem;
+      text-align: center;
+      padding: var(--space-10) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .heart-lock {
+      width: 6rem;
+      height: 6rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .heart-lock::before {
+      content: '';
+      position: absolute;
+      inset: calc(-1 * var(--space-6));
+      border-radius: var(--radius-full);
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent-rose) 8%, transparent), transparent 70%);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .heart-lock-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 20px color-mix(in srgb, var(--accent-rose) 25%, transparent));
+      transition: filter var(--duration-slow) var(--ease-out-expo);
+    }
+
+    .heart-lock.unlocked .heart-lock-svg {
+      filter: drop-shadow(0 0 40px color-mix(in srgb, var(--accent-rose) 50%, transparent));
+      animation: heartBeat 1s ease-in-out;
+    }
+
+    .pin-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .pin-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .pin-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      margin: var(--space-2) 0;
+    }
+
+    .pin-dot {
+      width: var(--space-3);
+      height: var(--space-3);
+      border-radius: var(--radius-full);
+      border: 2px solid var(--accent-pink);
+      background: transparent;
+      transition: all var(--duration-base) var(--ease-out-expo);
+      position: relative;
+    }
+
+    .pin-dot.filled {
+      background: var(--accent-rose);
+      border-color: var(--accent-rose);
+      box-shadow: var(--shadow-glow-rose);
+      transform: scale(1.2);
+    }
+
+    .pin-dot.locked {
+      border-color: var(--text-muted);
+      opacity: 0.4;
+    }
+
+    .pin-dot.filled::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--accent-rose);
+      opacity: 0;
+      animation: ringExpand 0.6s ease-out forwards;
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+      width: 100%;
+      max-width: 18rem;
+      margin-top: var(--space-2);
+    }
+
+    .pin-btn {
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--surface-65), var(--surface-50));
+      border: 1px solid var(--surface-50);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform var(--duration-fast) var(--ease-out-expo), box-shadow var(--duration-fast) var(--ease-out-expo);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pin-btn:hover {
+      transform: translateY(-2px) translateZ(0);
+      box-shadow: var(--shadow-md), var(--shadow-glow-rose);
+      background: linear-gradient(135deg, var(--surface-80), var(--surface-65));
+    }
+
+    .pin-btn:active {
+      transform: scale(0.92) translateZ(0);
+    }
+
+    .pin-btn .ripple {
+      position: absolute;
+      border-radius: var(--radius-full);
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent-rose) 20%, transparent), transparent);
+      transform: scale(0);
+      animation: ripple 0.6s ease-out forwards;
+      pointer-events: none;
+    }
+
+    .pin-btn.pin-action {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .pin-btn.pin-action:hover {
+      color: var(--accent-rose);
+    }
+
+    .pin-error {
+      color: var(--accent-rose);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      min-height: var(--space-6);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: all var(--duration-fast) var(--ease-out-expo);
+    }
+
+    .pin-error.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pin-lockout {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      min-height: var(--space-6);
+      opacity: 0;
+      transition: opacity var(--duration-fast) var(--ease-smooth);
+    }
+
+    .pin-lockout.show {
+      opacity: 1;
+    }
+
+    .pin-shake {
+      animation: shakeHeart 0.5s ease;
+    }
+
+    .pin-success-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-modal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: var(--space-6);
+      background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--duration-slow) var(--ease-smooth);
+    }
+
+    .pin-success-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .success-heart {
+      width: 6rem;
+      height: 6rem;
+      color: var(--accent-rose);
+      animation: heartBeat 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 30px color-mix(in srgb, var(--accent-rose) 30%, transparent));
+    }
+
+    .success-text {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--text-primary);
+    }
+
+    .success-sub {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 640px) {
+      .pin-card {
+        padding: var(--space-8) var(--space-5);
+        gap: var(--space-4);
+      }
+
+      .heart-lock {
+        width: 5rem;
+        height: 5rem;
+      }
+
+      .pin-keypad {
+        gap: var(--space-2);
+      }
+    }
+  </style>
+</head>
+<body data-page="pin">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
+
+  <div class="luxury-bg" aria-hidden="true"></div>
+  <div id="bg3d" aria-hidden="true"></div>
+
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="color: var(--accent-rose); animation: heartBeat 1.5s ease-in-out infinite;">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <div class="loading-bar">
+      <div class="loading-bar-fill" id="loadingBar"></div>
+    </div>
+  </div>
+
+  <main id="main-content" class="pin-page">
+    <div class="glass-card pin-card reveal reveal--scale">
+      <!-- Heart Lock -->
+      <div class="heart-lock" id="heartLock">
+        <svg viewBox="0 0 100 100" class="heart-lock-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="hl-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--accent-pink)"/>
+              <stop offset="100%" stop-color="var(--accent-purple)"/>
+            </linearGradient>
+            <filter id="hl-glow">
+              <feGaussianBlur stdDeviation="2" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <path id="heartPath" d="M50,85 C50,85 15,55 15,35 C15,20 25,10 40,10 C47,10 50,18 50,18 C50,18 53,10 60,10 C75,10 85,20 85,35 C85,55 50,85 50,85 Z" fill="url(#hl-grad)" stroke="none" filter="url(#hl-glow)"/>
+          <rect id="heartLockRect" x="42" y="35" width="16" height="14" rx="3" fill="var(--surface-90)" opacity="0"/>
+          <circle id="heartLockCircle" cx="50" cy="42" r="2.5" fill="var(--text-primary)" opacity="0"/>
+        </svg>
+      </div>
+
+      <h1 class="pin-title reveal reveal-delay-1">ادخلي الرقم السري</h1>
+      <p class="pin-subtitle reveal reveal-delay-2">القلب مفتوح لمن يعرف سره</p>
+
+      <!-- PIN Display -->
+      <div class="pin-display reveal reveal-delay-2" id="pinDisplay" aria-live="polite">
+        <span class="pin-dot" data-i="0"></span>
+        <span class="pin-dot" data-i="1"></span>
+        <span class="pin-dot" data-i="2"></span>
+        <span class="pin-dot" data-i="3"></span>
+        <span class="pin-dot" data-i="4"></span>
+        <span class="pin-dot" data-i="5"></span>
+        <span class="pin-dot" data-i="6"></span>
+      </div>
+
+      <p class="pin-error" id="pinError">الرقم غير صحيح</p>
+      <p class="pin-lockout" id="pinLockout"></p>
+
+      <!-- Keypad -->
+      <div class="pin-keypad reveal reveal-delay-3" id="pinKeypad">
+        <button class="pin-btn" data-key="1" type="button" aria-label="١">١</button>
+        <button class="pin-btn" data-key="2" type="button" aria-label="٢">٢</button>
+        <button class="pin-btn" data-key="3" type="button" aria-label="٣">٣</button>
+        <button class="pin-btn" data-key="4" type="button" aria-label="٤">٤</button>
+        <button class="pin-btn" data-key="5" type="button" aria-label="٥">٥</button>
+        <button class="pin-btn" data-key="6" type="button" aria-label="٦">٦</button>
+        <button class="pin-btn" data-key="7" type="button" aria-label="٧">٧</button>
+        <button class="pin-btn" data-key="8" type="button" aria-label="٨">٨</button>
+        <button class="pin-btn" data-key="9" type="button" aria-label="٩">٩</button>
+        <button class="pin-btn pin-action" data-action="clear" type="button">مسح</button>
+        <button class="pin-btn" data-key="0" type="button" aria-label="٠">٠</button>
+        <button class="pin-btn pin-action" data-action="back" type="button" aria-label="حذف">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12H8M4 12l4-4M4 12l4 4"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Success Overlay -->
+  <div class="pin-success-overlay" id="successOverlay">
+    <svg class="success-heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <div class="success-text">أهلاً بكِ يا شودي</div>
+    <div class="success-sub">جاري فتح الأبواب...</div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+  <script>
+    (function() {
+      'use strict';
+
+      const loadingScreen = document.getElementById('loadingScreen');
+      const loadingBar = document.getElementById('loadingBar');
+      let progress = 0;
+
+      function updateProgress(target, delay) {
+        setTimeout(() => {
+          progress = target;
+          if (loadingBar) loadingBar.style.width = progress + '%';
+        }, delay);
+      }
+
+      updateProgress(25, 200);
+      updateProgress(60, 500);
+      updateProgress(100, 1000);
+
+      setTimeout(() => {
+        if (loadingScreen) loadingScreen.classList.add('hidden');
+        document.querySelectorAll('.reveal').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 200);
+        });
+      }, 1400);
+
+      if (window.Engine3D) Engine3D.init();
+
+      let pin = '';
+      const pinDisplay = document.getElementById('pinDisplay');
+      const pinError = document.getElementById('pinError');
+      const heartLock = document.getElementById('heartLock');
+      const heartPath = document.getElementById('heartPath');
+      const heartLockRect = document.getElementById('heartLockRect');
+      const heartLockCircle = document.getElementById('heartLockCircle');
+      const successOverlay = document.getElementById('successOverlay');
+
+      function updatePinUI() {
+        const dots = pinDisplay.querySelectorAll('.pin-dot');
+        dots.forEach((dot, i) => dot.classList.toggle('filled', i < pin.length));
+        pinError.classList.remove('show');
+      }
+
+      function shakeHeart() {
+        heartLock.classList.add('pin-shake');
+        setTimeout(() => heartLock.classList.remove('pin-shake'), 500);
+      }
+
+      function createRipple(btn) {
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        const size = Math.max(btn.offsetWidth, btn.offsetHeight);
+        ripple.style.setProperty('--ripple-size', size + 'px');
+        ripple.style.width = 'var(--ripple-size)';
+        ripple.style.height = 'var(--ripple-size)';
+        ripple.style.left = 'calc(50% - var(--ripple-size) / 2)';
+        ripple.style.top = 'calc(50% - var(--ripple-size) / 2)';
+        btn.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      }
+
+      function showLockAnimation() {
+        heartPath.classList.add('unlocking');
+        heartLockRect.setAttribute('opacity', '1');
+        heartLockCircle.setAttribute('opacity', '1');
+
+        setTimeout(() => {
+          heartLockRect.setAttribute('opacity', '0');
+          heartLockCircle.setAttribute('opacity', '0');
+        }, 600);
+      }
+
+      async function unlockHeart() {
+        showLockAnimation();
+
+        const result = await AuthSystem.validatePin(pin);
+        if (result.success) {
+          successOverlay.classList.add('show');
+          setTimeout(() => {
+            const params = new URLSearchParams(window.location.search);
+            const returnUrl = params.get('return') || 'countdown.html';
+            window.location.href = decodeURIComponent(returnUrl);
+          }, 1800);
+        } else if (result.locked) {
+          pin = '';
+          updatePinUI();
+        } else {
+          pinError.textContent = result.remaining
+            ? 'الرقم غير صحيح (' + result.remaining + ' محاولات متبقية)'
+            : 'الرقم غير صحيح';
+          pinError.classList.add('show');
+          shakeHeart();
+          pin = '';
+          setTimeout(updatePinUI, 300);
+        }
+      }
+
+      function handleKey(key) {
+        if (AuthSystem.checkLockout()) return;
+        if (pin.length < 7) {
+          pin += key;
+          updatePinUI();
+          if (pin.length === 7) {
+            unlockHeart();
+          }
+        }
+      }
+
+      function handleAction(action) {
+        if (AuthSystem.checkLockout()) return;
+        if (action === 'clear') {
+          pin = '';
+          updatePinUI();
+        } else if (action === 'back') {
+          pin = pin.slice(0, -1);
+          updatePinUI();
+        }
+      }
+
+      document.querySelectorAll('.pin-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          createRipple(btn);
+          if (window.AuthSystem) AuthSystem.hapticPress(btn);
+          const key = btn.dataset.key;
+          const action = btn.dataset.action;
+          if (key !== undefined) handleKey(key);
+          else if (action) handleAction(action);
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (AuthSystem.checkLockout()) return;
+        if (e.key >= '0' && e.key <= '9') {
+          e.preventDefault();
+          handleKey(e.key);
+        } else if (e.key === 'Backspace') {
+          e.preventDefault();
+          handleAction('back');
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          handleAction('clear');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

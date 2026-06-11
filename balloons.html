@@ -1,44 +1,237 @@
-import { createClient } from '@vercel/kv';
-
-const kv = createClient({
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN,
-});
-
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method === 'GET') {
-    try {
-      const wishes = await kv.get('wishes') || [];
-      return res.status(200).json({ wishes });
-    } catch (e) {
-      return res.status(500).json({ error: 'Failed to read' });
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#e91e63">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>البالونات — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
+    .balloons-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      cursor: crosshair;
     }
-  }
+    .balloons-overlay {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+      text-align: center;
+    }
+    .balloons-overlay > * { pointer-events: auto; }
+    .pop-counter {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--accent-rose);
+      text-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.2);
+    }
+  </style>
+</head>
+<body data-page="balloons">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
+  <div class="luxury-bg" aria-hidden="true"></div>
 
-  if (req.method === 'POST') {
-    try {
-      const wishData = req.body;
-      const wishes = await kv.get('wishes') || [];
+  <canvas class="balloons-canvas" id="balloonsCanvas" aria-hidden="true"></canvas>
 
-      wishes.push({
-        ...wishData,
-        id: Date.now()
+  <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+    <a href="index.html" class="nav-link" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+    <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+    <a href="hero.html" class="nav-link" aria-label="ملكتي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+    <a href="lily.html" class="nav-link" aria-label="اليلك">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+    <a href="gallery.html" class="nav-link" aria-label="الذكريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+    <a href="balloons.html" class="nav-link" aria-label="البالونات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+    <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+    <a href="gift.html" class="nav-link" aria-label="الهدية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+     <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
+      <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
+  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
+</nav>
+
+  <main id="main-content" class="page-wrapper balloons-overlay">
+    <h1 class="display-title display-title--1 text-gradient-rose reveal">البالونات</h1>
+    <p class="reveal reveal-delay-1" style="color: var(--text-muted); font-size: var(--text-sm);">اضغط على البالونات لتفرقعها!</p>
+    <div class="glass-card reveal reveal-delay-2" style="padding: var(--space-lg) var(--space-xl);">
+      <span class="pop-counter" id="popCount">0</span>
+      <span style="color: var(--text-muted); font-size: var(--text-sm); margin-right: var(--space-sm);">بالون منفجر</span>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+  <script>
+    (function() {
+      'use strict';
+      if (window.Engine3D) Engine3D.init();
+      if (window.AuthSystem) AuthSystem.guard();
+
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 300 + i * 150);
       });
 
-      await kv.set('wishes', wishes);
-      return res.status(200).json({ success: true });
-    } catch (e) {
-      return res.status(500).json({ error: 'Failed to save' });
-    }
-  }
+      const canvas = document.getElementById('balloonsCanvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
+      let balloons = [];
+      let particles = [];
+      let poppedCount = 0;
+      const PALETTE = {
+        primary: '#e91e63', pink: '#ff7a9e', purple: '#9d4edd',
+        lilac: '#c8b6ff', gold: '#d4a574', lightPink: '#f472b6', rose: '#fb7185'
+      };
+      const colors = [PALETTE.primary, PALETTE.pink, PALETTE.purple, PALETTE.lilac, PALETTE.gold, PALETTE.lightPink, PALETTE.rose];
 
-  return res.status(405).json({ error: 'Method not allowed' });
-}
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Balloon {
+        constructor() {
+          this.reset();
+          this.y = H + Math.random() * 200;
+        }
+        reset() {
+          this.x = Math.random() * W;
+          this.y = H + 80;
+          this.r = 25 + Math.random() * 20;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.speed = 0.5 + Math.random() * 1.5;
+          this.wobble = Math.random() * Math.PI * 2;
+          this.wobbleSpeed = 0.02 + Math.random() * 0.02;
+          this.wobbleAmp = 10 + Math.random() * 20;
+          this.stringLen = 40 + Math.random() * 30;
+        }
+        update() {
+          this.y -= this.speed;
+          this.wobble += this.wobbleSpeed;
+          this.x += Math.sin(this.wobble) * 0.3;
+          if (this.y < -100) this.reset();
+        }
+        draw() {
+          const wobbleX = Math.sin(this.wobble) * this.wobbleAmp;
+          // String
+          ctx.beginPath();
+          ctx.moveTo(this.x + wobbleX, this.y + this.r);
+          ctx.quadraticCurveTo(this.x + wobbleX + Math.sin(this.wobble*2)*5, this.y + this.r + this.stringLen/2, this.x + wobbleX, this.y + this.r + this.stringLen);
+          ctx.strokeStyle = 'rgba(100,100,100,0.3)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          // Balloon
+          const grad = ctx.createRadialGradient(this.x + wobbleX - this.r*0.3, this.y - this.r*0.3, 0, this.x + wobbleX, this.y, this.r);
+          grad.addColorStop(0, this.color);
+          grad.addColorStop(0.7, this.color);
+          grad.addColorStop(1, adjustColor(this.color, -30));
+          ctx.beginPath();
+          ctx.ellipse(this.x + wobbleX, this.y, this.r * 0.85, this.r, 0, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+          // Highlight
+          ctx.beginPath();
+          ctx.ellipse(this.x + wobbleX - this.r*0.25, this.y - this.r*0.35, this.r*0.2, this.r*0.12, -0.5, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(255,255,255,0.35)';
+          ctx.fill();
+          // Knot
+          ctx.beginPath();
+          ctx.moveTo(this.x + wobbleX - 4, this.y + this.r);
+          ctx.lineTo(this.x + wobbleX + 4, this.y + this.r);
+          ctx.lineTo(this.x + wobbleX, this.y + this.r + 8);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+        }
+        contains(mx, my) {
+          const wobbleX = Math.sin(this.wobble) * this.wobbleAmp;
+          const dx = mx - (this.x + wobbleX);
+          const dy = my - this.y;
+          return dx*dx/(this.r*this.r*0.72) + dy*dy/(this.r*this.r) <= 1;
+        }
+      }
+
+      function adjustColor(hex, amt) {
+        const num = parseInt(hex.slice(1), 16);
+        const r = Math.max(0, Math.min(255, (num >> 16) + amt));
+        const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+        const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+        return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+      }
+
+      function createPopParticles(x, y, color) {
+        for (let i = 0; i < 15; i++) {
+          particles.push({
+            x, y,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.5) * 8,
+            life: 1,
+            color,
+            size: 2 + Math.random() * 4
+          });
+        }
+      }
+
+      for (let i = 0; i < 12; i++) {
+        const b = new Balloon();
+        b.y = Math.random() * H;
+        balloons.push(b);
+      }
+
+      canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        for (let i = balloons.length - 1; i >= 0; i--) {
+          if (balloons[i].contains(mx, my)) {
+            createPopParticles(balloons[i].x, balloons[i].y, balloons[i].color);
+            balloons[i].reset();
+            poppedCount++;
+            document.getElementById('popCount').textContent = poppedCount;
+            break;
+          }
+        }
+      });
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+        balloons.forEach(b => { b.update(); b.draw(); });
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.1;
+          p.life -= 0.025;
+          ctx.globalAlpha = p.life;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          if (p.life <= 0) particles.splice(i, 1);
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>

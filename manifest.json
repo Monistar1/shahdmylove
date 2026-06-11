@@ -1,0 +1,22 @@
+{
+  "name": "عيد ميلاد شودي",
+  "short_name": "شودي",
+  "description": "تجربة رقمية فاخرة لعيد ميلاد شودي",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#fff0f5",
+  "theme_color": "#ff8fab",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "entertainment"]
+}

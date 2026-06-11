@@ -1,1234 +1,833 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بالونات الحب — شهد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
-<style>
-
-/* === styles.css === */
-/* ===== Reset & Base ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --lilac-light: #E6E6FA;
-    --lilac-main: #C8A2C8;
-    --lilac-dark: #9B59B6;
-    --lilac-deep: #663399;
-    --night-bg: #0a0a1a;
-    --night-mid: #1a1a3e;
-    --gold: #FFD700;
-    --pink: #FF69B4;
-    --white: #ffffff;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Cairo', sans-serif;
-    background: var(--night-bg);
-    color: var(--white);
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-
-/* ===== خلفية حية ===== */
-.live-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
-    overflow: hidden;
-}
-
-/* نجوم */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, white, transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(1px 1px at 230px 80px, white, transparent),
-        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
-    background-size: 350px 200px;
-    animation: twinkle 5s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.3; }
-}
-
-/* سحاب */
-.clouds {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-}
-
-.clouds::before,
-.clouds::after {
-    content: '';
-    position: absolute;
-    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float 20s ease-in-out infinite;
-}
-
-.clouds::before {
-    width: 400px;
-    height: 150px;
-    top: 20%;
-    left: -10%;
-    animation-delay: 0s;
-}
-
-.clouds::after {
-    width: 300px;
-    height: 120px;
-    top: 60%;
-    right: -5%;
-    animation-delay: -10s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(50px) translateY(-20px); }
-    50% { transform: translateX(100px) translateY(10px); }
-    75% { transform: translateX(30px) translateY(-10px); }
-}
-
-/* القمر */
-.moon {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
-    animation: moonPulse 4s ease-in-out infinite;
-}
-
-@keyframes moonPulse {
-    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
-    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
-}
-
-/* ===== ورد الليلك ===== */
-.lilac-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.lilac-branch {
-    position: absolute;
-    bottom: -20px;
-    width: 200px;
-    height: 400px;
-    opacity: 0.7;
-}
-
-.lilac-branch.left {
-    left: -30px;
-    transform: rotate(-15deg);
-    transform-origin: bottom center;
-    animation: swayLeft 6s ease-in-out infinite;
-}
-
-.lilac-branch.right {
-    right: -30px;
-    transform: rotate(15deg) scaleX(-1);
-    transform-origin: bottom center;
-    animation: swayRight 7s ease-in-out infinite;
-}
-
-@keyframes swayLeft {
-    0%, 100% { transform: rotate(-15deg); }
-    50% { transform: rotate(-10deg); }
-}
-
-@keyframes swayRight {
-    0%, 100% { transform: rotate(15deg) scaleX(-1); }
-    50% { transform: rotate(10deg) scaleX(-1); }
-}
-
-/* أزهار الليلك */
-.lilac-flower {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 0 8px rgba(200,162,200,0.6);
-    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
-    opacity: 0;
-}
-
-@keyframes bloom {
-    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
-}
-
-@keyframes floatFlower {
-    0%, 100% { transform: rotate(-45deg) translateY(0); }
-    50% { transform: rotate(-45deg) translateY(-10px); }
-}
-
-/* بتلات متساقطة */
-.falling-petal {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 50% 0 50% 50%;
-    opacity: 0.8;
-    animation: fall linear forwards;
-    pointer-events: none;
-}
-
-@keyframes fall {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
-    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
-}
-
-/* جزيئات عطر الليلك */
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 6s ease-in-out infinite;
-    box-shadow: 0 0 6px var(--lilac-main);
-}
-
-@keyframes particleFloat {
-    0% { transform: translateY(0) scale(0); opacity: 0; }
-    20% { opacity: 0.8; }
-    80% { opacity: 0.4; }
-    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-}
-
-/* ===== المحتوى الرئيسي ===== */
-.start-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-}
-
-.intro-content {
-    text-align: center;
-    padding: 40px;
-    position: relative;
-}
-
-/* العناوين */
-.main-title {
-    margin-bottom: 30px;
-}
-
-.title-line {
-    display: block;
-    font-family: 'Amiri', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--white);
-    text-shadow: 0 0 20px rgba(200,162,200,0.5);
-    opacity: 0;
-    animation: fadeInUp 1s ease-out forwards;
-}
-
-.title-line.highlight {
-    font-size: 4rem;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* القلب النابض */
-.heart-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 30px auto;
-}
-
-.heart {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--pink), #FF1493);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    animation: heartbeat 1.2s ease-in-out infinite;
-    box-shadow: 0 0 30px rgba(255,105,180,0.6);
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    width: 80px;
-    height: 80px;
-    background: inherit;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.heart::before { top: -40px; left: 0; }
-.heart::after { top: 0; left: 40px; }
-
-@keyframes heartbeat {
-    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-}
-
-.heart-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
-    border-radius: 50%;
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* تأثير الكتابة */
-.subtitle {
-    font-size: 1.3rem;
-    color: var(--lilac-light);
-    margin: 20px 0 40px;
-    min-height: 40px;
-    text-shadow: 0 0 10px rgba(200,162,200,0.3);
-}
-
-/* زر البداية */
-.start-btn {
-    position: relative;
-    padding: 18px 50px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--white);
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
-}
-
-.btn-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.start-btn:hover .btn-glow {
-    opacity: 1;
-}
-
-/* قلوب طائرة */
-.floating-hearts {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.floating-heart {
-    position: absolute;
-    color: var(--pink);
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 4s ease-in forwards;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
-}
-
-/* ===== تصميم متجاوب ===== */
-@media (max-width: 768px) {
-    .title-line { font-size: 2rem; }
-    .title-line.highlight { font-size: 2.5rem; }
-    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
-    .lilac-branch { width: 120px; height: 250px; }
-}
-/* ===== أزرار التنقل المُحسَّنة ===== */
-.nav-back,
-.nav-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 14px 28px;
-    background: rgba(200, 162, 200, 0.2);
-    border: 2px solid rgba(200, 162, 200, 0.4);
-    border-radius: 50px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.4s ease;
-    z-index: 1000;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.nav-back {
-    left: 25px;
-}
-
-.nav-next {
-    right: 25px;
-}
-
-.nav-back:hover,
-.nav-next:hover {
-    background: rgba(200, 162, 200, 0.4);
-    border-color: rgba(200, 162, 200, 0.8);
-    color: var(--white);
-    transform: translateY(-50%) scale(1.08);
-    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
-}
-
-.nav-back::before {
-    content: '←';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-next::after {
-    content: '→';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-back:hover::before {
-    transform: translateX(-5px);
-}
-
-.nav-next:hover::after {
-    transform: translateX(5px);
-}
-
-/* ===== للموبايل ===== */
-@media (max-width: 768px) {
-    .nav-back,
-    .nav-next {
-        position: fixed;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        border-radius: 30px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="العد التنازلي لعيد ميلاد شودي">
+  <meta name="theme-color" content="#e91e63">
+  <meta property="og:title" content="العد التنازلي — شودي">
+  <meta property="og:description" content="العد التنازلي لعيد ميلاد شودي">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>العد التنازلي — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
+    /* ── Countdown Grid ── */
+    .countdown-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 680px;
     }
-    
-    .nav-back {
-        left: 15px;
+
+    .countdown-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-width: 92px;
+      padding: var(--space-5) var(--space-6);
     }
-    
-    .nav-next {
-        right: 15px;
+
+    .countdown-value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
     }
-    
-    .nav-back:hover,
-    .nav-next:hover {
-        transform: scale(1.05);
+
+    .countdown-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
-    
-    .page-container {
-        padding-bottom: 100px;
+
+    .countdown-sep {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--accent-pink);
+      opacity: 0.5;
+      line-height: 1;
+      margin-top: calc(var(--space-1) * -1);
     }
-}
 
-/* === balloons.css === */
-/* ===== صفحة البالونات ===== */
-.balloons-page {
-    min-height: 100vh;
-    padding: 60px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* ===== سماء البالونات ===== */
-.balloons-sky {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    height: 500px;
-    border: 2px solid rgba(200,162,200,0.2);
-    border-radius: 25px;
-    overflow: hidden;
-    background: linear-gradient(180deg, rgba(10,10,26,0.5), rgba(26,26,62,0.3));
-}
-
-.balloon {
-    position: absolute;
-    cursor: pointer;
-    transition: transform 0.2s;
-    animation: balloonFloat 8s ease-in-out infinite;
-}
-
-.balloon:hover {
-    transform: scale(1.1);
-}
-
-.balloon-body {
-    width: 60px;
-    height: 70px;
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    position: relative;
-    box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.balloon-body::before {
-    content: '';
-    position: absolute;
-    top: 15%;
-    left: 20%;
-    width: 20px;
-    height: 12px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50%;
-    transform: rotate(-20deg);
-}
-
-.balloon-string {
-    width: 2px;
-    height: 60px;
-    background: rgba(255,255,255,0.6);
-    margin: 0 auto;
-    position: relative;
-}
-
-.balloon-string::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 8px;
-    background: inherit;
-    border-radius: 50%;
-}
-
-@keyframes balloonFloat {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    25% { transform: translateY(-20px) rotate(2deg); }
-    50% { transform: translateY(-10px) rotate(-1deg); }
-    75% { transform: translateY(-30px) rotate(1deg); }
-}
-
-/* ===== انفجار البالون ===== */
-.balloon.pop {
-    animation: balloonPop 0.4s ease-out forwards !important;
-}
-
-@keyframes balloonPop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(0); opacity: 0; }
-}
-
-/* ===== جزيئات الانفجار ===== */
-.pop-particle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: popParticle 0.6s ease-out forwards;
-}
-
-@keyframes popParticle {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-}
-
-/* ===== رسالة البالون ===== */
-.balloon-message {
-    position: absolute;
-    background: rgba(200,162,200,0.2);
-    border: 1px solid rgba(200,162,200,0.4);
-    border-radius: 15px;
-    padding: 8px 15px;
-    font-size: 0.85rem;
-    color: var(--lilac-light);
-    white-space: nowrap;
-    pointer-events: none;
-    animation: messageFloat 3s ease-out forwards;
-    backdrop-filter: blur(10px);
-}
-
-@keyframes messageFloat {
-    0% { opacity: 0; transform: translateY(10px) scale(0.8); }
-    20% { opacity: 1; transform: translateY(0) scale(1); }
-    80% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-50px) scale(0.9); }
-}
-
-/* ===== اسم شهد في النجوم ===== */
-.name-stars {
-    display: flex;
-    gap: 30px;
-    margin: 20px 0;
-}
-
-.star-letter {
-    font-family: 'Amiri', serif;
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
-    animation: starTwinkle 2s ease-in-out infinite;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.star-letter:nth-child(2) {
-    animation-delay: 0.3s;
-}
-
-.star-letter:nth-child(3) {
-    animation-delay: 0.6s;
-}
-
-.star-letter:hover {
-    transform: scale(1.3);
-    text-shadow: 0 0 40px rgba(200,162,200,1), 0 0 80px rgba(155,89,182,0.6);
-}
-
-@keyframes starTwinkle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.1); }
-}
-
-/* ===== عداد البالونات ===== */
-.balloon-counter {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    padding: 15px 25px;
-    backdrop-filter: blur(10px);
-}
-
-.counter-icon {
-    font-size: 2rem;
-    animation: bounce 1s ease-in-out infinite;
-}
-
-.counter-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.counter-label {
-    font-size: 0.85rem;
-    color: var(--lilac-main);
-}
-
-.counter-value {
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--lilac-light);
-    text-shadow: 0 0 15px rgba(200,162,200,0.6);
-}
-
-/* ===== متجاوب ===== */
-@media (max-width: 768px) {
-    .balloons-sky {
-        height: 350px;
+    /* ── Hourglass SVG ── */
+    .hourglass-wrap {
+      position: relative;
+      width: 120px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
-    .star-letter {
-        font-size: 2.5rem;
+
+    .hourglass-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
     }
-    
-    .balloon-body {
-        width: 45px;
-        height: 55px;
+
+    #sandTop,
+    #sandBottom {
+      transition: all 1s linear;
     }
-}
-</style>
+
+    .hourglass-glow {
+      position: absolute;
+      inset: -24px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, color-mix(in srgb, var(--rose-300) 18%, transparent), transparent 70%);
+      animation: breathe 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    /* ── Daily Message ── */
+    .daily-message-card {
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .message-icon-wrap {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto var(--space-4);
+      color: var(--accent-rose);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .body-text {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: 1.9;
+      min-height: 3.5em;
+    }
+
+    /* ── Chat ── */
+    .chat-section {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .chat-messages {
+      max-height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      padding-left: var(--space-1);
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: var(--space-3);
+      align-items: stretch;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: var(--space-3) var(--space-5);
+      background: color-mix(in srgb, var(--bg-primary) 50%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-rose) 15%, transparent);
+      border-radius: var(--radius-xl);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--text-primary);
+      transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+    }
+
+    .chat-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--accent-rose);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-rose) 10%, transparent);
+    }
+
+    .chat-error {
+      font-size: var(--text-xs);
+      color: var(--accent-rose);
+      text-align: center;
+      padding: var(--space-1);
+      opacity: 0;
+      transition: opacity var(--duration-fast);
+      min-height: 1.5em;
+    }
+
+    .chat-error.show {
+      opacity: 1;
+    }
+
+    /* ── Wishes ── */
+    .wish-item {
+      background: color-mix(in srgb, var(--rose-100) 40%, transparent);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      border-right: 3px solid var(--accent-rose);
+      animation: slideInRight 0.35s var(--ease-out-expo);
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .wish-item::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-rose);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px color-mix(in srgb, var(--accent-rose) 35%, transparent);
+    }
+
+    .wish-item.optimistic {
+      opacity: 0.6;
+      border-right-color: var(--accent-pink);
+    }
+
+    .wish-item.optimistic::before {
+      background: var(--accent-pink);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .message-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      width: 100%;
+    }
+
+    .message-text {
+      word-break: break-word;
+      line-height: 1.6;
+    }
+
+    .message-time {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Thought Counter ── */
+    .thought-card {
+      max-width: 420px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thought-icon-wrap {
+      width: 44px;
+      height: 44px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      animation: think 3s ease-in-out infinite;
+    }
+
+    @keyframes think {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .thought-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .thought-label {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .thought-count {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--accent-rose);
+      line-height: 1;
+    }
+
+    .thought-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: color-mix(in srgb, var(--rose-200) 30%, transparent);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .thought-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-rose), var(--accent-pink));
+      border-radius: inherit;
+      transition: width var(--duration-base) var(--ease-smooth);
+    }
+
+    /* ── Connection Dot ── */
+    .connection-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: auto;
+      transition: background-color var(--duration-fast);
+    }
+
+    .connection-dot.online {
+      background: var(--accent-rose);
+      box-shadow: 0 0 6px color-mix(in srgb, var(--accent-rose) 50%, transparent);
+    }
+
+    .connection-dot.offline {
+      background: var(--text-muted);
+    }
+
+    .connection-dot.connecting {
+      background: var(--accent-gold);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    /* ── Confetti ── */
+    .confetti-particle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @media (max-width: 640px) {
+      .countdown-grid {
+        gap: var(--space-2);
+      }
+
+      .countdown-box {
+        min-width: 72px;
+        padding: var(--space-4) var(--space-3);
+      }
+
+      .countdown-value {
+        font-size: var(--text-2xl);
+      }
+
+      .countdown-sep {
+        font-size: var(--text-xl);
+      }
+
+      .hourglass-wrap {
+        transform: scale(0.88);
+      }
+
+      .chat-section {
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
-<body>
-    <div class="live-background">
-        <div class="stars"></div>
-        <div class="clouds"></div>
-        <div class="lilac-container" id="lilacContainer"></div>
-        <div class="particles" id="particles"></div>
+<body data-page="countdown" data-palette="rose">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
+
+  <div class="luxury-bg" aria-hidden="true"></div>
+  <div id="bg3d" aria-hidden="true"></div>
+  <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
+
+  <!-- Cinematic Navigation -->
+  <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+    <a href="index.html" class="nav-link" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+    <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+    <a href="hero.html" class="nav-link" aria-label="ملكتي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+    <a href="lily.html" class="nav-link" aria-label="اليلك">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+    <a href="gallery.html" class="nav-link" aria-label="الذكريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+    <a href="balloons.html" class="nav-link" aria-label="البالونات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+    <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+    <a href="gift.html" class="nav-link" aria-label="الهدية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+     <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
+      <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
+  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
+</nav>
+
+  <main id="main-content" class="page-wrapper">
+    <h1 class="display-title display-title--1 text-gradient-rose reveal">باقي على يوم ملكتي</h1>
+
+    <!-- Hourglass SVG -->
+    <div class="hourglass-wrap reveal reveal-delay-1" aria-hidden="true">
+      <div class="hourglass-glow"></div>
+      <svg class="hourglass-svg" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sandGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" style="stop-color:var(--accent-rose)"/>
+            <stop offset="100%" style="stop-color:var(--accent-purple)"/>
+          </linearGradient>
+          <clipPath id="topBulb">
+            <path d="M10 10 L90 10 L90 20 Q90 60 50 75 Q10 60 10 20 Z"/>
+          </clipPath>
+          <clipPath id="bottomBulb">
+            <path d="M10 140 L90 140 L90 130 Q90 90 50 75 Q10 90 10 130 Z"/>
+          </clipPath>
+        </defs>
+
+        <!-- Ambient glow -->
+        <ellipse cx="50" cy="75" rx="60" ry="75" fill="var(--rose-300)" opacity="0.06" style="filter:blur(20px)"/>
+
+        <!-- Caps -->
+        <rect x="5" y="2" width="90" height="8" rx="4" fill="none" stroke="var(--rose-300)" stroke-width="2" opacity="0.4"/>
+        <rect x="5" y="140" width="90" height="8" rx="4" fill="none" stroke="var(--rose-300)" stroke-width="2" opacity="0.4"/>
+
+        <!-- Glass outlines -->
+        <path d="M10 10 L90 10 L90 20 Q90 60 50 75 Q10 60 10 20 Z" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.35"/>
+        <path d="M10 140 L90 140 L90 130 Q90 90 50 75 Q10 90 10 130 Z" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.35"/>
+
+        <!-- Top sand -->
+        <rect id="sandTop" x="10" y="10" width="80" height="65" fill="url(#sandGrad)" opacity="0.82" clip-path="url(#topBulb)"/>
+
+        <!-- Bottom sand -->
+        <rect id="sandBottom" x="10" y="75" width="80" height="0" fill="url(#sandGrad)" opacity="0.82" clip-path="url(#bottomBulb)"/>
+
+        <!-- Sand stream -->
+        <line x1="50" y1="75" x2="50" y2="105" stroke="var(--accent-rose)" stroke-width="1.5" opacity="0.5" stroke-dasharray="3 2">
+          <animate attributeName="stroke-dashoffset" values="0;5" dur="0.4s" repeatCount="indefinite"/>
+        </line>
+      </svg>
     </div>
 
-    <div class="page-container">
-        <a href="gallery.html" class="nav-back">← رجوع</a>
-        
-        <div class="balloons-page">
-            <h1 class="page-title">🎈 اضغط على البالونات!</h1>
-            
-            <!-- سماء البالونات -->
-            <div class="balloons-sky" id="balloonsSky">
-                <!-- البالونات تُنشأ ديناميكياً -->
-            </div>
+    <!-- Countdown Grid -->
+    <div class="countdown-grid reveal reveal-delay-2">
+      <div class="glass-card countdown-box">
+        <span class="countdown-value" id="days">00</span>
+        <span class="countdown-label">يوم</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="glass-card countdown-box">
+        <span class="countdown-value" id="hours">00</span>
+        <span class="countdown-label">ساعة</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="glass-card countdown-box">
+        <span class="countdown-value" id="minutes">00</span>
+        <span class="countdown-label">دقيقة</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="glass-card countdown-box">
+        <span class="countdown-value" id="seconds">00</span>
+        <span class="countdown-label">ثانية</span>
+      </div>
+    </div>
 
-            <!-- اسم شهد في النجوم -->
-            <div class="name-stars" id="nameStars">
-                <div class="star-letter" data-letter="ش">ش</div>
-                <div class="star-letter" data-letter="ه">ه</div>
-                <div class="star-letter" data-letter="د">د</div>
-            </div>
+    <!-- Daily Rotating Message -->
+    <div class="glass-card daily-message-card reveal reveal-delay-3" id="dailyMessage">
+      <div class="message-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+      <p class="body-text" id="messageText"></p>
+    </div>
 
-            <!-- رسائل الطفو -->
-            <div class="floating-messages" id="floatingMessages"></div>
-
-            <!-- عداد البالونات -->
-            <div class="balloon-counter">
-                <div class="counter-icon">🎈</div>
-                <div class="counter-info">
-                    <span class="counter-label">بالونات منفجرة</span>
-                    <span class="counter-value" id="balloonCount">0</span>
-                </div>
-            </div>
+    <!-- Wishes Chat -->
+    <div class="chat-section reveal reveal-delay-4">
+      <h2 class="display-title display-title--2 text-gradient-purple" style="text-align:center; margin-bottom:var(--space-6);">صندوق رسائل شودي</h2>
+      <div class="glass-card chat-container">
+        <div class="chat-messages" id="wishesList"></div>
+        <div class="chat-error" id="chatError" role="alert" aria-live="polite"></div>
+        <div class="chat-input-row">
+          <input type="text" class="chat-input" id="wishInput" placeholder="اكتب رسالة شودي..." maxlength="100" aria-label="اكتب رسالة شودي">
+          <button class="btn btn--primary" id="wishBtn" type="button" aria-label="إرسال الرسالة">أرسل</button>
         </div>
-
-        <a href="fireworks.html" class="nav-next">التالي →</a>
+      </div>
     </div>
 
-    <script>
+    <!-- Thought Counter -->
+    <div class="glass-card thought-card reveal reveal-delay-5">
+      <div class="thought-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/>
+          <line x1="9" y1="21" x2="15" y2="21"/>
+        </svg>
+      </div>
+      <div class="thought-info">
+        <span class="thought-label">فكرت فيكِ اليوم</span>
+        <div>
+          <span class="thought-count" id="thoughtCount">0</span>
+          <span class="thought-label">مرة</span>
+        </div>
+      </div>
+      <div class="thought-bar">
+        <div class="thought-fill" id="thoughtFill"></div>
+      </div>
+    </div>
+  </main>
 
-/* === main.js === */
-// ===== متغيرات عامة =====
-let audioContext = null;
-let bgMusic = null;
+  <!-- Three.js & Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/petals.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
 
-// ===== عند تحميل الصفحة =====
-document.addEventListener('DOMContentLoaded', () => {
-    initLilac();
-    initParticles();
-    initTypewriter();
-    initStartButton();
-    createFallingPetals();
-});
+  <!-- Page Logic -->
+  <script>
+    (function() {
+      'use strict';
 
-// ===== ورد الليلك =====
-function initLilac() {
-    const container = document.getElementById('lilacContainer');
-    
-    // إنشاء أزهار على الأغصان
-    const branches = document.querySelectorAll('.lilac-branch');
-    
-    branches.forEach(branch => {
-        for (let i = 0; i < 25; i++) {
-            const flower = document.createElement('div');
-            flower.className = 'lilac-flower';
-            
-            // موقع عشوائي على الغصن
-            const top = 20 + Math.random() * 70;
-            const left = 30 + Math.random() * 40;
-            const delay = Math.random() * 3;
-            const size = 8 + Math.random() * 8;
-            
-            flower.style.cssText = `
-                top: ${top}%;
-                left: ${left}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-delay: ${delay}s;
-            `;
-            
-            branch.appendChild(flower);
+      if (window.Engine3D) Engine3D.init();
+
+      const BIRTHDAY = new Date('2026-11-01T00:00:00');
+
+      const dailyMessages = [
+        'باقي أيام قليلة ونحتفل بأجمل يوم في حياتي',
+        'كل يوم يمر يزيد شوقي ليوم ميلادك',
+        'أنتِ أجمل هدية حصلت عليها في حياتي',
+        'يوم ميلادك = بداية سنة جديدة من السعادة',
+        'لا يوجد شيء أجمل من الاحتفال بكِ',
+        'قلبي يخفق بسرعة كلما اقترب موعد فرحتنا',
+        'أعدكِ بأجمل يوم ميلاد في حياتكِ',
+        'أنتِ تستحقين كل الحب في هذا العالم'
+      ];
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initCountdown();
+        initDailyMessage();
+        initThoughtCounter();
+      });
+
+      /* ── Countdown ── */
+      function initCountdown() {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+      }
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = BIRTHDAY - now;
+
+        if (diff <= 0) {
+          document.getElementById('days').textContent = '00';
+          document.getElementById('hours').textContent = '00';
+          document.getElementById('minutes').textContent = '00';
+          document.getElementById('seconds').textContent = '00';
+          document.querySelector('.display-title').textContent = 'اليوم هو يومكِ يا ملكتي!';
+          return;
         }
-    });
-}
 
-// ===== بتلات متساقطة =====
-function createFallingPetals() {
-    setInterval(() => {
-        const petal = document.createElement('div');
-        petal.className = 'falling-petal';
-        
-        const startX = Math.random() * window.innerWidth;
-        const duration = 5 + Math.random() * 5;
-        const size = 6 + Math.random() * 6;
-        
-        petal.style.cssText = `
-            left: ${startX}px;
-            top: -20px;
-            width: ${size}px;
-            height: ${size}px;
-            animation-duration: ${duration}s;
-        `;
-        
-        document.querySelector('.live-background').appendChild(petal);
-        
-        setTimeout(() => petal.remove(), duration * 1000);
-    }, 1500);
-}
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-// ===== جزيئات العطر =====
-function initParticles() {
-    const container = document.getElementById('particles');
-    
-    setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const x = Math.random() * window.innerWidth;
-        const y = window.innerHeight - Math.random() * 200;
-        const delay = Math.random() * 2;
-        
-        particle.style.cssText = `
-            left: ${x}px;
-            top: ${y}px;
-            animation-delay: ${delay}s;
-        `;
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 6000);
-    }, 800);
-}
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
 
-// ===== تأثير الكتابة =====
-function initTypewriter() {
-    const text = "في كل نبضة قلب... أنتِ";
-    const element = document.getElementById('typewriterText');
-    let index = 0;
-    
-    function type() {
-        if (index < text.length) {
-            element.textContent += text.charAt(index);
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const maxSeconds = 30 * 24 * 60 * 60;
+        const percentage = Math.max(0, Math.min(100, (totalSeconds / maxSeconds) * 100));
+
+        const sandTop = document.getElementById('sandTop');
+        const sandBottom = document.getElementById('sandBottom');
+
+        if (sandTop && sandBottom) {
+          const maxH = 65;
+          const topH = Math.max(0.1, maxH * (percentage / 100));
+          const bottomH = Math.max(0.1, maxH * ((100 - percentage) / 100));
+          sandTop.setAttribute('height', topH);
+          sandBottom.setAttribute('height', bottomH);
+          sandBottom.setAttribute('y', 140 - bottomH);
+        }
+      }
+
+      /* ── Daily Message ── */
+      function initDailyMessage() {
+        const dayIndex = new Date().getDate() % dailyMessages.length;
+        const message = dailyMessages[dayIndex];
+        const textElement = document.getElementById('messageText');
+        if (!textElement) return;
+
+        let index = 0;
+        textElement.textContent = '';
+
+        function typeMessage() {
+          if (index < message.length) {
+            textElement.textContent += message.charAt(index);
             index++;
-            setTimeout(type, 150);
-        } else {
-            setTimeout(() => {
-                element.textContent = '';
-                index = 0;
-                type();
-            }, 4000);
+            setTimeout(typeMessage, 70);
+          }
         }
-    }
-    
-    setTimeout(type, 1500);
-}
 
-// ===== زر البداية =====
-function initStartButton() {
-    const btn = document.getElementById('startBtn');
-    
-    btn.addEventListener('click', async () => {
-        // تشغيل الموسيقى
-        await initAudio();
-        
-        // تأثير القلوب الطائرة
-        createBurstHearts();
-        
-        // الانتقال للصفحة التالية
-        setTimeout(() => {
-            window.location.href = 'fireworks.html';
-        }, 2000);
-    });
-}
+        setTimeout(typeMessage, 600);
+      }
 
-// ===== تشغيل الصوت =====
-async function initAudio() {
-    bgMusic = document.getElementById('bgMusic');
-    
-    try {
-        await bgMusic.play();
-        bgMusic.volume = 0.3;
-    } catch (e) {
-        console.log('Audio autoplay blocked:', e);
-    }
-}
+      /* ── Thought Counter ── */
+      function initThoughtCounter() {
+        const counter = document.getElementById('thoughtCount');
+        const fill = document.getElementById('thoughtFill');
+        if (!counter) return;
 
-// ===== انفجار قلوب =====
-function createBurstHearts() {
-    const container = document.getElementById('floatingHearts');
-    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
-    
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
-        
-        const x = 30 + Math.random() * 40;
-        const delay = Math.random() * 1;
-        
-        heart.style.cssText = `
-            left: ${x}%;
-            bottom: 20%;
-            animation-delay: ${delay}s;
-            font-size: ${15 + Math.random() * 20}px;
-        `;
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 5000);
-    }
-}
+        let count = parseInt(localStorage.getItem('thoughtCount') || '0');
+        updateThoughtDisplay(count);
 
-// ===== أداة مساعدة: عداد الوقت =====
-function getTimeSince(date) {
-    const now = new Date();
-    const diff = now - new Date(date);
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    return { days, hours, minutes, seconds };
-}
+        setInterval(() => {
+          count++;
+          localStorage.setItem('thoughtCount', count);
+          updateThoughtDisplay(count);
+        }, 3000);
+      }
 
-// ===== أداة مساعدة: تنسيق الأرقام =====
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
+      function updateThoughtDisplay(count) {
+        const counter = document.getElementById('thoughtCount');
+        const fill = document.getElementById('thoughtFill');
+        if (counter) counter.textContent = count.toLocaleString('ar-SA');
+        if (fill) fill.style.width = Math.min(100, (count % 100)) + '%';
+      }
 
-/* === balloons.js === */
-// ===== إعدادات البالونات =====
-const BALLOON_COLORS = [
-    '#C8A2C8', '#E6E6FA', '#DDA0DD', '#DA70D6', 
-    '#FF69B4', '#FFB6C1', '#FF1493', '#9B59B6'
-];
+      /* ── Helpers ── */
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
 
-const BALLOON_MESSAGES = [
-    'أحبكِ 💜',
-    'أنتِ ملكتي 👑',
-    'شهد 💕',
-    'كل يوم معكِ عيد 🎉',
-    'قلبي لكِ 💗',
-    'أجمل إنسانة 🌸',
-    'سعادتي بكِ 😊',
-    'إلى الأبد ♾️',
-    'نور عيني ✨',
-    'حبي لكِ لا ينتهي 💜'
-];
+      function getCssVar(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      }
 
-let poppedCount = 0;
+      window.createMiniConfetti = function(element) {
+        const rect = element.getBoundingClientRect();
+        const colors = [
+          getCssVar('--accent-rose'),
+          getCssVar('--accent-pink'),
+          getCssVar('--accent-purple'),
+          getCssVar('--accent-lilac')
+        ].filter(Boolean);
 
-// ===== عند التحميل =====
-document.addEventListener('DOMContentLoaded', () => {
-    initBalloons();
-    initNameStars();
-    initLilac();
-    initParticles();
-    updateCounterDisplay(); // تحديث العداد عند البداية
-});
-
-// ===== إنشاء البالونات =====
-function initBalloons() {
-    const sky = document.getElementById('balloonsSky');
-    if (!sky) return;
-    
-    const balloonCount = 12;
-    
-    for (let i = 0; i < balloonCount; i++) {
-        createBalloon(sky, i);
-    }
-    
-    // إعادة إنشاء بالونات جديدة كل فترة
-    setInterval(() => {
-        const currentBalloons = sky.querySelectorAll('.balloon:not(.pop)');
-        if (currentBalloons.length < 6) {
-            createBalloon(sky, Date.now());
+        if (!colors.length) {
+          const fallback = getCssVar('--accent-rose');
+          if (fallback) colors.push(fallback);
+          else return;
         }
-    }, 3000);
-}
 
-function createBalloon(sky, index) {
-    const balloon = document.createElement('div');
-    balloon.className = 'balloon';
-    
-    const color = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
-    const left = 5 + Math.random() * 85;
-    const delay = Math.random() * 5;
-    const duration = 6 + Math.random() * 4;
-    
-    balloon.style.cssText = `
-        left: ${left}%;
-        bottom: -100px;
-        animation-delay: ${delay}s;
-        animation-duration: ${duration}s;
-    `;
-    
-    balloon.innerHTML = `
-        <div class="balloon-body" style="background: ${color};"></div>
-        <div class="balloon-string"></div>
-    `;
-    
-    // حركة الصعود
-    const floatUp = animateBalloonUp(balloon, duration);
-    
-    // النقر
-    balloon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        popBalloon(balloon, color);
-        cancelAnimationFrame(floatUp);
-    });
-    
-    sky.appendChild(balloon);
-}
+        for (let i = 0; i < 12; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti-particle';
+          confetti.style.left = (rect.left + rect.width / 2) + 'px';
+          confetti.style.top = (rect.top + rect.height / 2) + 'px';
+          confetti.style.background = colors[i % colors.length];
+          document.body.appendChild(confetti);
 
-function animateBalloonUp(balloon, duration) {
-    let start = null;
-    const sky = document.getElementById('balloonsSky');
-    if (!sky) return;
-    
-    const skyHeight = sky.offsetHeight;
-    
-    function step(timestamp) {
-        if (!start) start = timestamp;
-        const progress = (timestamp - start) / (duration * 1000);
-        
-        if (progress < 1) {
-            const y = -100 + (skyHeight + 200) * progress;
-            const wobble = Math.sin(progress * Math.PI * 4) * 20;
-            
-            if (!balloon.classList.contains('pop')) {
-                balloon.style.bottom = y + 'px';
-                balloon.style.transform = `translateX(${wobble}px)`;
-            }
-            
-            return requestAnimationFrame(step);
-        } else {
-            balloon.remove();
+          const angle = (Math.random() - 0.5) * Math.PI * 2;
+          const velocity = 60 + Math.random() * 100;
+          const vx = Math.cos(angle) * velocity;
+          const vy = Math.sin(angle) * velocity - 90;
+
+          let x = 0, y = 0;
+          let opacity = 1;
+
+          function animate() {
+            x += vx * 0.016;
+            y += vy * 0.016 + 60 * 0.016 * 0.016;
+            opacity -= 0.018;
+
+            confetti.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+            confetti.style.opacity = opacity;
+
+            if (opacity > 0) requestAnimationFrame(animate);
+            else confetti.remove();
+          }
+
+          requestAnimationFrame(animate);
         }
+      };
+    })();
+  </script>
+
+  <!-- FPS Monitor -->
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+
+  <!-- Firebase Realtime Chat -->
+  <script type="module">
+    import { pushWish, onWishUpdate, createSkeleton } from './js/firebase.js';
+
+    const wishesList = document.getElementById('wishesList');
+    const wishInput = document.getElementById('wishInput');
+    const wishBtn = document.getElementById('wishBtn');
+    const chatError = document.getElementById('chatError');
+
+    function showSkeleton() {
+      if (!wishesList) return;
+      wishesList.innerHTML = '';
+      const skeleton = createSkeleton('text', 5);
+      skeleton.className = 'chat-skeleton';
+      wishesList.appendChild(skeleton);
     }
-    
-    return requestAnimationFrame(step);
-}
 
-// ===== انفجار البالون =====
-function popBalloon(balloon, color) {
-    if (balloon.classList.contains('pop')) return;
-    
-    balloon.classList.add('pop');
-    poppedCount++;
-    updateCounterDisplay();
-    
-    const rect = balloon.getBoundingClientRect();
-    const sky = document.getElementById('balloonsSky');
-    if (!sky) return;
-    
-    const skyRect = sky.getBoundingClientRect();
-    
-    // جزيئات الانفجار
-    for (let i = 0; i < 12; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'pop-particle';
-        
-        const angle = (Math.PI * 2 * i) / 12;
-        const distance = 30 + Math.random() * 50;
-        
-        particle.style.cssText = `
-            left: ${rect.left - skyRect.left + rect.width / 2}px;
-            top: ${rect.top - skyRect.top + rect.height / 2}px;
-            background: ${color};
-            --tx: ${Math.cos(angle) * distance}px;
-            --ty: ${Math.sin(angle) * distance}px;
-        `;
-        
-        sky.appendChild(particle);
-        setTimeout(() => particle.remove(), 600);
+    function removeSkeleton() {
+      const skeleton = wishesList?.querySelector('.chat-skeleton');
+      if (skeleton) skeleton.remove();
     }
-    
-    // رسالة
-    const message = BALLOON_MESSAGES[Math.floor(Math.random() * BALLOON_MESSAGES.length)];
-    showBalloonMessage(rect.left - skyRect.left + rect.width / 2, rect.top - skyRect.top, message);
-    
-    // إزالة بعد الانفجار
-    setTimeout(() => balloon.remove(), 400);
-}
 
-// ===== رسالة البالون =====
-function showBalloonMessage(x, y, text) {
-    const sky = document.getElementById('balloonsSky');
-    if (!sky) return;
-    
-    const message = document.createElement('div');
-    message.className = 'balloon-message';
-    message.textContent = text;
-    message.style.left = x + 'px';
-    message.style.top = y + 'px';
-    message.style.transform = 'translateX(-50%)';
-    
-    sky.appendChild(message);
-    setTimeout(() => message.remove(), 3000);
-}
-
-// ===== تحديث العداد =====
-function updateCounterDisplay() {
-    const counter = document.getElementById('balloonCount');
-    if (!counter) {
-        console.error('Balloon counter element not found!');
-        return;
+    function showError(msg) {
+      if (!chatError) return;
+      chatError.textContent = msg;
+      chatError.classList.add('show');
+      setTimeout(() => chatError.classList.remove('show'), 3500);
     }
-    
-    // تأثير العد السريع
-    const current = parseInt(counter.textContent) || 0;
-    animateNumber(counter, current, poppedCount, 300);
-}
 
-function animateNumber(element, start, end, duration) {
-    const startTime = performance.now();
-    
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
-        
-        const current = Math.floor(start + (end - start) * easeProgress);
-        element.textContent = current.toLocaleString('ar-SA');
-        
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
-    
-    requestAnimationFrame(update);
-}
 
-// ===== نجوم الاسم =====
-function initNameStars() {
-    const letters = document.querySelectorAll('.star-letter');
-    
-    letters.forEach((letter, index) => {
-        letter.addEventListener('click', () => {
-            // تأثير توهج
-            letter.style.textShadow = '0 0 60px rgba(200,162,200,1), 0 0 100px rgba(155,89,182,0.8)';
-            
-            setTimeout(() => {
-                letter.style.textShadow = '';
-            }, 1000);
-            
-            // إنشاء نجوم حول الحرف
-            createStarBurst(letter);
+    function addWishToDOM(wish, optimistic = false) {
+      if (!wishesList) return;
+
+      const id = optimistic ? (wish._id || wish.timestamp) : wish.id;
+      if (!id || document.querySelector(`[data-id="${id}"]`)) return;
+
+      // If confirmed, remove optimistic twin by timestamp
+      if (!optimistic && wish.timestamp) {
+        const optimisticEls = wishesList.querySelectorAll('.optimistic');
+        optimisticEls.forEach(el => {
+          const ts = el.getAttribute('data-timestamp');
+          if (ts && parseInt(ts) === wish.timestamp) el.remove();
         });
-    });
-}
+      }
 
-function createStarBurst(element) {
-    const rect = element.getBoundingClientRect();
-    
-    for (let i = 0; i < 8; i++) {
-        const star = document.createElement('div');
-        star.textContent = '✨';
-        star.style.cssText = `
-            position: fixed;
-            left: ${rect.left + rect.width / 2}px;
-            top: ${rect.top + rect.height / 2}px;
-            font-size: 20px;
-            pointer-events: none;
-            z-index: 1000;
-        `;
-        
-        document.body.appendChild(star);
-        
-        const angle = (Math.PI * 2 * i) / 8;
-        const velocity = 60;
-        let x = 0, y = 0;
-        let opacity = 1;
-        
-        function animate() {
-            x += Math.cos(angle) * velocity * 0.016;
-            y += Math.sin(angle) * velocity * 0.016 - 20 * 0.016;
-            opacity -= 0.02;
-            
-            star.style.transform = `translate(${x}px, ${y}px)`;
-            star.style.opacity = opacity;
-            
-            if (opacity > 0) {
-                requestAnimationFrame(animate);
-            } else {
-                star.remove();
-            }
-        }
-        
-        requestAnimationFrame(animate);
+      const item = document.createElement('div');
+      item.className = 'wish-item' + (optimistic ? ' optimistic' : '');
+      item.setAttribute('data-id', id);
+      if (optimistic) item.setAttribute('data-timestamp', wish.timestamp);
+
+      const time = wish.time || new Date(wish.timestamp).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+      const status = optimistic ? ' · جاري الإرسال' : '';
+
+      item.innerHTML = `
+        <div class="message-content">
+          <span class="message-text">${escapeHtml(wish.text)}</span>
+          <span class="message-time">${time}${status}</span>
+        </div>
+      `;
+
+      wishesList.appendChild(item);
+      wishesList.scrollTop = wishesList.scrollHeight;
     }
-}
-</script>
+
+    function loadWishesRealtime() {
+      if (!wishesList) return;
+      showSkeleton();
+
+      onWishUpdate((wishes, { isFirstLoad, error }) => {
+        removeSkeleton();
+        if (error) {
+          showError('خطأ في الاتصال بالمحادثة');
+          return;
+        }
+        if (isFirstLoad) {
+          wishesList.innerHTML = '';
+          wishes.forEach(wish => addWishToDOM(wish));
+        } else {
+          wishes.forEach(wish => addWishToDOM(wish));
+        }
+      });
+    }
+
+    async function addWishRealtime(text) {
+      const wishData = {
+        text: text,
+        timestamp: Date.now(),
+        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await pushWish(wishData, {
+          onOptimistic: (data) => addWishToDOM(data, true),
+          onSuccess: () => {
+            wishInput.value = '';
+            if (window.createMiniConfetti) createMiniConfetti(wishBtn);
+          },
+          onError: (err) => {
+            showError(err.message);
+            // Fade out optimistic item
+            const optimisticEls = wishesList.querySelectorAll('.optimistic');
+            optimisticEls.forEach(el => { el.style.opacity = '0.4'; });
+          }
+        });
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (wishesList) loadWishesRealtime();
+
+      if (wishBtn && wishInput) {
+        wishBtn.addEventListener('click', () => {
+          const text = wishInput.value.trim();
+          if (text) addWishRealtime(text);
+        });
+
+        wishInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') wishBtn.click();
+        });
+      }
+    });
+  </script>
 </body>
 </html>

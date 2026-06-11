@@ -1,1399 +1,319 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موسيقانا — شهد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
-<style>
-
-/* === styles.css === */
-/* ===== Reset & Base ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --lilac-light: #E6E6FA;
-    --lilac-main: #C8A2C8;
-    --lilac-dark: #9B59B6;
-    --lilac-deep: #663399;
-    --night-bg: #0a0a1a;
-    --night-mid: #1a1a3e;
-    --gold: #FFD700;
-    --pink: #FF69B4;
-    --white: #ffffff;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Cairo', sans-serif;
-    background: var(--night-bg);
-    color: var(--white);
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-
-/* ===== خلفية حية ===== */
-.live-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
-    overflow: hidden;
-}
-
-/* نجوم */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, white, transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(1px 1px at 230px 80px, white, transparent),
-        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
-    background-size: 350px 200px;
-    animation: twinkle 5s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.3; }
-}
-
-/* سحاب */
-.clouds {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-}
-
-.clouds::before,
-.clouds::after {
-    content: '';
-    position: absolute;
-    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float 20s ease-in-out infinite;
-}
-
-.clouds::before {
-    width: 400px;
-    height: 150px;
-    top: 20%;
-    left: -10%;
-    animation-delay: 0s;
-}
-
-.clouds::after {
-    width: 300px;
-    height: 120px;
-    top: 60%;
-    right: -5%;
-    animation-delay: -10s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(50px) translateY(-20px); }
-    50% { transform: translateX(100px) translateY(10px); }
-    75% { transform: translateX(30px) translateY(-10px); }
-}
-
-/* القمر */
-.moon {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
-    animation: moonPulse 4s ease-in-out infinite;
-}
-
-@keyframes moonPulse {
-    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
-    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
-}
-
-/* ===== ورد الليلك ===== */
-.lilac-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.lilac-branch {
-    position: absolute;
-    bottom: -20px;
-    width: 200px;
-    height: 400px;
-    opacity: 0.7;
-}
-
-.lilac-branch.left {
-    left: -30px;
-    transform: rotate(-15deg);
-    transform-origin: bottom center;
-    animation: swayLeft 6s ease-in-out infinite;
-}
-
-.lilac-branch.right {
-    right: -30px;
-    transform: rotate(15deg) scaleX(-1);
-    transform-origin: bottom center;
-    animation: swayRight 7s ease-in-out infinite;
-}
-
-@keyframes swayLeft {
-    0%, 100% { transform: rotate(-15deg); }
-    50% { transform: rotate(-10deg); }
-}
-
-@keyframes swayRight {
-    0%, 100% { transform: rotate(15deg) scaleX(-1); }
-    50% { transform: rotate(10deg) scaleX(-1); }
-}
-
-/* أزهار الليلك */
-.lilac-flower {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 0 8px rgba(200,162,200,0.6);
-    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
-    opacity: 0;
-}
-
-@keyframes bloom {
-    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
-}
-
-@keyframes floatFlower {
-    0%, 100% { transform: rotate(-45deg) translateY(0); }
-    50% { transform: rotate(-45deg) translateY(-10px); }
-}
-
-/* بتلات متساقطة */
-.falling-petal {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 50% 0 50% 50%;
-    opacity: 0.8;
-    animation: fall linear forwards;
-    pointer-events: none;
-}
-
-@keyframes fall {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
-    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
-}
-
-/* جزيئات عطر الليلك */
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 6s ease-in-out infinite;
-    box-shadow: 0 0 6px var(--lilac-main);
-}
-
-@keyframes particleFloat {
-    0% { transform: translateY(0) scale(0); opacity: 0; }
-    20% { opacity: 0.8; }
-    80% { opacity: 0.4; }
-    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-}
-
-/* ===== المحتوى الرئيسي ===== */
-.start-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-}
-
-.intro-content {
-    text-align: center;
-    padding: 40px;
-    position: relative;
-}
-
-/* العناوين */
-.main-title {
-    margin-bottom: 30px;
-}
-
-.title-line {
-    display: block;
-    font-family: 'Amiri', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--white);
-    text-shadow: 0 0 20px rgba(200,162,200,0.5);
-    opacity: 0;
-    animation: fadeInUp 1s ease-out forwards;
-}
-
-.title-line.highlight {
-    font-size: 4rem;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* القلب النابض */
-.heart-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 30px auto;
-}
-
-.heart {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--pink), #FF1493);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    animation: heartbeat 1.2s ease-in-out infinite;
-    box-shadow: 0 0 30px rgba(255,105,180,0.6);
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    width: 80px;
-    height: 80px;
-    background: inherit;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.heart::before { top: -40px; left: 0; }
-.heart::after { top: 0; left: 40px; }
-
-@keyframes heartbeat {
-    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-}
-
-.heart-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
-    border-radius: 50%;
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* تأثير الكتابة */
-.subtitle {
-    font-size: 1.3rem;
-    color: var(--lilac-light);
-    margin: 20px 0 40px;
-    min-height: 40px;
-    text-shadow: 0 0 10px rgba(200,162,200,0.3);
-}
-
-/* زر البداية */
-.start-btn {
-    position: relative;
-    padding: 18px 50px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--white);
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
-}
-
-.btn-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.start-btn:hover .btn-glow {
-    opacity: 1;
-}
-
-/* قلوب طائرة */
-.floating-hearts {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.floating-heart {
-    position: absolute;
-    color: var(--pink);
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 4s ease-in forwards;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
-}
-
-/* ===== تصميم متجاوب ===== */
-@media (max-width: 768px) {
-    .title-line { font-size: 2rem; }
-    .title-line.highlight { font-size: 2.5rem; }
-    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
-    .lilac-branch { width: 120px; height: 250px; }
-}
-/* ===== أزرار التنقل المُحسَّنة ===== */
-.nav-back,
-.nav-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 14px 28px;
-    background: rgba(200, 162, 200, 0.2);
-    border: 2px solid rgba(200, 162, 200, 0.4);
-    border-radius: 50px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.4s ease;
-    z-index: 1000;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.nav-back {
-    left: 25px;
-}
-
-.nav-next {
-    right: 25px;
-}
-
-.nav-back:hover,
-.nav-next:hover {
-    background: rgba(200, 162, 200, 0.4);
-    border-color: rgba(200, 162, 200, 0.8);
-    color: var(--white);
-    transform: translateY(-50%) scale(1.08);
-    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
-}
-
-.nav-back::before {
-    content: '←';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-next::after {
-    content: '→';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-back:hover::before {
-    transform: translateX(-5px);
-}
-
-.nav-next:hover::after {
-    transform: translateX(5px);
-}
-
-/* ===== للموبايل ===== */
-@media (max-width: 768px) {
-    .nav-back,
-    .nav-next {
-        position: fixed;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        border-radius: 30px;
-    }
-    
-    .nav-back {
-        left: 15px;
-    }
-    
-    .nav-next {
-        right: 15px;
-    }
-    
-    .nav-back:hover,
-    .nav-next:hover {
-        transform: scale(1.05);
-    }
-    
-    .page-container {
-        padding-bottom: 100px;
-    }
-}
-
-/* === music.css === */
-/* ===== صفحة الموسيقى ===== */
-.music-page {
-    min-height: 100vh;
-    padding: 60px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-}
-
-/* ===== قرص الفينيل ===== */
-.vinyl-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
-
-.vinyl-player {
-    position: relative;
-    width: 300px;
-    height: 300px;
-}
-
-.vinyl-record {
-    width: 280px;
-    height: 280px;
-    background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-    border-radius: 50%;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    animation: none;
-}
-
-.vinyl-record.playing {
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.record-grooves {
-    position: absolute;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 80%;
-    border-radius: 50%;
-    background: repeating-radial-gradient(
-        circle at center,
-        transparent 0px,
-        transparent 2px,
-        rgba(255,255,255,0.03) 2px,
-        rgba(255,255,255,0.03) 4px
-    );
-}
-
-.record-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px rgba(155,89,182,0.4);
-}
-
-.label-text {
-    font-family: 'Amiri', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--white);
-}
-
-.label-sub {
-    font-size: 0.7rem;
-    color: var(--lilac-light);
-    margin-top: 5px;
-}
-
-.record-hole {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background: var(--night-bg);
-    border-radius: 50%;
-}
-
-/* ===== ذراع التشغيل ===== */
-.tonearm {
-    position: absolute;
-    top: -20px;
-    right: 30px;
-    width: 80px;
-    height: 120px;
-    transform-origin: top right;
-    transition: transform 0.5s ease;
-}
-
-.tonearm.playing {
-    transform: rotate(25deg);
-}
-
-.tonearm-base {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 25px;
-    height: 25px;
-    background: linear-gradient(135deg, #C0C0C0, #808080);
-    border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.tonearm-stick {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 4px;
-    height: 100px;
-    background: linear-gradient(90deg, #C0C0C0, #A0A0A0);
-    transform-origin: top center;
-    transform: rotate(-30deg);
-}
-
-.tonearm-head {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 15px;
-    height: 20px;
-    background: linear-gradient(135deg, #8B4513, #A0522D);
-    border-radius: 3px;
-}
-
-/* ===== موجات الصوت ===== */
-.sound-waves {
-    display: flex;
-    align-items: flex-end;
-    gap: 6px;
-    height: 60px;
-}
-
-.wave-bar {
-    width: 8px;
-    background: linear-gradient(180deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 4px;
-    transition: height 0.2s ease;
-    height: 10px;
-}
-
-.wave-bar.active {
-    animation: wave 0.5s ease-in-out infinite alternate;
-}
-
-.wave-bar:nth-child(1) { animation-delay: 0s; }
-.wave-bar:nth-child(2) { animation-delay: 0.1s; }
-.wave-bar:nth-child(3) { animation-delay: 0.2s; }
-.wave-bar:nth-child(4) { animation-delay: 0.3s; }
-.wave-bar:nth-child(5) { animation-delay: 0.4s; }
-.wave-bar:nth-child(6) { animation-delay: 0.5s; }
-.wave-bar:nth-child(7) { animation-delay: 0.6s; }
-.wave-bar:nth-child(8) { animation-delay: 0.7s; }
-.wave-bar:nth-child(9) { animation-delay: 0.8s; }
-.wave-bar:nth-child(10) { animation-delay: 0.9s; }
-
-@keyframes wave {
-    0% { height: 10px; }
-    100% { height: 50px; }
-}
-
-/* ===== أزرار التحكم ===== */
-.music-controls {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.music-btn {
-    padding: 12px 30px;
-    background: rgba(200,162,200,0.15);
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 25px;
-    color: var(--lilac-light);
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.music-btn:hover {
-    background: rgba(200,162,200,0.3);
-    transform: translateY(-2px);
-}
-
-.music-btn.active {
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    color: var(--white);
-    box-shadow: 0 5px 20px rgba(155,89,182,0.4);
-}
-
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    padding: 8px 15px;
-}
-
-.volume-icon {
-    font-size: 1.2rem;
-}
-
-.volume-slider {
-    width: 100px;
-    height: 4px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: rgba(200,162,200,0.3);
-    border-radius: 2px;
-    outline: none;
-}
-
-.volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--lilac-main);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(200,162,200,0.5);
-}
-
-/* ===== كلمات الأغنية ===== */
-.lyrics-section {
-    max-width: 500px;
-    width: 100%;
-}
-
-.lyrics-box {
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    padding: 30px;
-    min-height: 150px;
-    backdrop-filter: blur(10px);
-}
-
-.lyrics-text {
-    text-align: center;
-}
-
-.lyric-line {
-    font-family: 'Amiri', serif;
-    font-size: 1.2rem;
-    color: var(--lilac-main);
-    line-height: 2;
-    opacity: 0.5;
-    transition: all 0.5s;
-}
-
-.lyric-line.active {
-    color: var(--lilac-light);
-    opacity: 1;
-    font-size: 1.3rem;
-    text-shadow: 0 0 15px rgba(200,162,200,0.5);
-}
-
-/* ===== زر الرقص ===== */
-.dance-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.dance-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px 40px;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 30px;
-    color: var(--white);
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
-}
-
-.dance-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
-}
-
-.dance-icon {
-    font-size: 1.5rem;
-    animation: dance 1s ease-in-out infinite;
-}
-
-@keyframes dance {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
-}
-
-.camera-preview {
-    width: 300px;
-    height: 225px;
-    background: rgba(200,162,200,0.1);
-    border: 2px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    overflow: hidden;
-    display: none;
-}
-
-.camera-preview.show {
-    display: block;
-    animation: fadeIn 0.5s ease-out;
-}
-
-.camera-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--lilac-main);
-}
-
-.camera-sub {
-    font-size: 0.85rem;
-    color: rgba(200,162,200,0.6);
-    margin-top: 10px;
-}
-
-/* ===== متجاوب ===== */
-@media (max-width: 768px) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#9d4edd">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>الموسيقى — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
     .vinyl-player {
-        transform: scale(0.8);
+      position: relative;
+      width: 260px;
+      height: 260px;
+      margin: 0 auto;
     }
-    
-    .wave-bar {
-        width: 6px;
+
+    .vinyl-record {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, color-mix(in srgb, black, white 10%) 8%, transparent 10%),
+        repeating-radial-gradient(circle at 50% 50%, color-mix(in srgb, black, white 13%) 0px, color-mix(in srgb, black, white 7%) 2px, color-mix(in srgb, black, white 13%) 3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 4px rgba(255,255,255,0.1);
+      position: relative;
+      animation: vinylSpin 4s linear infinite paused;
     }
-    
-    .camera-preview {
-        width: 250px;
-        height: 188px;
+
+    .vinyl-record.playing { animation-play-state: running; }
+
+    @keyframes vinylSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
-}
-</style>
+
+    .vinyl-label {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .vinyl-label span {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--text-on-accent);
+      font-weight: 700;
+    }
+
+    .vinyl-arm {
+      position: absolute;
+      top: 20px; right: 20px;
+      width: 80px; height: 4px;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--accent-gold), white 20%), color-mix(in srgb, var(--accent-gold), black 30%));
+      border-radius: 2px;
+      transform-origin: right center;
+      transform: rotate(-30deg);
+      transition: transform 0.8s var(--ease-out-expo);
+    }
+
+    .vinyl-arm.playing { transform: rotate(8deg); }
+
+    .visualizer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      height: 60px;
+      margin-top: var(--space-lg);
+    }
+
+    .viz-bar {
+      width: 6px;
+      background: linear-gradient(180deg, var(--accent-rose), var(--accent-purple));
+      border-radius: 3px;
+      transition: height 0.1s ease;
+      opacity: 0.6;
+    }
+
+    .song-list {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out-expo);
+    }
+
+    .song-item:hover {
+      transform: translateX(-4px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      box-shadow: var(--shadow-md);
+    }
+
+    .song-item.active {
+      background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.1), rgba(var(--lily-purple-rgb), 0.08));
+      border-color: rgba(var(--color-primary-rgb), 0.3);
+    }
+
+    .song-num {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      width: 24px;
+    }
+
+    .song-info { flex: 1; }
+    .song-title { font-weight: 700; color: var(--text-primary); font-size: var(--text-base); }
+    .song-artist { font-size: var(--text-xs); color: var(--text-muted); }
+
+    .song-play {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-on-accent);
+      flex-shrink: 0;
+      transition: transform var(--duration-fast);
+    }
+
+    .song-play:hover { transform: scale(1.1); }
+    .song-play svg { width: 14px; height: 14px; fill: currentColor; margin-right: -1px; }
+
+    .lyrics-box {
+      text-align: center;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+    }
+
+    .lyrics-text {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: 1.8;
+      transition: opacity 0.5s;
+    }
+
+    @media (max-width: 640px) {
+      .vinyl-player { transform: scale(0.85); }
+    }
+  </style>
 </head>
-<body>
-    <div class="live-background">
-        <div class="stars"></div>
-        <div class="clouds"></div>
-        <div class="lilac-container" id="lilacContainer"></div>
-        <div class="particles" id="particles"></div>
-    </div>
+<body data-page="music">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
+  <div class="luxury-bg" aria-hidden="true"></div>
+  <div id="bg3d" aria-hidden="true"></div>
+  <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
 
-    <div class="page-container">
-        <a href="letters.html" class="nav-back">← رجوع</a>
-        
-        <div class="music-page">
-            <h1 class="page-title">🎵 أغنيتنا</h1>
-            
-            <!-- قرص الفينيل -->
-            <div class="vinyl-section">
-                <div class="vinyl-player" id="vinylPlayer">
-                    <div class="vinyl-record" id="vinylRecord">
-                        <div class="record-grooves"></div>
-                        <div class="record-label">
-                            <div class="label-text">شهد</div>
-                            <div class="label-sub">❤️ أغنية حياتي</div>
-                        </div>
-                        <div class="record-hole"></div>
-                    </div>
-                    <div class="tonearm" id="tonearm">
-                        <div class="tonearm-base"></div>
-                        <div class="tonearm-stick"></div>
-                        <div class="tonearm-head"></div>
-                    </div>
-                </div>
-                
-                <!-- موجات الصوت -->
-                <div class="sound-waves" id="soundWaves">
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                </div>
-            </div>
+   <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+    <a href="index.html" class="nav-link" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+    <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+    <a href="hero.html" class="nav-link" aria-label="ملكتي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+    <a href="lily.html" class="nav-link" aria-label="اليلك">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+    <a href="gallery.html" class="nav-link" aria-label="الذكريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+    <a href="balloons.html" class="nav-link" aria-label="البالونات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+    <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+    <a href="gift.html" class="nav-link" aria-label="الهدية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+     <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
+      <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
+  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
+</nav>
 
-            <!-- أزرار التحكم -->
-            <div class="music-controls">
-                <button class="music-btn" id="playMusicBtn">▶️ تشغيل</button>
-                <button class="music-btn" id="pauseMusicBtn">⏸️ إيقاف</button>
-                <div class="volume-control">
-                    <span class="volume-icon">🔊</span>
-                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
-                </div>
-            </div>
+  <main id="main-content" class="page-wrapper">
+    <h1 class="display-title display-title--1 text-gradient-purple reveal">أغنياتنا</h1>
 
-            <!-- كلمات الأغنية -->
-            <div class="lyrics-section" id="lyricsSection">
-                <div class="lyrics-box">
-                    <div class="lyrics-text" id="lyricsText">
-                        <p class="lyric-line active">🎵 اضغط تشغيل لبدء الأغنية</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- زر الرقص -->
-            <div class="dance-section">
-                <button class="dance-btn" id="danceBtn">
-                    <span class="dance-icon">💃</span>
-                    <span class="dance-text">رقص معي</span>
-                </button>
-                <div class="camera-preview" id="cameraPreview">
-                    <div class="camera-placeholder">
-                        <span>📷 الكاميرا ستظهر هنا</span>
-                        <span class="camera-sub">(يتطلب إذن الكاميرا)</span>
-                    </div>
-                </div>
-            </div>
+    <div class="glass-card reveal reveal-delay-1" style="padding: var(--space-xl); max-width: 400px;">
+      <div class="vinyl-player">
+        <div class="vinyl-record" id="vinylRecord">
+          <div class="vinyl-label"><span>شودي</span></div>
         </div>
-
-        <a href="footer.html" class="nav-next">التالي →</a>
+        <div class="vinyl-arm" id="vinylArm"></div>
+      </div>
+      <div class="visualizer" id="visualizer" aria-hidden="true"></div>
     </div>
 
-    <script>
+    <div class="lyrics-box glass-card reveal reveal-delay-2" style="max-width: 500px; width: 100%;">
+      <p class="lyrics-text" id="lyricsText">اختر أغنية للاستماع</p>
+    </div>
 
-/* === main.js === */
-// ===== متغيرات عامة =====
-let audioContext = null;
-let bgMusic = null;
+    <div class="song-list reveal reveal-delay-3">
+      <div class="song-item" data-song="0" data-lyric="أنتِ الحبيبة التي لا تُضاهى">
+        <span class="song-num">01</span>
+        <div class="song-info">
+          <div class="song-title">أغنيتنا</div>
+          <div class="song-artist">لشودي</div>
+        </div>
+        <div class="song-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="song-item" data-song="1" data-lyric="في كل نبضة قلب أذكركِ">
+        <span class="song-num">02</span>
+        <div class="song-info">
+          <div class="song-title">قلبي لكِ</div>
+          <div class="song-artist">لشودي</div>
+        </div>
+        <div class="song-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="song-item" data-song="2" data-lyric="إلى الأبد يا حبيبتي">
+        <span class="song-num">03</span>
+        <div class="song-info">
+          <div class="song-title">إلى الأبد</div>
+          <div class="song-artist">لشودي</div>
+        </div>
+        <div class="song-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+  </main>
 
-// ===== عند تحميل الصفحة =====
-document.addEventListener('DOMContentLoaded', () => {
-    initLilac();
-    initParticles();
-    initTypewriter();
-    initStartButton();
-    createFallingPetals();
-});
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/petals.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+  <script>
+    (function() {
+      'use strict';
+      if (window.Engine3D) Engine3D.init();
+      if (window.AuthSystem) AuthSystem.guard();
 
-// ===== ورد الليلك =====
-function initLilac() {
-    const container = document.getElementById('lilacContainer');
-    
-    // إنشاء أزهار على الأغصان
-    const branches = document.querySelectorAll('.lilac-branch');
-    
-    branches.forEach(branch => {
-        for (let i = 0; i < 25; i++) {
-            const flower = document.createElement('div');
-            flower.className = 'lilac-flower';
-            
-            // موقع عشوائي على الغصن
-            const top = 20 + Math.random() * 70;
-            const left = 30 + Math.random() * 40;
-            const delay = Math.random() * 3;
-            const size = 8 + Math.random() * 8;
-            
-            flower.style.cssText = `
-                top: ${top}%;
-                left: ${left}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-delay: ${delay}s;
-            `;
-            
-            branch.appendChild(flower);
-        }
-    });
-}
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 300 + i * 150);
+      });
 
-// ===== بتلات متساقطة =====
-function createFallingPetals() {
-    setInterval(() => {
-        const petal = document.createElement('div');
-        petal.className = 'falling-petal';
-        
-        const startX = Math.random() * window.innerWidth;
-        const duration = 5 + Math.random() * 5;
-        const size = 6 + Math.random() * 6;
-        
-        petal.style.cssText = `
-            left: ${startX}px;
-            top: -20px;
-            width: ${size}px;
-            height: ${size}px;
-            animation-duration: ${duration}s;
-        `;
-        
-        document.querySelector('.live-background').appendChild(petal);
-        
-        setTimeout(() => petal.remove(), duration * 1000);
-    }, 1500);
-}
+      const vinyl = document.getElementById('vinylRecord');
+      const arm = document.getElementById('vinylArm');
+      const lyrics = document.getElementById('lyricsText');
+      const viz = document.getElementById('visualizer');
+      let playing = false;
+      let vizInterval = null;
 
-// ===== جزيئات العطر =====
-function initParticles() {
-    const container = document.getElementById('particles');
-    
-    setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const x = Math.random() * window.innerWidth;
-        const y = window.innerHeight - Math.random() * 200;
-        const delay = Math.random() * 2;
-        
-        particle.style.cssText = `
-            left: ${x}px;
-            top: ${y}px;
-            animation-delay: ${delay}s;
-        `;
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 6000);
-    }, 800);
-}
+      // Build visualizer bars
+      for (let i = 0; i < 20; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'viz-bar';
+        bar.style.height = '4px';
+        viz.appendChild(bar);
+      }
 
-// ===== تأثير الكتابة =====
-function initTypewriter() {
-    const text = "في كل نبضة قلب... أنتِ";
-    const element = document.getElementById('typewriterText');
-    let index = 0;
-    
-    function type() {
-        if (index < text.length) {
-            element.textContent += text.charAt(index);
-            index++;
-            setTimeout(type, 150);
-        } else {
-            setTimeout(() => {
-                element.textContent = '';
-                index = 0;
-                type();
-            }, 4000);
-        }
-    }
-    
-    setTimeout(type, 1500);
-}
+      document.querySelectorAll('.song-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const lyric = item.getAttribute('data-lyric');
+          const isActive = item.classList.contains('active');
+          document.querySelectorAll('.song-item').forEach(s => s.classList.remove('active'));
+          if (!isActive) {
+            item.classList.add('active');
+            playSong(lyric);
+          } else {
+            pauseSong();
+          }
+        });
+      });
 
-// ===== زر البداية =====
-function initStartButton() {
-    const btn = document.getElementById('startBtn');
-    
-    btn.addEventListener('click', async () => {
-        // تشغيل الموسيقى
-        await initAudio();
-        
-        // تأثير القلوب الطائرة
-        createBurstHearts();
-        
-        // الانتقال للصفحة التالية
+      function playSong(lyric) {
+        playing = true;
+        vinyl.classList.add('playing');
+        arm.classList.add('playing');
+        lyrics.style.opacity = '0';
         setTimeout(() => {
-            window.location.href = 'footer.html';
-        }, 2000);
-    });
-}
+          lyrics.textContent = lyric;
+          lyrics.style.opacity = '1';
+        }, 300);
+        if (vizInterval) clearInterval(vizInterval);
+        vizInterval = setInterval(() => {
+          viz.querySelectorAll('.viz-bar').forEach(bar => {
+            bar.style.height = (4 + Math.random() * 50) + 'px';
+          });
+        }, 100);
+      }
 
-// ===== تشغيل الصوت =====
-async function initAudio() {
-    bgMusic = document.getElementById('bgMusic');
-    
-    try {
-        await bgMusic.play();
-        bgMusic.volume = 0.3;
-    } catch (e) {
-        console.log('Audio autoplay blocked:', e);
-    }
-}
-
-// ===== انفجار قلوب =====
-function createBurstHearts() {
-    const container = document.getElementById('floatingHearts');
-    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
-    
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
-        
-        const x = 30 + Math.random() * 40;
-        const delay = Math.random() * 1;
-        
-        heart.style.cssText = `
-            left: ${x}%;
-            bottom: 20%;
-            animation-delay: ${delay}s;
-            font-size: ${15 + Math.random() * 20}px;
-        `;
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 5000);
-    }
-}
-
-// ===== أداة مساعدة: عداد الوقت =====
-function getTimeSince(date) {
-    const now = new Date();
-    const diff = now - new Date(date);
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    return { days, hours, minutes, seconds };
-}
-
-// ===== أداة مساعدة: تنسيق الأرقام =====
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
-
-/* === music.js === */
-// ===== إعدادات الموسيقى =====
-let isPlaying = false;
-let audio = null;
-let lyricsInterval = null;
-
-// ===== رابط الأغنية =====
-// غير هذا الرابط لما تحط الملف في مجلد assets/
-const AUDIO_URL = 'assets/mia-sebastians-theme.mp3'; 
-// أو استخدم رابط مباشر إذا لقيت: 'https://...'
-
-// ===== كلمات الأغنية (مُتزامنة) =====
-const lyrics = [
-    { text: "🎵 Mia & Sebastian's Theme", time: 0 },
-    { text: "نغمة تدق باسم الحب", time: 10 },
-    { text: "كل نوتة تحكي قصتنا", time: 20 },
-    { text: "أنتِ لحني المفضل", time: 30 },
-    { text: "معكِ تصبح الحياة أجمل", time: 40 },
-    { text: "إلى الأبد يا شهد", time: 50 },
-    { text: "🎹 🎵 💜", time: 60 }
-];
-
-let currentLyric = 0;
-let audioStartTime = 0;
-
-// ===== عند التحميل =====
-document.addEventListener('DOMContentLoaded', () => {
-    initMusic();
-    initDanceButton();
-    initLilac();
-    initParticles();
-});
-
-// ===== الموسيقى =====
-function initMusic() {
-    const playBtn = document.getElementById('playMusicBtn');
-    const pauseBtn = document.getElementById('pauseMusicBtn');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const record = document.getElementById('vinylRecord');
-    const tonearm = document.getElementById('tonearm');
-    const waves = document.querySelectorAll('.wave-bar');
-    
-    if (!playBtn || !pauseBtn) return;
-    
-    // إنشاء عنصر الصوت
-    audio = new Audio(AUDIO_URL);
-    audio.loop = true;
-    audio.volume = 0.5;
-    
-    // معالجة الأخطاء
-    audio.addEventListener('error', (e) => {
-        console.error('Audio error:', e);
-        const lyricsText = document.getElementById('lyricsText');
-        if (lyricsText) {
-            lyricsText.innerHTML = '<p class="lyric-line active">⚠️ لا يمكن تحميل الأغنية. تأكد من وجود الملف في مجلد assets/</p>';
-        }
-    });
-    
-    playBtn.addEventListener('click', async () => {
-        if (isPlaying) return;
-        
-        try {
-            await audio.play();
-            isPlaying = true;
-            audioStartTime = Date.now();
-            playBtn.classList.add('active');
-            
-            // تشغيل القرص
-            if (record) record.classList.add('playing');
-            if (tonearm) tonearm.classList.add('playing');
-            
-            // تشغيل الموجات
-            waves.forEach(wave => wave.classList.add('active'));
-            
-            // عرض الكلمات
-            startLyrics();
-            
-        } catch (err) {
-            console.error('Play error:', err);
-            alert('تأكد من وجود ملف الأغنية في: ' + AUDIO_URL);
-        }
-    });
-    
-    pauseBtn.addEventListener('click', () => {
-        if (!isPlaying) return;
-        
-        audio.pause();
-        isPlaying = false;
-        playBtn.classList.remove('active');
-        
-        // إيقاف القرص
-        if (record) record.classList.remove('playing');
-        if (tonearm) tonearm.classList.remove('playing');
-        
-        // إيقاف الموجات
-        waves.forEach(wave => wave.classList.remove('active'));
-        
-        // إيقاف الكلمات
-        stopLyrics();
-    });
-    
-    // مستوى الصوت
-    volumeSlider.addEventListener('input', (e) => {
-        if (audio) {
-            audio.volume = e.target.value / 100;
-        }
-    });
-    
-    // عند انتهاء الأغنية
-    audio.addEventListener('ended', () => {
-        if (record) record.classList.remove('playing');
-        if (tonearm) tonearm.classList.remove('playing');
-        waves.forEach(wave => wave.classList.remove('active'));
-        isPlaying = false;
-        playBtn.classList.remove('active');
-    });
-}
-
-// ===== عرض الكلمات المُتزامنة =====
-function startLyrics() {
-    const lyricsText = document.getElementById('lyricsText');
-    if (!lyricsText) return;
-    
-    currentLyric = 0;
-    
-    function updateLyrics() {
-        if (!isPlaying || !audio) return;
-        
-        const currentTime = audio.currentTime;
-        
-        // البحث عن الكلمة المناسبة للوقت الحالي
-        for (let i = lyrics.length - 1; i >= 0; i--) {
-            if (currentTime >= lyrics[i].time) {
-                if (currentLyric !== i) {
-                    currentLyric = i;
-                    showLyric(lyrics[i].text);
-                }
-                break;
-            }
-        }
-        
-        lyricsInterval = requestAnimationFrame(updateLyrics);
-    }
-    
-    updateLyrics();
-}
-
-function showLyric(text) {
-    const lyricsText = document.getElementById('lyricsText');
-    if (!lyricsText) return;
-    
-    lyricsText.innerHTML = `
-        <p class="lyric-line active" style="animation: fadeInUp 0.5s ease-out;">
-            ${text}
-        </p>
-    `;
-}
-
-function stopLyrics() {
-    if (lyricsInterval) {
-        cancelAnimationFrame(lyricsInterval);
-        lyricsInterval = null;
-    }
-    
-    const lyricsText = document.getElementById('lyricsText');
-    if (lyricsText) {
-        lyricsText.innerHTML = '<p class="lyric-line active">🎵 اضغط تشغيل لبدء الأغنية</p>';
-    }
-}
-
-// ===== زر الرقص =====
-function initDanceButton() {
-    const danceBtn = document.getElementById('danceBtn');
-    const cameraPreview = document.getElementById('cameraPreview');
-    
-    if (!danceBtn || !cameraPreview) return;
-    
-    danceBtn.addEventListener('click', async () => {
-        cameraPreview.classList.toggle('show');
-        
-        if (cameraPreview.classList.contains('show')) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' } 
-                });
-                
-                const video = document.createElement('video');
-                video.srcObject = stream;
-                video.autoplay = true;
-                video.playsInline = true;
-                video.style.width = '100%';
-                video.style.height = '100%';
-                video.style.objectFit = 'cover';
-                video.style.borderRadius = '20px';
-                
-                cameraPreview.innerHTML = '';
-                cameraPreview.appendChild(video);
-                
-            } catch (err) {
-                console.error('Camera error:', err);
-                cameraPreview.innerHTML = `
-                    <div class="camera-placeholder">
-                        <span>❌ لا يمكن الوصول للكاميرا</span>
-                        <span class="camera-sub">تأكد من إعطاء الإذن</span>
-                    </div>
-                `;
-            }
-        } else {
-            const video = cameraPreview.querySelector('video');
-            if (video && video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-            }
-            cameraPreview.innerHTML = `
-                <div class="camera-placeholder">
-                    <span>📷 الكاميرا ستظهر هنا</span>
-                    <span class="camera-sub">(يتطلب إذن الكاميرا)</span>
-                </div>
-            `;
-        }
-    });
-}
-
-// ===== إضافة أنماط CSS ديناميكية =====
-const musicStyles = document.createElement('style');
-musicStyles.textContent = `
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-`;
-document.head.appendChild(musicStyles);
-</script>
+      function pauseSong() {
+        playing = false;
+        vinyl.classList.remove('playing');
+        arm.classList.remove('playing');
+        if (vizInterval) { clearInterval(vizInterval); vizInterval = null; }
+        viz.querySelectorAll('.viz-bar').forEach(bar => { bar.style.height = '4px'; });
+      }
+    })();
+  </script>
 </body>
 </html>

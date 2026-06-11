@@ -1,1361 +1,438 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إلى الأبد — شهد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
-<style>
-
-/* === styles.css === */
-/* ===== Reset & Base ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --lilac-light: #E6E6FA;
-    --lilac-main: #C8A2C8;
-    --lilac-dark: #9B59B6;
-    --lilac-deep: #663399;
-    --night-bg: #0a0a1a;
-    --night-mid: #1a1a3e;
-    --gold: #FFD700;
-    --pink: #FF69B4;
-    --white: #ffffff;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Cairo', sans-serif;
-    background: var(--night-bg);
-    color: var(--white);
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-
-/* ===== خلفية حية ===== */
-.live-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
-    overflow: hidden;
-}
-
-/* نجوم */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, white, transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(1px 1px at 230px 80px, white, transparent),
-        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
-    background-size: 350px 200px;
-    animation: twinkle 5s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.3; }
-}
-
-/* سحاب */
-.clouds {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-}
-
-.clouds::before,
-.clouds::after {
-    content: '';
-    position: absolute;
-    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float 20s ease-in-out infinite;
-}
-
-.clouds::before {
-    width: 400px;
-    height: 150px;
-    top: 20%;
-    left: -10%;
-    animation-delay: 0s;
-}
-
-.clouds::after {
-    width: 300px;
-    height: 120px;
-    top: 60%;
-    right: -5%;
-    animation-delay: -10s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(50px) translateY(-20px); }
-    50% { transform: translateX(100px) translateY(10px); }
-    75% { transform: translateX(30px) translateY(-10px); }
-}
-
-/* القمر */
-.moon {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
-    animation: moonPulse 4s ease-in-out infinite;
-}
-
-@keyframes moonPulse {
-    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
-    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
-}
-
-/* ===== ورد الليلك ===== */
-.lilac-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.lilac-branch {
-    position: absolute;
-    bottom: -20px;
-    width: 200px;
-    height: 400px;
-    opacity: 0.7;
-}
-
-.lilac-branch.left {
-    left: -30px;
-    transform: rotate(-15deg);
-    transform-origin: bottom center;
-    animation: swayLeft 6s ease-in-out infinite;
-}
-
-.lilac-branch.right {
-    right: -30px;
-    transform: rotate(15deg) scaleX(-1);
-    transform-origin: bottom center;
-    animation: swayRight 7s ease-in-out infinite;
-}
-
-@keyframes swayLeft {
-    0%, 100% { transform: rotate(-15deg); }
-    50% { transform: rotate(-10deg); }
-}
-
-@keyframes swayRight {
-    0%, 100% { transform: rotate(15deg) scaleX(-1); }
-    50% { transform: rotate(10deg) scaleX(-1); }
-}
-
-/* أزهار الليلك */
-.lilac-flower {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 0 8px rgba(200,162,200,0.6);
-    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
-    opacity: 0;
-}
-
-@keyframes bloom {
-    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
-}
-
-@keyframes floatFlower {
-    0%, 100% { transform: rotate(-45deg) translateY(0); }
-    50% { transform: rotate(-45deg) translateY(-10px); }
-}
-
-/* بتلات متساقطة */
-.falling-petal {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 50% 0 50% 50%;
-    opacity: 0.8;
-    animation: fall linear forwards;
-    pointer-events: none;
-}
-
-@keyframes fall {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
-    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
-}
-
-/* جزيئات عطر الليلك */
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 6s ease-in-out infinite;
-    box-shadow: 0 0 6px var(--lilac-main);
-}
-
-@keyframes particleFloat {
-    0% { transform: translateY(0) scale(0); opacity: 0; }
-    20% { opacity: 0.8; }
-    80% { opacity: 0.4; }
-    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-}
-
-/* ===== المحتوى الرئيسي ===== */
-.start-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-}
-
-.intro-content {
-    text-align: center;
-    padding: 40px;
-    position: relative;
-}
-
-/* العناوين */
-.main-title {
-    margin-bottom: 30px;
-}
-
-.title-line {
-    display: block;
-    font-family: 'Amiri', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--white);
-    text-shadow: 0 0 20px rgba(200,162,200,0.5);
-    opacity: 0;
-    animation: fadeInUp 1s ease-out forwards;
-}
-
-.title-line.highlight {
-    font-size: 4rem;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* القلب النابض */
-.heart-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 30px auto;
-}
-
-.heart {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--pink), #FF1493);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    animation: heartbeat 1.2s ease-in-out infinite;
-    box-shadow: 0 0 30px rgba(255,105,180,0.6);
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    width: 80px;
-    height: 80px;
-    background: inherit;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.heart::before { top: -40px; left: 0; }
-.heart::after { top: 0; left: 40px; }
-
-@keyframes heartbeat {
-    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-}
-
-.heart-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
-    border-radius: 50%;
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* تأثير الكتابة */
-.subtitle {
-    font-size: 1.3rem;
-    color: var(--lilac-light);
-    margin: 20px 0 40px;
-    min-height: 40px;
-    text-shadow: 0 0 10px rgba(200,162,200,0.3);
-}
-
-/* زر البداية */
-.start-btn {
-    position: relative;
-    padding: 18px 50px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--white);
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
-}
-
-.btn-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.start-btn:hover .btn-glow {
-    opacity: 1;
-}
-
-/* قلوب طائرة */
-.floating-hearts {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.floating-heart {
-    position: absolute;
-    color: var(--pink);
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 4s ease-in forwards;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
-}
-
-/* ===== تصميم متجاوب ===== */
-@media (max-width: 768px) {
-    .title-line { font-size: 2rem; }
-    .title-line.highlight { font-size: 2.5rem; }
-    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
-    .lilac-branch { width: 120px; height: 250px; }
-}
-/* ===== أزرار التنقل المُحسَّنة ===== */
-.nav-back,
-.nav-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 14px 28px;
-    background: rgba(200, 162, 200, 0.2);
-    border: 2px solid rgba(200, 162, 200, 0.4);
-    border-radius: 50px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.4s ease;
-    z-index: 1000;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.nav-back {
-    left: 25px;
-}
-
-.nav-next {
-    right: 25px;
-}
-
-.nav-back:hover,
-.nav-next:hover {
-    background: rgba(200, 162, 200, 0.4);
-    border-color: rgba(200, 162, 200, 0.8);
-    color: var(--white);
-    transform: translateY(-50%) scale(1.08);
-    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
-}
-
-.nav-back::before {
-    content: '←';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-next::after {
-    content: '→';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-back:hover::before {
-    transform: translateX(-5px);
-}
-
-.nav-next:hover::after {
-    transform: translateX(5px);
-}
-
-/* ===== للموبايل ===== */
-@media (max-width: 768px) {
-    .nav-back,
-    .nav-next {
-        position: fixed;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        border-radius: 30px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="ذكرياتنا الجميلة — معرض لحظاتنا السعيدة معاً">
+  <meta name="theme-color" content="#e91e63">
+  <meta property="og:title" content="ذكرياتنا — شودي">
+  <meta property="og:description" content="معرض لحظاتنا السعيدة معاً">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>ذكرياتنا — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
+    :root {
+      --safe-left: env(safe-area-inset-left, 0px);
     }
-    
-    .nav-back {
-        left: 15px;
+
+    /* ── Film Frame ── */
+    .film-section {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
     }
-    
-    .nav-next {
-        right: 15px;
+
+    .film-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: color-mix(in srgb, var(--accent-pink) 10%, transparent);
+      border: 2px solid color-mix(in srgb, var(--accent-pink) 25%, transparent);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color var(--duration-base), box-shadow var(--duration-base);
     }
-    
-    .nav-back:hover,
-    .nav-next:hover {
-        transform: scale(1.05);
+
+    .film-frame:hover {
+      border-color: color-mix(in srgb, var(--accent-pink) 50%, transparent);
+      box-shadow: 0 0 40px color-mix(in srgb, var(--accent-rose) 20%, transparent);
     }
-    
-    .page-container {
-        padding-bottom: 100px;
+
+    .film-photo {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-}
 
-/* === footer.css === */
-/* ===== صفحة الختامية ===== */
-.footer-page {
-    min-height: 100vh;
-    padding: 60px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-}
-
-/* ===== عداد أيام الحب ===== */
-.love-counter-section {
-    text-align: center;
-}
-
-.section-title {
-    font-family: 'Amiri', serif;
-    font-size: 1.8rem;
-    color: var(--lilac-light);
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(200,162,200,0.4);
-}
-
-.love-counter {
-    background: rgba(200,162,200,0.1);
-    border: 2px solid rgba(200,162,200,0.3);
-    border-radius: 25px;
-    padding: 40px 60px;
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-}
-
-.counter-digit {
-    font-family: 'Cairo', sans-serif;
-    font-size: 4rem;
-    font-weight: 800;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8);
-    line-height: 1;
-    animation: counterPulse 2s ease-in-out infinite;
-}
-
-@keyframes counterPulse {
-    0%, 100% { transform: scale(1); text-shadow: 0 0 30px rgba(200,162,200,0.8); }
-    50% { transform: scale(1.05); text-shadow: 0 0 50px rgba(200,162,200,1); }
-}
-
-.counter-unit {
-    font-size: 1.1rem;
-    color: var(--lilac-main);
-    margin-top: 10px;
-}
-
-.counter-hearts {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.counter-heart {
-    position: absolute;
-    font-size: 1.5rem;
-    animation: floatHeart 3s ease-in-out infinite;
-    opacity: 0.6;
-}
-
-@keyframes floatHeart {
-    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
-    50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
-}
-
-/* ===== الرسائل المتغيرة ===== */
-.quote-section {
-    max-width: 600px;
-    width: 100%;
-}
-
-.quote-box {
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    padding: 35px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.5s;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.quote-box:hover {
-    border-color: rgba(200,162,200,0.5);
-    box-shadow: 0 10px 30px rgba(200,162,200,0.2);
-}
-
-.quote-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.quote-text {
-    font-family: 'Amiri', serif;
-    font-size: 1.3rem;
-    color: var(--lilac-light);
-    line-height: 2;
-    margin-bottom: 15px;
-    min-height: 80px;
-}
-
-.quote-author {
-    font-size: 0.95rem;
-    color: var(--lilac-main);
-    font-style: italic;
-}
-
-/* ===== زر القبلة ===== */
-.kiss-section {
-    position: relative;
-}
-
-.kiss-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 45px;
-    background: linear-gradient(135deg, var(--pink), #FF1493);
-    border: none;
-    border-radius: 50px;
-    color: var(--white);
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 25px rgba(255,105,180,0.4);
-}
-
-.kiss-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 35px rgba(255,105,180,0.6);
-}
-
-.kiss-icon {
-    font-size: 1.8rem;
-    animation: kissWiggle 1s ease-in-out infinite;
-}
-
-@keyframes kissWiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-15deg); }
-    75% { transform: rotate(15deg); }
-}
-
-.flying-kisses {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 100;
-}
-
-.flying-kiss {
-    position: absolute;
-    font-size: 2rem;
-    animation: flyKiss 4s ease-out forwards;
-}
-
-@keyframes flyKiss {
-    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
-}
-
-/* ===== التوقيع الرقمي ===== */
-.signature-section {
-    text-align: center;
-}
-
-.digital-signature {
-    background: rgba(200,162,200,0.08);
-    border: 2px solid rgba(200,162,200,0.2);
-    border-radius: 25px;
-    padding: 40px;
-    position: relative;
-    backdrop-filter: blur(10px);
-    max-width: 400px;
-}
-
-.signature-line {
-    font-size: 1rem;
-    color: var(--lilac-main);
-    margin-bottom: 10px;
-}
-
-.signature-name {
-    font-family: 'Amiri', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.6);
-    margin-bottom: 10px;
-}
-
-.signature-date {
-    font-size: 0.9rem;
-    color: var(--lilac-main);
-    margin-bottom: 20px;
-}
-
-.signature-stamp {
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.stamp-circle {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 5px 20px rgba(155,89,182,0.4);
-    animation: stampPulse 3s ease-in-out infinite;
-}
-
-.stamp-heart {
-    font-size: 1.5rem;
-}
-
-@keyframes stampPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 5px 20px rgba(155,89,182,0.4); }
-    50% { transform: scale(1.1); box-shadow: 0 8px 30px rgba(155,89,182,0.6); }
-}
-
-/* ===== روابط الصفحات ===== */
-.pages-nav {
-    text-align: center;
-    max-width: 700px;
-    width: 100%;
-}
-
-.nav-title {
-    font-family: 'Amiri', serif;
-    font-size: 1.5rem;
-    color: var(--lilac-light);
-    margin-bottom: 25px;
-}
-
-.nav-links {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-}
-
-.nav-link {
-    display: block;
-    padding: 12px 20px;
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.2);
-    border-radius: 15px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: all 0.3s;
-    backdrop-filter: blur(10px);
-}
-
-.nav-link:hover {
-    background: rgba(200,162,200,0.25);
-    transform: translateY(-3px);
-    border-color: rgba(200,162,200,0.5);
-    box-shadow: 0 5px 15px rgba(200,162,200,0.2);
-}
-
-/* ===== إعادة التشغيل ===== */
-.restart-section {
-    margin-top: 20px;
-}
-
-.restart-btn {
-    padding: 15px 40px;
-    background: transparent;
-    border: 2px solid rgba(200,162,200,0.4);
-    border-radius: 30px;
-    color: var(--lilac-light);
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.restart-btn:hover {
-    background: rgba(200,162,200,0.15);
-    border-color: rgba(200,162,200,0.7);
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(200,162,200,0.3);
-}
-
-/* ===== متجاوب ===== */
-@media (max-width: 768px) {
-    .counter-digit {
-        font-size: 3rem;
+    .film-placeholder {
+      text-align: center;
+      color: var(--accent-purple);
+      font-size: var(--text-base);
     }
-    
-    .nav-links {
-        grid-template-columns: 1fr 1fr;
+
+    .film-placeholder span { display: block; margin-top: var(--space-2); }
+
+    .film-play-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent-pink) 15%, transparent);
+      border: 2px solid color-mix(in srgb, var(--accent-pink) 30%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-2);
+      transition: transform var(--duration-base), background var(--duration-base);
     }
-    
-    .quote-text {
-        font-size: 1.1rem;
+
+    .film-frame:hover .film-play-icon {
+      transform: scale(1.1);
+      background: color-mix(in srgb, var(--accent-pink) 25%, transparent);
     }
-    
-    .signature-name {
-        font-size: 2rem;
+
+    .film-play-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent-rose);
+      margin-right: -2px;
     }
-}
-</style>
+
+    .film-overlay {
+      position: absolute;
+      inset: 0;
+      background: color-mix(in srgb, var(--bg-primary) 50%, transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity var(--duration-base);
+    }
+
+    .film-frame.playing .film-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .film-vintage {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, transparent 50%, color-mix(in srgb, var(--text-muted) 8%, transparent) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, color-mix(in srgb, var(--text-muted) 2%, transparent) 2px, color-mix(in srgb, var(--text-muted) 2%, transparent) 4px);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--duration-base);
+    }
+
+    .film-frame.playing .film-vintage {
+      opacity: 1;
+      animation: vintageFlicker var(--duration-base) ease-in-out infinite;
+    }
+
+    @keyframes vintageFlicker {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* ── Masonry Gallery ── */
+    .gallery-masonry {
+      width: 100%;
+      max-width: 960px;
+      columns: 1;
+      column-gap: var(--space-md);
+    }
+
+    @media (min-width: 480px) { .gallery-masonry { columns: 2; } }
+    @media (min-width: 768px) { .gallery-masonry { columns: 3; } }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: var(--space-md);
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: zoom-in;
+      background: color-mix(in srgb, var(--accent-pink) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-pink) 18%, transparent);
+      transition: transform var(--duration-base) var(--ease-out-expo),
+                  border-color var(--duration-base),
+                  box-shadow var(--duration-base);
+      will-change: transform;
+      contain: layout paint;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: color-mix(in srgb, var(--accent-pink) 45%, transparent);
+      box-shadow: 0 12px 40px color-mix(in srgb, var(--accent-rose) 18%, transparent);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform var(--duration-slow) var(--ease-out-expo),
+                  filter var(--duration-base),
+                  opacity var(--duration-base);
+    }
+
+    .gallery-item:hover img { transform: scale(1.05); }
+
+    .img-blur { filter: blur(12px); opacity: 0.6; }
+    .img-loaded { filter: blur(0); opacity: 1; }
+
+    /* ── Caption ── */
+    .item-caption {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: var(--space-md);
+      background: linear-gradient(to top, color-mix(in srgb, var(--text-primary) 72%, transparent) 0%, color-mix(in srgb, var(--text-primary) 25%, transparent) 50%, transparent 100%);
+      opacity: 0;
+      transition: opacity var(--duration-base) var(--ease-smooth);
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .gallery-item:hover .item-caption { opacity: 1; }
+
+    .item-caption-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      color: var(--text-on-accent);
+      margin-bottom: var(--space-1);
+    }
+
+    .item-caption-date {
+      font-size: var(--text-xs);
+      color: var(--surface-65);
+    }
+
+    /* ── Lightbox ── */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-modal);
+      background: rgba(var(--color-bg-dark-rgb), 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--duration-base), visibility 0s var(--duration-base);
+    }
+
+    .lightbox-overlay.show {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity var(--duration-base), visibility 0s;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      transform: scale(0.9);
+      transition: transform var(--duration-base) var(--ease-out-back);
+    }
+
+    .lightbox-overlay.show .lightbox-img {
+      transform: scale(1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: var(--space-6);
+      left: var(--space-6);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface-25);
+      border: 1px solid var(--surface-50);
+      color: var(--text-on-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--duration-fast);
+      z-index: calc(var(--z-modal) + 1);
+    }
+
+    .lightbox-close:hover { background: var(--surface-50); }
+
+    .lightbox-caption {
+      position: absolute;
+      bottom: var(--space-8);
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: var(--surface-80);
+      font-size: var(--text-sm);
+      padding: var(--space-2);
+    }
+  </style>
 </head>
-<body>
-    <div class="live-background">
-        <div class="stars"></div>
-        <div class="clouds"></div>
-        <div class="lilac-container" id="lilacContainer"></div>
-        <div class="particles" id="particles"></div>
-    </div>
+<body data-page="gallery">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
 
-    <div class="page-container">
-        <a href="music.html" class="nav-back">← رجوع</a>
-        
-        <div class="footer-page">
-            <!-- عداد أيام الحب -->
-            <div class="love-counter-section">
-                <h2 class="section-title">⏳ أيام حبنا</h2>
-                <div class="love-counter" id="loveCounter">
-                    <div class="counter-digit" id="counterDays">0</div>
-                    <div class="counter-unit">يوم من الحب</div>
-                </div>
-                <div class="counter-hearts" id="counterHearts"></div>
-            </div>
+  <div class="luxury-bg" aria-hidden="true"></div>
+  <div id="bg3d" aria-hidden="true"></div>
+  <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
 
-            <!-- رسالة متغيرة -->
-            <div class="quote-section">
-                <div class="quote-box" id="quoteBox">
-                    <div class="quote-icon">💜</div>
-                    <p class="quote-text" id="quoteText"></p>
-                    <div class="quote-author" id="quoteAuthor">— لكِ</div>
-                </div>
-            </div>
+   <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+    <a href="index.html" class="nav-link" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+    <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+    <a href="hero.html" class="nav-link" aria-label="ملكتي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+    <a href="lily.html" class="nav-link" aria-label="اليلك">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+    <a href="gallery.html" class="nav-link" aria-label="الذكريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+    <a href="balloons.html" class="nav-link" aria-label="البالونات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+    <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+    <a href="gift.html" class="nav-link" aria-label="الهدية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+     <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
+      <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
+  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
+</nav>
 
-            <!-- زر القبلة -->
-            <div class="kiss-section">
-                <button class="kiss-btn" id="kissBtn">
-                    <span class="kiss-icon">💋</span>
-                    <span class="kiss-text">أرسل قبلة</span>
-                </button>
-                <div class="flying-kisses" id="flyingKisses"></div>
-            </div>
+  <main id="main-content" class="page-wrapper">
+    <h1 class="display-title display-title--1 text-gradient-purple reveal">ذكرياتنا الجميلة</h1>
 
-            <!-- التوقيع الرقمي -->
-            <div class="signature-section">
-                <div class="digital-signature" id="digitalSignature">
-                    <div class="signature-line">بكل حبٍ ووفاء</div>
-                    <div class="signature-name">إلى شهد</div>
-                    <div class="signature-date" id="signatureDate"></div>
-                    <div class="signature-stamp">
-                        <div class="stamp-circle">
-                            <span class="stamp-heart">🪻</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- Film Frame -->
+    <div class="film-section reveal reveal-delay-1">
+      <div class="film-frame" id="filmFrame">
+        <div class="film-photo">
+          <div class="film-overlay">
+            <div class="film-play-icon">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>
-
-            <!-- روابط الصفحات -->
-            <div class="pages-nav">
-                <h3 class="nav-title">📍 صفحات الموقع</h3>
-                <div class="nav-links">
-                    <a href="index.html" class="nav-link">🏠 البداية</a>
-                    <a href="countdown.html" class="nav-link">⏳ العد التنازلي</a>
-                    <a href="hero.html" class="nav-link">💕 الهيرو</a>
-                    <a href="lily.html" class="nav-link">🎂 الكيكة</a>
-                    <a href="gallery.html" class="nav-link">📸 الذكريات</a>
-                    <a href="balloons.html" class="nav-link">🎈 البالونات</a>
-                    <a href="fireworks.html" class="nav-link">🎆 الألعاب النارية</a>
-                    <a href="gift.html" class="nav-link">🎁 الهدية</a>
-                    <a href="letters.html" class="nav-link">💌 الرسائل</a>
-                    <a href="music.html" class="nav-link">🎵 الموسيقى</a>
-                </div>
+            <div class="film-placeholder">
+              <strong>فيديو الذكريات</strong>
+              <span>اضغط للتشغيل</span>
             </div>
-
-            <!-- إعادة التشغيل -->
-            <div class="restart-section">
-                <button class="restart-btn" id="restartBtn">
-                    <span>🔄 ابدأ الرحلة من جديد</span>
-                </button>
-            </div>
+          </div>
         </div>
+        <div class="film-vintage"></div>
+      </div>
     </div>
 
-    <script>
+    <!-- Masonry Gallery -->
+    <div class="gallery-masonry reveal reveal-delay-2" id="galleryMasonry">
+      <div class="gallery-item" data-caption="أول لقاء">
+        <img src="assets/photos/photo1.jpg" alt="أول لقاء" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+        <div class="item-caption">
+          <span class="item-caption-title">أول لقاء</span>
+          <span class="item-caption-date">يناير 2026</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-caption="يوم مميز">
+        <img src="assets/photos/photo2.jpg" alt="يوم مميز" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+        <div class="item-caption">
+          <span class="item-caption-title">يوم مميز</span>
+          <span class="item-caption-date">فبراير 2026</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-caption="لحظة سعيدة">
+        <img src="assets/photos/photo3.jpg" alt="لحظة سعيدة" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+        <div class="item-caption">
+          <span class="item-caption-title">لحظة سعيدة</span>
+          <span class="item-caption-date">مارس 2026</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-caption="وقت جميل">
+        <img src="assets/photos/photo4.jpg" alt="وقت جميل" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+        <div class="item-caption">
+          <span class="item-caption-title">وقت جميل</span>
+          <span class="item-caption-date">أبريل 2026</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-caption="ذكرى لا تُنسى">
+        <img src="assets/photos/photo5.jpg" alt="ذكرى لا تُنسى" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+        <div class="item-caption">
+          <span class="item-caption-title">ذكرى لا تُنسى</span>
+          <span class="item-caption-date">مايو 2026</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-caption="أجمل يوم">
+        <img src="assets/photos/photo6.jpg" alt="أجمل يوم" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+        <div class="item-caption">
+          <span class="item-caption-title">أجمل يوم</span>
+          <span class="item-caption-date">يونيو 2026</span>
+        </div>
+      </div>
+    </div>
+  </main>
 
-/* === main.js === */
-// ===== متغيرات عامة =====
-let audioContext = null;
-let bgMusic = null;
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="إغلاق">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
 
-// ===== عند تحميل الصفحة =====
-document.addEventListener('DOMContentLoaded', () => {
-    initLilac();
-    initParticles();
-    initTypewriter();
-    initStartButton();
-    createFallingPetals();
-});
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/petals.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+  <script>
+    (function() {
+      'use strict';
+      if (window.Engine3D) Engine3D.init();
 
-// ===== ورد الليلك =====
-function initLilac() {
-    const container = document.getElementById('lilacContainer');
-    
-    // إنشاء أزهار على الأغصان
-    const branches = document.querySelectorAll('.lilac-branch');
-    
-    branches.forEach(branch => {
-        for (let i = 0; i < 25; i++) {
-            const flower = document.createElement('div');
-            flower.className = 'lilac-flower';
-            
-            // موقع عشوائي على الغصن
-            const top = 20 + Math.random() * 70;
-            const left = 30 + Math.random() * 40;
-            const delay = Math.random() * 3;
-            const size = 8 + Math.random() * 8;
-            
-            flower.style.cssText = `
-                top: ${top}%;
-                left: ${left}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-delay: ${delay}s;
-            `;
-            
-            branch.appendChild(flower);
-        }
-    });
-}
+      /* ── Auth Guard ── */
+      if (window.AuthSystem) AuthSystem.guard();
 
-// ===== بتلات متساقطة =====
-function createFallingPetals() {
-    setInterval(() => {
-        const petal = document.createElement('div');
-        petal.className = 'falling-petal';
-        
-        const startX = Math.random() * window.innerWidth;
-        const duration = 5 + Math.random() * 5;
-        const size = 6 + Math.random() * 6;
-        
-        petal.style.cssText = `
-            left: ${startX}px;
-            top: -20px;
-            width: ${size}px;
-            height: ${size}px;
-            animation-duration: ${duration}s;
-        `;
-        
-        document.querySelector('.live-background').appendChild(petal);
-        
-        setTimeout(() => petal.remove(), duration * 1000);
-    }, 1500);
-}
+      /* ── Lightbox ── */
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const lightboxClose = document.getElementById('lightboxClose');
 
-// ===== جزيئات العطر =====
-function initParticles() {
-    const container = document.getElementById('particles');
-    
-    setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const x = Math.random() * window.innerWidth;
-        const y = window.innerHeight - Math.random() * 200;
-        const delay = Math.random() * 2;
-        
-        particle.style.cssText = `
-            left: ${x}px;
-            top: ${y}px;
-            animation-delay: ${delay}s;
-        `;
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 6000);
-    }, 800);
-}
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const img = item.querySelector('img');
+          if (!img) return;
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt || '';
+          lightboxCaption.textContent = item.dataset.caption || '';
+          lightbox.classList.add('show');
+          lightbox.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        });
+      });
 
-// ===== تأثير الكتابة =====
-function initTypewriter() {
-    const text = "في كل نبضة قلب... أنتِ";
-    const element = document.getElementById('typewriterText');
-    let index = 0;
-    
-    function type() {
-        if (index < text.length) {
-            element.textContent += text.charAt(index);
-            index++;
-            setTimeout(type, 150);
-        } else {
-            setTimeout(() => {
-                element.textContent = '';
-                index = 0;
-                type();
-            }, 4000);
-        }
-    }
-    
-    setTimeout(type, 1500);
-}
+      function closeLightbox() {
+        lightbox.classList.remove('show');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        setTimeout(() => { lightboxImg.src = ''; }, 300);
+      }
 
-// ===== زر البداية =====
-function initStartButton() {
-    const btn = document.getElementById('startBtn');
-    
-    btn.addEventListener('click', async () => {
-        // تشغيل الموسيقى
-        await initAudio();
-        
-        // تأثير القلوب الطائرة
-        createBurstHearts();
-        
-        // الانتقال للصفحة التالية
-        setTimeout(() => {
-            window.location.href = 'countdown.html';
-        }, 2000);
-    });
-}
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
-// ===== تشغيل الصوت =====
-async function initAudio() {
-    bgMusic = document.getElementById('bgMusic');
-    
-    try {
-        await bgMusic.play();
-        bgMusic.volume = 0.3;
-    } catch (e) {
-        console.log('Audio autoplay blocked:', e);
-    }
-}
+      /* ── Lazy image blur-up ── */
+      document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.classList.add('img-blur');
+        if (img.complete) img.classList.add('img-loaded');
+      });
 
-// ===== انفجار قلوب =====
-function createBurstHearts() {
-    const container = document.getElementById('floatingHearts');
-    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
-    
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
-        
-        const x = 30 + Math.random() * 40;
-        const delay = Math.random() * 1;
-        
-        heart.style.cssText = `
-            left: ${x}%;
-            bottom: 20%;
-            animation-delay: ${delay}s;
-            font-size: ${15 + Math.random() * 20}px;
-        `;
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 5000);
-    }
-}
-
-// ===== أداة مساعدة: عداد الوقت =====
-function getTimeSince(date) {
-    const now = new Date();
-    const diff = now - new Date(date);
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    return { days, hours, minutes, seconds };
-}
-
-// ===== أداة مساعدة: تنسيق الأرقام =====
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
-
-/* === footer.js === */
-// ===== إعدادات =====
-const FIRST_DAY = new Date('2026-01-01T00:00:00'); // ✅ تاريخ التعارف: 1/1/2026
-
-// ===== اقتباسات الحب =====
-const loveQuotes = [
-    { text: "أحبكِ ليس لأنكِ مثالية، بل لأنكِ أنتِ", author: "— لكِ" },
-    { text: "في عالم مليء بالفوضى، أنتِ سلامي", author: "— لكِ" },
-    { text: "كل يوم معكِ هو قصة حب جديدة", author: "— لكِ" },
-    { text: "أنتِ نجمتي التي تضيء ظلام ليالي", author: "— لكِ" },
-    { text: "حبكِ هو أجمل ما حدث في حياتي", author: "— لكِ" },
-    { text: "أريد أن أكون سبب ابتسامتكِ دائماً", author: "— لكِ" },
-    { text: "أنتِ بيتي، وأنا لن أغادر أبداً", author: "— لكِ" },
-    { text: "معكِ تتوقف الساعة وتبدأ الأحلام", author: "— لكِ" },
-    { text: "أحبكِ أكثر من الأمس وأقل من الغد", author: "— لكِ" },
-    { text: "أنتِ قصيدتي التي لا تنتهي", author: "— لكِ" }
-];
-
-// ===== عند التحميل =====
-document.addEventListener('DOMContentLoaded', () => {
-    initLoveCounter();
-    initQuotes();
-    initKissButton();
-    initSignature();
-    initRestart();
-    initLilac();
-    initParticles();
-});
-
-// ===== عداد أيام الحب =====
-function initLoveCounter() {
-    const daysEl = document.getElementById('counterDays');
-    const heartsContainer = document.getElementById('counterHearts');
-    
-    if (!daysEl) return;
-    
-    function updateCounter() {
-        const now = new Date();
-        const diff = now - FIRST_DAY;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        
-        // التأكد من أن العداد موجب
-        const displayDays = Math.max(0, days);
-        
-        animateNumber(daysEl, parseInt(daysEl.textContent) || 0, displayDays, 2000);
-        
-        // إضافة قلوب عائمة
-        if (heartsContainer && heartsContainer.children.length < 10) {
-            createFloatingHeart(heartsContainer);
-        }
-    }
-    
-    updateCounter();
-    setInterval(updateCounter, 60000); // تحديث كل دقيقة
-    
-    // إنشاء قلوب عائمة
-    if (heartsContainer) {
-        for (let i = 0; i < 8; i++) {
-            setTimeout(() => createFloatingHeart(heartsContainer), i * 500);
-        }
-    }
-}
-
-function createFloatingHeart(container) {
-    const heart = document.createElement('div');
-    heart.className = 'counter-heart';
-    heart.textContent = ['💜', '💖', '💕', '🪻'][Math.floor(Math.random() * 4)];
-    
-    heart.style.left = Math.random() * 100 + '%';
-    heart.style.top = Math.random() * 100 + '%';
-    heart.style.animationDelay = Math.random() * 3 + 's';
-    heart.style.animationDuration = (3 + Math.random() * 2) + 's';
-    
-    container.appendChild(heart);
-    
-    // إعادة تعيين بعد انتهاء الحركة
-    setTimeout(() => {
-        if (heart.parentNode) {
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.top = Math.random() * 100 + '%';
-        }
-    }, 5000);
-}
-
-// ===== الرسائل المتغيرة =====
-function initQuotes() {
-    const textEl = document.getElementById('quoteText');
-    const authorEl = document.getElementById('quoteAuthor');
-    
-    if (!textEl || !authorEl) return;
-    
-    let currentIndex = 0;
-    
-    function showQuote() {
-        const quote = loveQuotes[currentIndex];
-        
-        // تأثير التلاشي
-        textEl.style.opacity = '0';
-        authorEl.style.opacity = '0';
-        
-        setTimeout(() => {
-            textEl.textContent = quote.text;
-            authorEl.textContent = quote.author;
-            
-            textEl.style.opacity = '1';
-            authorEl.style.opacity = '1';
-            
-            currentIndex = (currentIndex + 1) % loveQuotes.length;
-        }, 500);
-    }
-    
-    // تأثير الانتقال
-    textEl.style.transition = 'opacity 0.5s';
-    authorEl.style.transition = 'opacity 0.5s';
-    
-    showQuote();
-    setInterval(showQuote, 5000);
-}
-
-// ===== زر القبلة =====
-function initKissButton() {
-    const btn = document.getElementById('kissBtn');
-    const container = document.getElementById('flyingKisses');
-    
-    if (!btn || !container) {
-        console.error('Kiss button or container not found!');
-        return;
-    }
-    
-    // إزالة أي مستمعين سابقين
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-    
-    newBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        console.log('Kiss button clicked!');
-        
-        // إنشاء قبلة طائرة
-        for (let i = 0; i < 15; i++) {
-            setTimeout(() => {
-                createFlyingKiss(container);
-            }, i * 100);
-        }
-        
-        // تأثير الزر
-        newBtn.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            newBtn.style.transform = '';
-        }, 150);
-    });
-}
-
-function createFlyingKiss(container) {
-    const kiss = document.createElement('div');
-    kiss.className = 'flying-kiss';
-    
-    const emojis = ['💋', '💜', '💖', '💕', '🪻', '✨', '💗', '💓'];
-    kiss.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    
-    const startX = 30 + Math.random() * 40;
-    kiss.style.left = startX + '%';
-    kiss.style.bottom = '20%';
-    kiss.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
-    
-    container.appendChild(kiss);
-    
-    // إزالة بعد الانتهاء
-    setTimeout(() => {
-        if (kiss.parentNode) {
-            kiss.remove();
-        }
-    }, 4000);
-}
-
-// ===== التوقيع الرقمي =====
-function initSignature() {
-    const dateEl = document.getElementById('signatureDate');
-    if (!dateEl) return;
-    
-    const today = new Date();
-    
-    dateEl.textContent = today.toLocaleDateString('ar-SA', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
-
-// ===== إعادة التشغيل =====
-function initRestart() {
-    const btn = document.getElementById('restartBtn');
-    
-    if (!btn) {
-        console.error('Restart button not found!');
-        return;
-    }
-    
-    // إزالة أي مستمعين سابقين
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-    
-    newBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        console.log('Restart button clicked!');
-        
-        // تأثير الانتقال
-        document.body.style.transition = 'opacity 0.5s';
-        document.body.style.opacity = '0';
-        
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 500);
-    });
-}
-
-// ===== أداة مساعدة: عداد الأرقام =====
-function animateNumber(element, start, end, duration) {
-    const startTime = performance.now();
-    
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
-        
-        const current = Math.floor(start + (end - start) * easeProgress);
-        element.textContent = current.toLocaleString('ar-SA');
-        
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
-    }
-    
-    requestAnimationFrame(update);
-}
-</script>
+      /* ── Reveals ── */
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 300 + i * 150);
+      });
+    })();
+  </script>
 </body>
 </html>

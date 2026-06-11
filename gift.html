@@ -1,1402 +1,301 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ذكرياتنا — شهد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
-<style>
-
-/* === styles.css === */
-/* ===== Reset & Base ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --lilac-light: #E6E6FA;
-    --lilac-main: #C8A2C8;
-    --lilac-dark: #9B59B6;
-    --lilac-deep: #663399;
-    --night-bg: #0a0a1a;
-    --night-mid: #1a1a3e;
-    --gold: #FFD700;
-    --pink: #FF69B4;
-    --white: #ffffff;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Cairo', sans-serif;
-    background: var(--night-bg);
-    color: var(--white);
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-
-/* ===== خلفية حية ===== */
-.live-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
-    overflow: hidden;
-}
-
-/* نجوم */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, white, transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(1px 1px at 230px 80px, white, transparent),
-        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
-    background-size: 350px 200px;
-    animation: twinkle 5s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.3; }
-}
-
-/* سحاب */
-.clouds {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-}
-
-.clouds::before,
-.clouds::after {
-    content: '';
-    position: absolute;
-    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float 20s ease-in-out infinite;
-}
-
-.clouds::before {
-    width: 400px;
-    height: 150px;
-    top: 20%;
-    left: -10%;
-    animation-delay: 0s;
-}
-
-.clouds::after {
-    width: 300px;
-    height: 120px;
-    top: 60%;
-    right: -5%;
-    animation-delay: -10s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(50px) translateY(-20px); }
-    50% { transform: translateX(100px) translateY(10px); }
-    75% { transform: translateX(30px) translateY(-10px); }
-}
-
-/* القمر */
-.moon {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
-    animation: moonPulse 4s ease-in-out infinite;
-}
-
-@keyframes moonPulse {
-    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
-    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
-}
-
-/* ===== ورد الليلك ===== */
-.lilac-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.lilac-branch {
-    position: absolute;
-    bottom: -20px;
-    width: 200px;
-    height: 400px;
-    opacity: 0.7;
-}
-
-.lilac-branch.left {
-    left: -30px;
-    transform: rotate(-15deg);
-    transform-origin: bottom center;
-    animation: swayLeft 6s ease-in-out infinite;
-}
-
-.lilac-branch.right {
-    right: -30px;
-    transform: rotate(15deg) scaleX(-1);
-    transform-origin: bottom center;
-    animation: swayRight 7s ease-in-out infinite;
-}
-
-@keyframes swayLeft {
-    0%, 100% { transform: rotate(-15deg); }
-    50% { transform: rotate(-10deg); }
-}
-
-@keyframes swayRight {
-    0%, 100% { transform: rotate(15deg) scaleX(-1); }
-    50% { transform: rotate(10deg) scaleX(-1); }
-}
-
-/* أزهار الليلك */
-.lilac-flower {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 0 8px rgba(200,162,200,0.6);
-    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
-    opacity: 0;
-}
-
-@keyframes bloom {
-    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
-}
-
-@keyframes floatFlower {
-    0%, 100% { transform: rotate(-45deg) translateY(0); }
-    50% { transform: rotate(-45deg) translateY(-10px); }
-}
-
-/* بتلات متساقطة */
-.falling-petal {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 50% 0 50% 50%;
-    opacity: 0.8;
-    animation: fall linear forwards;
-    pointer-events: none;
-}
-
-@keyframes fall {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
-    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
-}
-
-/* جزيئات عطر الليلك */
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 6s ease-in-out infinite;
-    box-shadow: 0 0 6px var(--lilac-main);
-}
-
-@keyframes particleFloat {
-    0% { transform: translateY(0) scale(0); opacity: 0; }
-    20% { opacity: 0.8; }
-    80% { opacity: 0.4; }
-    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-}
-
-/* ===== المحتوى الرئيسي ===== */
-.start-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-}
-
-.intro-content {
-    text-align: center;
-    padding: 40px;
-    position: relative;
-}
-
-/* العناوين */
-.main-title {
-    margin-bottom: 30px;
-}
-
-.title-line {
-    display: block;
-    font-family: 'Amiri', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--white);
-    text-shadow: 0 0 20px rgba(200,162,200,0.5);
-    opacity: 0;
-    animation: fadeInUp 1s ease-out forwards;
-}
-
-.title-line.highlight {
-    font-size: 4rem;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* القلب النابض */
-.heart-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 30px auto;
-}
-
-.heart {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--pink), #FF1493);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    animation: heartbeat 1.2s ease-in-out infinite;
-    box-shadow: 0 0 30px rgba(255,105,180,0.6);
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    width: 80px;
-    height: 80px;
-    background: inherit;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.heart::before { top: -40px; left: 0; }
-.heart::after { top: 0; left: 40px; }
-
-@keyframes heartbeat {
-    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-}
-
-.heart-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
-    border-radius: 50%;
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* تأثير الكتابة */
-.subtitle {
-    font-size: 1.3rem;
-    color: var(--lilac-light);
-    margin: 20px 0 40px;
-    min-height: 40px;
-    text-shadow: 0 0 10px rgba(200,162,200,0.3);
-}
-
-/* زر البداية */
-.start-btn {
-    position: relative;
-    padding: 18px 50px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--white);
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
-}
-
-.btn-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.start-btn:hover .btn-glow {
-    opacity: 1;
-}
-
-/* قلوب طائرة */
-.floating-hearts {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.floating-heart {
-    position: absolute;
-    color: var(--pink);
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 4s ease-in forwards;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
-}
-
-/* ===== تصميم متجاوب ===== */
-@media (max-width: 768px) {
-    .title-line { font-size: 2rem; }
-    .title-line.highlight { font-size: 2.5rem; }
-    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
-    .lilac-branch { width: 120px; height: 250px; }
-}
-/* ===== أزرار التنقل المُحسَّنة ===== */
-.nav-back,
-.nav-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 14px 28px;
-    background: rgba(200, 162, 200, 0.2);
-    border: 2px solid rgba(200, 162, 200, 0.4);
-    border-radius: 50px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.4s ease;
-    z-index: 1000;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.nav-back {
-    left: 25px;
-}
-
-.nav-next {
-    right: 25px;
-}
-
-.nav-back:hover,
-.nav-next:hover {
-    background: rgba(200, 162, 200, 0.4);
-    border-color: rgba(200, 162, 200, 0.8);
-    color: var(--white);
-    transform: translateY(-50%) scale(1.08);
-    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
-}
-
-.nav-back::before {
-    content: '←';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-next::after {
-    content: '→';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-back:hover::before {
-    transform: translateX(-5px);
-}
-
-.nav-next:hover::after {
-    transform: translateX(5px);
-}
-
-/* ===== للموبايل ===== */
-@media (max-width: 768px) {
-    .nav-back,
-    .nav-next {
-        position: fixed;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        border-radius: 30px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#e91e63">
+  <meta property="og:title" content="الهدية — شودي">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>الهدية — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
+    .gift-stage {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto;
+      perspective: 800px;
+      cursor: pointer;
     }
-    
-    .nav-back {
-        left: 15px;
+
+    .gift-box {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 60px auto 0;
+      transform-style: preserve-3d;
+      transition: transform 0.6s var(--ease-out-expo);
     }
-    
-    .nav-next {
-        right: 15px;
+
+    .gift-box:hover { transform: scale(1.05); }
+
+    .gift-face {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(135deg, var(--color-primary), var(--accent-pink));
+      border: 2px solid rgba(255,255,255,0.3);
     }
-    
-    .nav-back:hover,
-    .nav-next:hover {
-        transform: scale(1.05);
+
+    .gift-face.front { transform: translateZ(80px); }
+    .gift-face.back { transform: rotateY(180deg) translateZ(80px); }
+    .gift-face.right { transform: rotateY(90deg) translateZ(80px); }
+    .gift-face.left { transform: rotateY(-90deg) translateZ(80px); }
+    .gift-face.top { transform: rotateX(90deg) translateZ(80px); height: 160px; }
+    .gift-face.bottom { transform: rotateX(-90deg) translateZ(80px); height: 160px; }
+
+    .gift-ribbon-v {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 24px; height: 100%;
+      background: linear-gradient(180deg, var(--accent-gold), color-mix(in srgb, var(--accent-gold), white 32%), var(--accent-gold));
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
     }
-    
-    .page-container {
-        padding-bottom: 100px;
+
+    .gift-ribbon-h {
+      position: absolute;
+      top: 50%; left: 0;
+      transform: translateY(-50%);
+      width: 100%; height: 24px;
+      background: linear-gradient(90deg, var(--accent-gold), color-mix(in srgb, var(--accent-gold), white 32%), var(--accent-gold));
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
     }
-}
 
-/* === gallery.css === */
-/* ===== صفحة المعرض ===== */
-.gallery-page {
-    min-height: 100vh;
-    padding: 60px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-}
-
-/* ===== الفيلم التلقائي ===== */
-.film-section {
-    width: 100%;
-    max-width: 700px;
-    text-align: center;
-}
-
-.film-frame {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    background: rgba(200,162,200,0.1);
-    border: 3px solid rgba(200,162,200,0.3);
-    border-radius: 15px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.film-frame:hover {
-    border-color: rgba(200,162,200,0.6);
-    box-shadow: 0 10px 40px rgba(200,162,200,0.3);
-}
-
-.film-photo {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.film-placeholder {
-    text-align: center;
-    color: var(--lilac-main);
-    font-size: 1.2rem;
-}
-
-.film-placeholder span {
-    display: block;
-    margin-top: 10px;
-}
-
-.film-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    transition: opacity 0.3s;
-}
-
-.film-frame.playing .film-overlay {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.film-play {
-    font-size: 4rem;
-    opacity: 0.9;
-    transition: transform 0.3s;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.film-frame:hover .film-play {
-    transform: scale(1.2);
-}
-
-.film-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--lilac-main), var(--lilac-light));
-    transition: width 0.3s;
-}
-
-.film-vintage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle, transparent 50%, rgba(139,69,19,0.1) 100%),
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.03) 2px, rgba(139,69,19,0.03) 4px);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-.film-frame.playing .film-vintage {
-    opacity: 1;
-    animation: vintageFlicker 0.5s ease-in-out infinite;
-}
-
-@keyframes vintageFlicker {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
-}
-
-.film-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.film-btn {
-    padding: 10px 25px;
-    background: rgba(200,162,200,0.15);
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 20px;
-    color: var(--lilac-light);
-    font-family: 'Cairo', sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.film-btn:hover {
-    background: rgba(200,162,200,0.3);
-    transform: translateY(-2px);
-}
-
-.film-status {
-    font-size: 0.85rem;
-    color: var(--lilac-main);
-}
-
-/* ===== معرض الصور ===== */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    width: 100%;
-    max-width: 900px;
-}
-
-.gallery-item {
-    position: relative;
-    aspect-ratio: 1;
-    background: rgba(200,162,200,0.1);
-    border: 2px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.4s ease;
-}
-
-.gallery-item:hover {
-    transform: translateY(-10px) scale(1.02);
-    border-color: rgba(200,162,200,0.5);
-    box-shadow: 0 15px 40px rgba(200,162,200,0.3);
-}
-
-.item-photo {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--lilac-main);
-}
-
-.item-icon {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-
-.item-text {
-    font-size: 0.9rem;
-}
-
-.item-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(10,10,26,0.9));
-    transform: translateY(100%);
-    transition: transform 0.4s ease;
-}
-
-.gallery-item:hover .item-overlay {
-    transform: translateY(0);
-}
-
-.item-date,
-.item-place,
-.item-memory {
-    font-size: 0.85rem;
-    color: var(--lilac-light);
-    margin-bottom: 5px;
-}
-
-/* ===== قصة الصورة (Modal) ===== */
-.story-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(10,10,26,0.95);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
-
-.story-modal.show {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.story-content {
-    background: rgba(200,162,200,0.1);
-    border: 2px solid rgba(200,162,200,0.3);
-    border-radius: 25px;
-    padding: 40px;
-    max-width: 500px;
-    text-align: center;
-    backdrop-filter: blur(20px);
-    transform: scale(0.9);
-    transition: transform 0.3s;
-}
-
-.story-modal.show .story-content {
-    transform: scale(1);
-}
-
-.story-title {
-    font-family: 'Amiri', serif;
-    font-size: 1.5rem;
-    color: var(--lilac-light);
-    margin-bottom: 20px;
-}
-
-.story-text {
-    font-size: 1.1rem;
-    color: var(--white);
-    line-height: 2;
-    margin-bottom: 25px;
-}
-
-.story-close {
-    padding: 12px 30px;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 20px;
-    color: var(--white);
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.story-close:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(155,89,182,0.4);
-}
-
-/* ===== مقارنة قبل/بعد ===== */
-.compare-section {
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-}
-
-.compare-slider {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: rgba(200,162,200,0.1);
-    border: 2px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: col-resize;
-}
-
-.compare-before,
-.compare-after {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    overflow: hidden;
-}
-
-.compare-before {
-    left: 0;
-    width: 50%;
-    background: linear-gradient(135deg, rgba(200,162,200,0.2), rgba(155,89,182,0.2));
-    z-index: 2;
-}
-
-.compare-after {
-    right: 0;
-    width: 50%;
-    background: linear-gradient(135deg, rgba(255,105,180,0.2), rgba(255,20,147,0.2));
-    z-index: 1;
-}
-
-.compare-photo {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--lilac-main);
-    font-size: 1.2rem;
-}
-
-.compare-handle {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 100%;
-    z-index: 3;
-    cursor: col-resize;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.handle-line {
-    width: 2px;
-    height: 100%;
-    background: var(--lilac-light);
-    box-shadow: 0 0 10px rgba(200,162,200,0.6);
-}
-
-.handle-circle {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    box-shadow: 0 0 20px rgba(200,162,200,0.6);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-/* ===== متجاوب ===== */
-@media (max-width: 768px) {
-    .gallery-grid {
-        grid-template-columns: 1fr 1fr;
+    .gift-lid {
+      position: absolute;
+      top: -20px; left: -10px;
+      width: 180px; height: 40px;
+      background: linear-gradient(135deg, var(--rose-700), var(--color-primary));
+      border: 2px solid rgba(255,255,255,0.3);
+      transform-origin: back;
+      transition: transform 1s var(--ease-out-back);
+      transform-style: preserve-3d;
+      z-index: 10;
     }
-    
-    .film-frame {
-        aspect-ratio: 4/3;
+
+    .gift-lid.unwrapped {
+      transform: rotateX(-110deg) translateZ(80px);
     }
-    
-    .story-content {
-        margin: 20px;
-        padding: 25px;
+
+    .gift-bow {
+      position: absolute;
+      top: -30px; left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 40px;
+      z-index: 20;
+      transition: all 0.5s var(--ease-out-expo);
     }
-}
-</style>
+
+    .gift-bow::before, .gift-bow::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 30px; height: 40px;
+      background: linear-gradient(135deg, var(--accent-gold), color-mix(in srgb, var(--accent-gold), white 32%));
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .gift-bow::before { left: 0; transform: rotate(-20deg); }
+    .gift-bow::after { right: 0; transform: rotate(20deg) scaleX(-1); }
+
+    .gift-bow.unwrapped {
+      transform: translateX(-50%) translateY(-40px) scale(0.5);
+      opacity: 0;
+    }
+
+    .gift-message {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      text-align: center;
+      opacity: 0;
+      transition: all 0.8s 0.5s var(--ease-out-back);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .gift-message.show {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .gift-message h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .gift-message p {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: 2;
+    }
+
+    .gift-glow {
+      position: absolute;
+      inset: -50px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(var(--color-primary-rgb), 0.15), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+    }
+
+    .gift-stage:hover .gift-glow { opacity: 1; }
+
+    @media (max-width: 640px) {
+      .gift-stage { transform: scale(0.8); }
+    }
+  </style>
 </head>
-<body>
-    <div class="live-background">
-        <div class="stars"></div>
-        <div class="clouds"></div>
-        <div class="lilac-container" id="lilacContainer"></div>
-        <div class="particles" id="particles"></div>
-    </div>
+<body data-page="gift">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
+  <div class="luxury-bg" aria-hidden="true"></div>
+  <div id="bg3d" aria-hidden="true"></div>
+  <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
 
-    <div class="page-container">
-        <a href="lily.html" class="nav-back">← رجوع</a>
-        
-        <div class="gallery-page">
-            <h1 class="page-title">📸 ذكرياتنا الجميلة</h1>
-            
-            <!-- فيلم تلقائي -->
-            <div class="film-section">
-                <div class="film-frame" id="filmFrame">
-                    <div class="film-photo" id="filmPhoto">
-                        <div class="photo-placeholder film-placeholder">
-                            <span>🎬 اضغط لتشغيل الفيلم</span>
-                        </div>
-                    </div>
-                    <div class="film-overlay">
-                        <div class="film-play" id="filmPlay">▶️</div>
-                        <div class="film-progress" id="filmProgress"></div>
-                    </div>
-                    <div class="film-vintage" id="filmVintage"></div>
-                </div>
-                <div class="film-controls">
-                    <button class="film-btn" id="playBtn">▶️ تشغيل</button>
-                    <button class="film-btn" id="pauseBtn">⏸️ إيقاف</button>
-                    <div class="film-status" id="filmStatus">جاهز للعرض</div>
-                </div>
-            </div>
+   <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+    <a href="index.html" class="nav-link" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+    <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+    <a href="hero.html" class="nav-link" aria-label="ملكتي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+    <a href="lily.html" class="nav-link" aria-label="اليلك">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+    <a href="gallery.html" class="nav-link" aria-label="الذكريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+    <a href="balloons.html" class="nav-link" aria-label="البالونات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+    <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+    <a href="gift.html" class="nav-link" aria-label="الهدية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+     <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
+      <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
+  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
+</nav>
 
-            <!-- معرض الصور -->
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- الصور تُضاف ديناميكياً -->
-                <div class="gallery-item" data-story="أول لقاء - المكان: ... التاريخ: ...">
-                    <div class="item-photo">
-                        <span class="item-icon">📷</span>
-                        <span class="item-text">أضف صورة هنا</span>
-                    </div>
-                    <div class="item-overlay">
-                        <div class="item-date">📅 التاريخ</div>
-                        <div class="item-place">📍 المكان</div>
-                        <div class="item-memory">💭 الذكرى</div>
-                    </div>
-                </div>
-                <!-- نسخ المزيد -->
-                <div class="gallery-item" data-story="رحلة معاً - أجمل أيام العمر">
-                    <div class="item-photo">
-                        <span class="item-icon">📷</span>
-                        <span class="item-text">أضف صورة هنا</span>
-                    </div>
-                    <div class="item-overlay">
-                        <div class="item-date">📅 التاريخ</div>
-                        <div class="item-place">📍 المكان</div>
-                        <div class="item-memory">💭 الذكرى</div>
-                    </div>
-                </div>
-                <div class="gallery-item" data-story="يوم لا يُنسى - ضحكنا كثيراً">
-                    <div class="item-photo">
-                        <span class="item-icon">📷</span>
-                        <span class="item-text">أضف صورة هنا</span>
-                    </div>
-                    <div class="item-overlay">
-                        <div class="item-date">📅 التاريخ</div>
-                        <div class="item-place">📍 المكان</div>
-                        <div class="item-memory">💭 الذكرى</div>
-                    </div>
-                </div>
-                <div class="gallery-item" data-story="لحظة سعيدة - القلب يدق بقوة">
-                    <div class="item-photo">
-                        <span class="item-icon">📷</span>
-                        <span class="item-text">أضف صورة هنا</span>
-                    </div>
-                    <div class="item-overlay">
-                        <div class="item-date">📅 التاريخ</div>
-                        <div class="item-place">📍 المكان</div>
-                        <div class="item-memory">💭 الذكرى</div>
-                    </div>
-                </div>
-            </div>
+  <!-- Small Flowers Decoration -->
+  <div class="small-flower-eco" aria-hidden="true">
+    <div class="small-flower sf-1 sf-rose"><svg viewBox="0 0 24 24" fill="var(--petal-rose)"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg></div>
+    <div class="small-flower sf-2 sf-pink"><svg viewBox="0 0 24 24" fill="var(--petal-pink)"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg></div>
+    <div class="small-flower sf-3 sf-rose"><svg viewBox="0 0 24 24" fill="var(--petal-rose)"><circle cx="12" cy="12" r="10"/></svg></div>
+    <div class="small-flower sf-4 sf-gold"><svg viewBox="0 0 24 24" fill="var(--petal-gold)"><path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5-6.5-4.5-6.5 4.5 2.5-7.5-6-4.5h7.5z"/></svg></div>
+    <div class="small-flower sf-5 sf-pink"><svg viewBox="0 0 24 24" fill="var(--petal-pink)"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg></div>
+  </div>
 
-            <!-- مقارنة قبل/بعد -->
-            <div class="compare-section">
-                <h3 class="section-title">⏳ قبل وبعد</h3>
-                <div class="compare-slider" id="compareSlider">
-                    <div class="compare-before">
-                        <div class="compare-photo">
-                            <span>📷 قبل</span>
-                        </div>
-                    </div>
-                    <div class="compare-after">
-                        <div class="compare-photo">
-                            <span>📷 بعد</span>
-                        </div>
-                    </div>
-                    <div class="compare-handle" id="compareHandle">
-                        <div class="handle-line"></div>
-                        <div class="handle-circle">↔️</div>
-                    </div>
-                </div>
-            </div>
+  <main id="main-content" class="page-wrapper">
+    <h1 class="display-title display-title--1 text-gradient-rose reveal">هديتكِ يا شودي</h1>
+
+    <div class="gift-stage reveal reveal-delay-1" id="giftStage" role="button" tabindex="0" aria-label="صندوق الهدية، اضغط لفتحه">
+      <div class="gift-glow"></div>
+      <div class="gift-box" id="giftBox">
+        <div class="gift-lid" id="giftLid">
+          <div class="gift-ribbon-v"></div>
+          <div class="gift-ribbon-h"></div>
         </div>
-
-        <a href="balloons.html" class="nav-next">التالي →</a>
+        <div class="gift-bow" id="giftBow"></div>
+        <div class="gift-face front"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
+        <div class="gift-face back"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
+        <div class="gift-face right"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
+        <div class="gift-face left"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
+        <div class="gift-face top"></div>
+        <div class="gift-face bottom"></div>
+      </div>
+      <div class="gift-message" id="giftMessage">
+        <h2>كل عام وأنتِ بخير</h2>
+        <p>أنتِ أجمل هدية<br>حصلت عليها في حياتي</p>
+      </div>
     </div>
 
-    <script>
+    <p class="reveal reveal-delay-2" style="text-align:center;color:var(--text-muted);font-size:var(--text-sm);">اضغط على الصندوق لفتحه</p>
+  </main>
 
-/* === main.js === */
-// ===== متغيرات عامة =====
-let audioContext = null;
-let bgMusic = null;
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/petals.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+  <script>
+    (function() {
+      'use strict';
+      if (window.Engine3D) Engine3D.init();
+      if (window.AuthSystem) AuthSystem.guard();
 
-// ===== عند تحميل الصفحة =====
-document.addEventListener('DOMContentLoaded', () => {
-    initLilac();
-    initParticles();
-    initTypewriter();
-    initStartButton();
-    createFallingPetals();
-});
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 300 + i * 150);
+      });
 
-// ===== ورد الليلك =====
-function initLilac() {
-    const container = document.getElementById('lilacContainer');
-    
-    // إنشاء أزهار على الأغصان
-    const branches = document.querySelectorAll('.lilac-branch');
-    
-    branches.forEach(branch => {
-        for (let i = 0; i < 25; i++) {
-            const flower = document.createElement('div');
-            flower.className = 'lilac-flower';
-            
-            // موقع عشوائي على الغصن
-            const top = 20 + Math.random() * 70;
-            const left = 30 + Math.random() * 40;
-            const delay = Math.random() * 3;
-            const size = 8 + Math.random() * 8;
-            
-            flower.style.cssText = `
-                top: ${top}%;
-                left: ${left}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-delay: ${delay}s;
+      const PALETTE = {
+        primary: '#e91e63', pink: '#ff7a9e', purple: '#9d4edd',
+        lilac: '#c8b6ff', gold: '#d4a574', lightPink: '#f472b6'
+      };
+
+      const stage = document.getElementById('giftStage');
+      const lid = document.getElementById('giftLid');
+      const bow = document.getElementById('giftBow');
+      const msg = document.getElementById('giftMessage');
+      let opened = false;
+
+      function openGift() {
+        if (opened) return;
+        opened = true;
+        lid.classList.add('unwrapped');
+        bow.classList.add('unwrapped');
+        msg.classList.add('show');
+        createConfetti();
+      }
+
+      stage.addEventListener('click', openGift);
+      stage.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGift(); }
+      });
+
+      function createConfetti() {
+        const colors = [PALETTE.primary, PALETTE.pink, PALETTE.purple, PALETTE.lilac, PALETTE.gold, PALETTE.lightPink];
+        for (let i = 0; i < 120; i++) {
+          setTimeout(() => {
+            const c = document.createElement('div');
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const sz = 6 + Math.random() * 10;
+            c.style.cssText = `
+              position: fixed; left: 50%; top: 40%;
+              width: ${sz}px; height: ${sz}px;
+              background: ${color}; border-radius: ${Math.random()>0.5?'50%':'3px'};
+              pointer-events: none; z-index: 1000;
+              box-shadow: 0 0 8px ${color};
             `;
-            
-            branch.appendChild(flower);
+            document.body.appendChild(c);
+            let x = 0, y = 0, op = 1;
+            const a = (Math.random()-0.5)*Math.PI*2;
+            const v = 60+Math.random()*180;
+            const vx = Math.cos(a)*v, vy = Math.sin(a)*v-100;
+            const grav = 100, start = performance.now();
+            function anim(now) {
+              const dt = Math.min((now-start)/1000,0.032);
+              x += vx*dt; y += vy*dt+grav*dt*dt; op -= 0.008;
+              c.style.transform = `translate(${x}px,${y}px) rotate(${x*3}deg)`;
+              c.style.opacity = op;
+              if (op>0) requestAnimationFrame(anim); else c.remove();
+            }
+            requestAnimationFrame(anim);
+          }, i*10);
         }
-    });
-}
-
-// ===== بتلات متساقطة =====
-function createFallingPetals() {
-    setInterval(() => {
-        const petal = document.createElement('div');
-        petal.className = 'falling-petal';
-        
-        const startX = Math.random() * window.innerWidth;
-        const duration = 5 + Math.random() * 5;
-        const size = 6 + Math.random() * 6;
-        
-        petal.style.cssText = `
-            left: ${startX}px;
-            top: -20px;
-            width: ${size}px;
-            height: ${size}px;
-            animation-duration: ${duration}s;
-        `;
-        
-        document.querySelector('.live-background').appendChild(petal);
-        
-        setTimeout(() => petal.remove(), duration * 1000);
-    }, 1500);
-}
-
-// ===== جزيئات العطر =====
-function initParticles() {
-    const container = document.getElementById('particles');
-    
-    setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const x = Math.random() * window.innerWidth;
-        const y = window.innerHeight - Math.random() * 200;
-        const delay = Math.random() * 2;
-        
-        particle.style.cssText = `
-            left: ${x}px;
-            top: ${y}px;
-            animation-delay: ${delay}s;
-        `;
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 6000);
-    }, 800);
-}
-
-// ===== تأثير الكتابة =====
-function initTypewriter() {
-    const text = "في كل نبضة قلب... أنتِ";
-    const element = document.getElementById('typewriterText');
-    let index = 0;
-    
-    function type() {
-        if (index < text.length) {
-            element.textContent += text.charAt(index);
-            index++;
-            setTimeout(type, 150);
-        } else {
-            setTimeout(() => {
-                element.textContent = '';
-                index = 0;
-                type();
-            }, 4000);
-        }
-    }
-    
-    setTimeout(type, 1500);
-}
-
-// ===== زر البداية =====
-function initStartButton() {
-    const btn = document.getElementById('startBtn');
-    
-    btn.addEventListener('click', async () => {
-        // تشغيل الموسيقى
-        await initAudio();
-        
-        // تأثير القلوب الطائرة
-        createBurstHearts();
-        
-        // الانتقال للصفحة التالية
-        setTimeout(() => {
-            window.location.href = 'balloons.html';
-        }, 2000);
-    });
-}
-
-// ===== تشغيل الصوت =====
-async function initAudio() {
-    bgMusic = document.getElementById('bgMusic');
-    
-    try {
-        await bgMusic.play();
-        bgMusic.volume = 0.3;
-    } catch (e) {
-        console.log('Audio autoplay blocked:', e);
-    }
-}
-
-// ===== انفجار قلوب =====
-function createBurstHearts() {
-    const container = document.getElementById('floatingHearts');
-    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
-    
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
-        
-        const x = 30 + Math.random() * 40;
-        const delay = Math.random() * 1;
-        
-        heart.style.cssText = `
-            left: ${x}%;
-            bottom: 20%;
-            animation-delay: ${delay}s;
-            font-size: ${15 + Math.random() * 20}px;
-        `;
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 5000);
-    }
-}
-
-// ===== أداة مساعدة: عداد الوقت =====
-function getTimeSince(date) {
-    const now = new Date();
-    const diff = now - new Date(date);
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    return { days, hours, minutes, seconds };
-}
-
-// ===== أداة مساعدة: تنسيق الأرقام =====
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
-
-/* === gallery.js === */
-// ===== عند التحميل =====
-document.addEventListener('DOMContentLoaded', () => {
-    initFilm();
-    initGalleryItems();
-    initCompareSlider();
-    initLilac();
-    initParticles();
-});
-
-// ===== الفيلم التلقائي =====
-let isPlaying = false;
-let filmInterval = null;
-const filmPhotos = [
-    { icon: '💑', text: 'أول لقاء' },
-    { icon: '🌅', text: 'غروب الشمس' },
-    { icon: '🎉', text: 'احتفال' },
-    { icon: '🌸', text: 'ورد الليلك' },
-    { icon: '💍', text: 'لحظة مميزة' },
-    { icon: '🌙', text: 'ليلة هادئة' }
-];
-let currentPhotoIndex = 0;
-
-function initFilm() {
-    const frame = document.getElementById('filmFrame');
-    const playBtn = document.getElementById('playBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const filmPlay = document.getElementById('filmPlay');
-    
-    frame.addEventListener('click', () => {
-        if (!isPlaying) startFilm();
-        else pauseFilm();
-    });
-    
-    playBtn.addEventListener('click', startFilm);
-    pauseBtn.addEventListener('click', pauseFilm);
-    filmPlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        startFilm();
-    });
-}
-
-function startFilm() {
-    if (isPlaying) return;
-    
-    isPlaying = true;
-    const frame = document.getElementById('filmFrame');
-    const status = document.getElementById('filmStatus');
-    
-    frame.classList.add('playing');
-    status.textContent = 'جارٍ العرض...';
-    
-    filmInterval = setInterval(() => {
-        currentPhotoIndex = (currentPhotoIndex + 1) % filmPhotos.length;
-        updateFilmPhoto();
-        updateProgress();
-    }, 2000);
-    
-    updateFilmPhoto();
-    updateProgress();
-}
-
-function pauseFilm() {
-    isPlaying = false;
-    const frame = document.getElementById('filmFrame');
-    const status = document.getElementById('filmStatus');
-    
-    frame.classList.remove('playing');
-    status.textContent = 'متوقف مؤقتاً';
-    
-    if (filmInterval) {
-        clearInterval(filmInterval);
-        filmInterval = null;
-    }
-}
-
-function updateFilmPhoto() {
-    const photo = document.getElementById('filmPhoto');
-    const current = filmPhotos[currentPhotoIndex];
-    
-    photo.innerHTML = `
-        <div style="text-align: center; animation: fadeIn 0.5s;">
-            <div style="font-size: 4rem; margin-bottom: 15px;">${current.icon}</div>
-            <div style="font-size: 1.3rem; color: var(--lilac-light);">${current.text}</div>
-        </div>
-    `;
-}
-
-function updateProgress() {
-    const progress = document.getElementById('filmProgress');
-    const percentage = ((currentPhotoIndex + 1) / filmPhotos.length) * 100;
-    progress.style.width = percentage + '%';
-}
-
-// ===== عناصر المعرض =====
-function initGalleryItems() {
-    const items = document.querySelectorAll('.gallery-item');
-    
-    items.forEach(item => {
-        item.addEventListener('click', () => {
-            const story = item.getAttribute('data-story');
-            showStoryModal(story);
-        });
-    });
-}
-
-function showStoryModal(story) {
-    // إزالة أي modal سابق
-    const existing = document.querySelector('.story-modal');
-    if (existing) existing.remove();
-    
-    const modal = document.createElement('div');
-    modal.className = 'story-modal';
-    modal.innerHTML = `
-        <div class="story-content">
-            <div class="story-title">💭 قصة هذه اللحظة</div>
-            <div class="story-text">${story}</div>
-            <button class="story-close">أغلق ✨</button>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // إظهار
-    requestAnimationFrame(() => {
-        modal.classList.add('show');
-    });
-    
-    // إغلاق
-    modal.querySelector('.story-close').addEventListener('click', () => {
-        modal.classList.remove('show');
-        setTimeout(() => modal.remove(), 300);
-    });
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('show');
-            setTimeout(() => modal.remove(), 300);
-        }
-    });
-}
-
-// ===== مقارنة قبل/بعد =====
-function initCompareSlider() {
-    const slider = document.getElementById('compareSlider');
-    const handle = document.getElementById('compareHandle');
-    const before = slider.querySelector('.compare-before');
-    
-    let isDragging = false;
-    
-    handle.addEventListener('mousedown', () => isDragging = true);
-    document.addEventListener('mouseup', () => isDragging = false);
-    
-    slider.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        
-        const rect = slider.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const percentage = (x / rect.width) * 100;
-        
-        const clamped = Math.max(5, Math.min(95, percentage));
-        
-        before.style.width = clamped + '%';
-        handle.style.left = clamped + '%';
-    });
-    
-    // للمس
-    handle.addEventListener('touchstart', () => isDragging = true);
-    document.addEventListener('touchend', () => isDragging = false);
-    
-    slider.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        
-        const rect = slider.getBoundingClientRect();
-        const x = e.touches[0].clientX - rect.left;
-        const percentage = (x / rect.width) * 100;
-        
-        const clamped = Math.max(5, Math.min(95, percentage));
-        
-        before.style.width = clamped + '%';
-        handle.style.left = clamped + '%';
-    });
-}
-
-// ===== إضافة أنماط CSS ديناميكية =====
-const galleryStyles = document.createElement('style');
-galleryStyles.textContent = `
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-`;
-document.head.appendChild(galleryStyles);
-</script>
+      }
+    })();
+  </script>
 </body>
 </html>

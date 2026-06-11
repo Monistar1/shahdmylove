@@ -1,1573 +1,204 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>العد التنازلي — شهد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
-<style>
-
-/* === styles.css === */
-/* ===== Reset & Base ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --lilac-light: #E6E6FA;
-    --lilac-main: #C8A2C8;
-    --lilac-dark: #9B59B6;
-    --lilac-deep: #663399;
-    --night-bg: #0a0a1a;
-    --night-mid: #1a1a3e;
-    --gold: #FFD700;
-    --pink: #FF69B4;
-    --white: #ffffff;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Cairo', sans-serif;
-    background: var(--night-bg);
-    color: var(--white);
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-
-/* ===== خلفية حية ===== */
-.live-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2d1b4e 70%, #1a1a3e 100%);
-    overflow: hidden;
-}
-
-/* نجوم */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, white, transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(1px 1px at 230px 80px, white, transparent),
-        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
-    background-size: 350px 200px;
-    animation: twinkle 5s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.3; }
-}
-
-/* سحاب */
-.clouds {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-}
-
-.clouds::before,
-.clouds::after {
-    content: '';
-    position: absolute;
-    background: radial-gradient(ellipse, rgba(200,162,200,0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float 20s ease-in-out infinite;
-}
-
-.clouds::before {
-    width: 400px;
-    height: 150px;
-    top: 20%;
-    left: -10%;
-    animation-delay: 0s;
-}
-
-.clouds::after {
-    width: 300px;
-    height: 120px;
-    top: 60%;
-    right: -5%;
-    animation-delay: -10s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(50px) translateY(-20px); }
-    50% { transform: translateX(100px) translateY(10px); }
-    75% { transform: translateX(30px) translateY(-10px); }
-}
-
-/* القمر */
-.moon {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle at 30% 30%, #FFF8DC, #F0E68C);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2);
-    animation: moonPulse 4s ease-in-out infinite;
-}
-
-@keyframes moonPulse {
-    0%, 100% { box-shadow: 0 0 40px rgba(255,248,220,0.4), 0 0 80px rgba(255,248,220,0.2); }
-    50% { box-shadow: 0 0 60px rgba(255,248,220,0.6), 0 0 100px rgba(255,248,220,0.3); }
-}
-
-/* ===== ورد الليلك ===== */
-.lilac-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.lilac-branch {
-    position: absolute;
-    bottom: -20px;
-    width: 200px;
-    height: 400px;
-    opacity: 0.7;
-}
-
-.lilac-branch.left {
-    left: -30px;
-    transform: rotate(-15deg);
-    transform-origin: bottom center;
-    animation: swayLeft 6s ease-in-out infinite;
-}
-
-.lilac-branch.right {
-    right: -30px;
-    transform: rotate(15deg) scaleX(-1);
-    transform-origin: bottom center;
-    animation: swayRight 7s ease-in-out infinite;
-}
-
-@keyframes swayLeft {
-    0%, 100% { transform: rotate(-15deg); }
-    50% { transform: rotate(-10deg); }
-}
-
-@keyframes swayRight {
-    0%, 100% { transform: rotate(15deg) scaleX(-1); }
-    50% { transform: rotate(10deg) scaleX(-1); }
-}
-
-/* أزهار الليلك */
-.lilac-flower {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, var(--lilac-light) 0%, var(--lilac-main) 60%, var(--lilac-dark) 100%);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 0 8px rgba(200,162,200,0.6);
-    animation: bloom 3s ease-out forwards, floatFlower 8s ease-in-out infinite;
-    opacity: 0;
-}
-
-@keyframes bloom {
-    0% { transform: rotate(-45deg) scale(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: rotate(-45deg) scale(1); opacity: 1; }
-}
-
-@keyframes floatFlower {
-    0%, 100% { transform: rotate(-45deg) translateY(0); }
-    50% { transform: rotate(-45deg) translateY(-10px); }
-}
-
-/* بتلات متساقطة */
-.falling-petal {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, var(--lilac-main), var(--lilac-dark));
-    border-radius: 50% 0 50% 50%;
-    opacity: 0.8;
-    animation: fall linear forwards;
-    pointer-events: none;
-}
-
-@keyframes fall {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; }
-    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
-}
-
-/* جزيئات عطر الليلك */
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--lilac-light);
-    border-radius: 50%;
-    opacity: 0;
-    animation: particleFloat 6s ease-in-out infinite;
-    box-shadow: 0 0 6px var(--lilac-main);
-}
-
-@keyframes particleFloat {
-    0% { transform: translateY(0) scale(0); opacity: 0; }
-    20% { opacity: 0.8; }
-    80% { opacity: 0.4; }
-    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-}
-
-/* ===== المحتوى الرئيسي ===== */
-.start-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-}
-
-.intro-content {
-    text-align: center;
-    padding: 40px;
-    position: relative;
-}
-
-/* العناوين */
-.main-title {
-    margin-bottom: 30px;
-}
-
-.title-line {
-    display: block;
-    font-family: 'Amiri', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--white);
-    text-shadow: 0 0 20px rgba(200,162,200,0.5);
-    opacity: 0;
-    animation: fadeInUp 1s ease-out forwards;
-}
-
-.title-line.highlight {
-    font-size: 4rem;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.8), 0 0 60px rgba(155,89,182,0.4);
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* القلب النابض */
-.heart-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 30px auto;
-}
-
-.heart {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--pink), #FF1493);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    animation: heartbeat 1.2s ease-in-out infinite;
-    box-shadow: 0 0 30px rgba(255,105,180,0.6);
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    width: 80px;
-    height: 80px;
-    background: inherit;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.heart::before { top: -40px; left: 0; }
-.heart::after { top: 0; left: 40px; }
-
-@keyframes heartbeat {
-    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    15% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-    30% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
-    45% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
-}
-
-.heart-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
-    border-radius: 50%;
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* تأثير الكتابة */
-.subtitle {
-    font-size: 1.3rem;
-    color: var(--lilac-light);
-    margin: 20px 0 40px;
-    min-height: 40px;
-    text-shadow: 0 0 10px rgba(200,162,200,0.3);
-}
-
-/* زر البداية */
-.start-btn {
-    position: relative;
-    padding: 18px 50px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--white);
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 25px rgba(155,89,182,0.4);
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 35px rgba(155,89,182,0.6);
-}
-
-.btn-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.start-btn:hover .btn-glow {
-    opacity: 1;
-}
-
-/* قلوب طائرة */
-.floating-hearts {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.floating-heart {
-    position: absolute;
-    color: var(--pink);
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 4s ease-in forwards;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; transform: scale(1); }
-    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
-}
-
-/* ===== تصميم متجاوب ===== */
-@media (max-width: 768px) {
-    .title-line { font-size: 2rem; }
-    .title-line.highlight { font-size: 2.5rem; }
-    .moon { width: 50px; height: 50px; top: 20px; left: 20px; }
-    .lilac-branch { width: 120px; height: 250px; }
-}
-/* ===== أزرار التنقل المُحسَّنة ===== */
-.nav-back,
-.nav-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 14px 28px;
-    background: rgba(200, 162, 200, 0.2);
-    border: 2px solid rgba(200, 162, 200, 0.4);
-    border-radius: 50px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.4s ease;
-    z-index: 1000;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.nav-back {
-    left: 25px;
-}
-
-.nav-next {
-    right: 25px;
-}
-
-.nav-back:hover,
-.nav-next:hover {
-    background: rgba(200, 162, 200, 0.4);
-    border-color: rgba(200, 162, 200, 0.8);
-    color: var(--white);
-    transform: translateY(-50%) scale(1.08);
-    box-shadow: 0 8px 30px rgba(200, 162, 200, 0.5);
-}
-
-.nav-back::before {
-    content: '←';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-next::after {
-    content: '→';
-    font-size: 1.2rem;
-    transition: transform 0.3s;
-    display: inline-block;
-}
-
-.nav-back:hover::before {
-    transform: translateX(-5px);
-}
-
-.nav-next:hover::after {
-    transform: translateX(5px);
-}
-
-/* ===== للموبايل ===== */
-@media (max-width: 768px) {
-    .nav-back,
-    .nav-next {
-        position: fixed;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        border-radius: 30px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#9d4edd">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>الألعاب النارية — شودي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/core.css">
+  <style>
+    .fireworks-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      cursor: crosshair;
     }
-    
-    .nav-back {
-        left: 15px;
+    .fireworks-overlay {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+      text-align: center;
     }
-    
-    .nav-next {
-        right: 15px;
-    }
-    
-    .nav-back:hover,
-    .nav-next:hover {
-        transform: scale(1.05);
-    }
-    
-    .page-container {
-        padding-bottom: 100px;
-    }
-}
-
-/* === countdown.css === */
-/* ===== صفحة العد التنازلي ===== */
-.countdown-page {
-    min-height: 100vh;
-    padding: 60px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-}
-
-.page-title {
-    font-family: 'Amiri', serif;
-    font-size: 2.5rem;
-    color: var(--lilac-light);
-    text-shadow: 0 0 30px rgba(200,162,200,0.5);
-    margin-bottom: 20px;
-}
-
-/* ===== ساعة رملية ===== */
-.hourglass-container {
-    position: relative;
-    width: 120px;
-    height: 180px;
-    margin: 20px 0;
-}
-
-.hourglass {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 0 20px rgba(200,162,200,0.4));
-}
-
-.hourglass-top,
-.hourglass-bottom {
-    width: 100px;
-    height: 70px;
-    background: rgba(200,162,200,0.15);
-    border: 2px solid rgba(200,162,200,0.5);
-    position: absolute;
-    left: 10px;
-    overflow: hidden;
-}
-
-.hourglass-top {
-    top: 0;
-    border-radius: 50px 50px 10px 10px;
-    clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-}
-
-.hourglass-bottom {
-    bottom: 0;
-    border-radius: 10px 10px 50px 50px;
-    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
-}
-
-.hourglass-neck {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15px;
-    height: 20px;
-    background: rgba(200,162,200,0.3);
-    border-radius: 50%;
-}
-
-.sand-top,
-.sand-bottom {
-    position: absolute;
-    width: 100%;
-    background: linear-gradient(180deg, var(--lilac-main), var(--lilac-dark));
-    transition: height 1s linear;
-}
-
-.sand-top {
-    bottom: 0;
-    height: 80%;
-    animation: sandDrain 60s linear infinite;
-}
-
-.sand-bottom {
-    bottom: 0;
-    height: 20%;
-    animation: sandFill 60s linear infinite;
-}
-
-.sand-stream {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 0;
-    background: linear-gradient(180deg, var(--lilac-main), var(--lilac-dark));
-    animation: streamFlow 60s linear infinite;
-}
-
-@keyframes sandDrain {
-    0% { height: 80%; }
-    100% { height: 0%; }
-}
-
-@keyframes sandFill {
-    0% { height: 20%; }
-    100% { height: 100%; }
-}
-
-@keyframes streamFlow {
-    0% { height: 0; opacity: 0; }
-    10% { height: 40px; opacity: 1; }
-    90% { height: 40px; opacity: 1; }
-    100% { height: 0; opacity: 0; }
-}
-
-.hourglass-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    height: 200px;
-    background: radial-gradient(ellipse, rgba(200,162,200,0.2), transparent);
-    border-radius: 50%;
-    animation: pulse 3s ease-in-out infinite;
-}
-
-/* ===== العدادات ===== */
-.counters-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    max-width: 600px;
-    width: 100%;
-}
-
-.counter-box {
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 20px;
-    padding: 25px 15px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.counter-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(200,162,200,0.3);
-    border-color: rgba(200,162,200,0.6);
-}
-
-.counter-number {
-    font-family: 'Cairo', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--lilac-light);
-    text-shadow: 0 0 15px rgba(200,162,200,0.6);
-    line-height: 1;
-}
-
-.counter-label {
-    font-size: 0.9rem;
-    color: var(--lilac-main);
-    margin-top: 8px;
-}
-
-.counter-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(200,162,200,0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.counter-box:hover .counter-glow {
-    opacity: 1;
-}
-
-/* ===== الرسالة اليومية ===== */
-.daily-message {
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 20px;
-    padding: 25px 30px;
-    max-width: 500px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    animation: fadeIn 1s ease-out;
-}
-
-.message-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-.message-text {
-    font-family: 'Amiri', serif;
-    font-size: 1.2rem;
-    color: var(--lilac-light);
-    line-height: 1.8;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-/* ===== صندوق الأمنيات ===== */
-.wishes-section {
-    width: 100%;
-    max-width: 600px;
-}
-
-.section-title {
-    font-family: 'Amiri', serif;
-    font-size: 1.5rem;
-    color: var(--lilac-light);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.wishes-box {
-    background: rgba(200,162,200,0.08);
-    border: 1px solid rgba(200,162,200,0.2);
-    border-radius: 20px;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-}
-
-.wishes-list {
-    max-height: 200px;
-    overflow-y: auto;
-    margin-bottom: 15px;
-    padding-right: 10px;
-}
-
-.wishes-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.wishes-list::-webkit-scrollbar-thumb {
-    background: rgba(200,162,200,0.4);
-    border-radius: 3px;
-}
-
-.wish-item {
-    background: rgba(200,162,200,0.15);
-    border-radius: 15px;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-    color: var(--white);
-    border-right: 3px solid var(--lilac-main);
-    animation: slideIn 0.5s ease-out;
-    position: relative;
-}
-
-.wish-item::before {
-    content: '🌸';
-    margin-left: 8px;
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-.wish-input-area {
-    display: flex;
-    gap: 10px;
-}
-
-.wish-input {
-    flex: 1;
-    padding: 12px 15px;
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 15px;
-    background: rgba(200,162,200,0.1);
-    color: var(--white);
-    font-family: 'Cairo', sans-serif;
-    font-size: 0.95rem;
-    outline: none;
-    transition: all 0.3s;
-}
-
-.wish-input:focus {
-    border-color: var(--lilac-main);
-    box-shadow: 0 0 15px rgba(200,162,200,0.2);
-}
-
-.wish-input::placeholder {
-    color: rgba(255,255,255,0.4);
-}
-
-.wish-btn {
-    padding: 12px 25px;
-    background: linear-gradient(135deg, var(--lilac-dark), var(--lilac-deep));
-    border: none;
-    border-radius: 15px;
-    color: var(--white);
-    font-family: 'Cairo', sans-serif;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    white-space: nowrap;
-}
-
-.wish-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(155,89,182,0.4);
-}
-
-/* ===== عداد التفكير ===== */
-.thought-counter {
-    background: rgba(200,162,200,0.1);
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 20px;
-    padding: 25px 30px;
-    max-width: 400px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-}
-
-.thought-icon {
-    font-size: 2.5rem;
-    animation: think 3s ease-in-out infinite;
-}
-
-@keyframes think {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-}
-
-.thought-content {
-    flex: 1;
-}
-
-.thought-label {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--lilac-main);
-    margin-bottom: 5px;
-}
-
-.thought-number {
-    font-family: 'Cairo', sans-serif;
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--lilac-light);
-    text-shadow: 0 0 15px rgba(200,162,200,0.6);
-}
-
-.thought-unit {
-    font-size: 0.9rem;
-    color: var(--lilac-main);
-    margin-right: 5px;
-}
-
-.thought-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: rgba(200,162,200,0.2);
-    border-radius: 0 0 20px 20px;
-}
-
-.thought-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--lilac-main), var(--lilac-light));
-    border-radius: 0 0 20px 20px;
-    transition: width 0.5s ease;
-}
-
-/* ===== التنقل ===== */
-.nav-back,
-.nav-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 15px 20px;
-    background: rgba(200,162,200,0.15);
-    border: 1px solid rgba(200,162,200,0.3);
-    border-radius: 15px;
-    color: var(--lilac-light);
-    text-decoration: none;
-    font-size: 1rem;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s;
-    z-index: 100;
-}
-
-.nav-back {
-    left: 20px;
-}
-
-.nav-next {
-    right: 20px;
-}
-
-.nav-back:hover,
-.nav-next:hover {
-    background: rgba(200,162,200,0.3);
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 5px 20px rgba(200,162,200,0.3);
-}
-
-.page-container {
-    position: relative;
-    min-height: 100vh;
-}
-
-/* ===== متجاوب ===== */
-@media (max-width: 768px) {
-    .counters-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .counter-number {
-        font-size: 1.8rem;
-    }
-    
-    .nav-back,
-    .nav-next {
-        position: static;
-        display: inline-block;
-        margin: 20px;
-        transform: none;
-    }
-    
-    .nav-back:hover,
-    .nav-next:hover {
-        transform: scale(1.05);
-    }
-    
-    .hourglass-container {
-        transform: scale(0.8);
-    }
-}
-</style>
+    .fireworks-overlay > * { pointer-events: auto; }
+  </style>
 </head>
-<body>
-    <div class="live-background">
-        <div class="stars"></div>
-        <div class="clouds"></div>
-        <div class="lilac-container" id="lilacContainer"></div>
-        <div class="particles" id="particles"></div>
-    </div>
+<body data-page="fireworks">
+  <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
+  <div class="luxury-bg" aria-hidden="true"></div>
 
-    <div class="page-container">
-        <a href="index.html" class="nav-back">← رجوع</a>
-        
-        <div class="countdown-page">
-            <h1 class="page-title">⏳ باقي على يوم ملكتي</h1>
-            
-            <!-- ساعة رملية -->
-            <div class="hourglass-container">
-                <div class="hourglass">
-                    <div class="hourglass-top">
-                        <div class="sand-top" id="sandTop"></div>
-                    </div>
-                    <div class="hourglass-neck"></div>
-                    <div class="hourglass-bottom">
-                        <div class="sand-bottom" id="sandBottom"></div>
-                    </div>
-                    <div class="sand-stream" id="sandStream"></div>
-                </div>
-                <div class="hourglass-glow"></div>
-            </div>
+  <canvas class="fireworks-canvas" id="fireworksCanvas" aria-hidden="true"></canvas>
 
-            <!-- العدادات -->
-            <div class="counters-grid">
-                <div class="counter-box">
-                    <div class="counter-number" id="days">00</div>
-                    <div class="counter-label">يوم</div>
-                    <div class="counter-glow"></div>
-                </div>
-                <div class="counter-box">
-                    <div class="counter-number" id="hours">00</div>
-                    <div class="counter-label">ساعة</div>
-                </div>
-                <div class="counter-box">
-                    <div class="counter-number" id="minutes">00</div>
-                    <div class="counter-label">دقيقة</div>
-                </div>
-                <div class="counter-box">
-                    <div class="counter-number" id="seconds">00</div>
-                    <div class="counter-label">ثانية</div>
-                </div>
-            </div>
+    <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+    <a href="index.html" class="nav-link" aria-label="الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+    <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+    <a href="hero.html" class="nav-link" aria-label="ملكتي">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+    <a href="lily.html" class="nav-link" aria-label="اليلك">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+    <a href="gallery.html" class="nav-link" aria-label="الذكريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+    <a href="balloons.html" class="nav-link" aria-label="البالونات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+    <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+    <a href="gift.html" class="nav-link" aria-label="الهدية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+     <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
+      <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
+  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
+</nav>
 
-            <!-- رسالة يومية -->
-            <div class="daily-message" id="dailyMessage">
-                <div class="message-icon">💌</div>
-                <p class="message-text" id="messageText"></p>
-            </div>
+  <main id="main-content" class="page-wrapper fireworks-overlay">
+    <h1 class="display-title display-title--1 text-gradient-purple reveal">ألعاب نارية لكِ</h1>
+    <p class="reveal reveal-delay-1" style="color: var(--text-muted); font-size: var(--text-sm);">اضغط في أي مكان لإطلاق الألعاب النارية</p>
+  </main>
 
-            <!-- صندوق الأمنيات -->
-            <div class="wishes-section">
-                <h3 class="section-title">✨ صندوق رسائل شهد</h3>
-                <div class="wishes-box" id="wishesBox">
-                    <div class="wishes-list" id="wishesList"></div>
-                    <div class="wish-input-area">
-                        <input type="text" class="wish-input" id="wishInput" placeholder="اكتب رسالة لشهد..." maxlength="100">
-                        <button class="wish-btn" id="wishBtn">🌟 أرسل</button>
-                    </div>
-                </div>
-            </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/engine3d.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/fps.js"></script>
+  <script>FPSMonitor.init();</script>
+  <script>
+    (function() {
+      'use strict';
+      if (window.Engine3D) Engine3D.init();
+      if (window.AuthSystem) AuthSystem.guard();
 
-            <!-- عداد التفكير -->
-            <div class="thought-counter">
-                <div class="thought-icon">💭</div>
-                <div class="thought-content">
-                    <span class="thought-label">فكرت فيكِ اليوم</span>
-                    <span class="thought-number" id="thoughtCount">0</span>
-                    <span class="thought-unit">مرة</span>
-                </div>
-                <div class="thought-bar">
-                    <div class="thought-fill" id="thoughtFill"></div>
-                </div>
-            </div>
-        </div>
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 300 + i * 150);
+      });
 
-        <a href="hero.html" class="nav-next">التالي →</a>
-    </div>
+      const canvas = document.getElementById('fireworksCanvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
+      let fireworks = [];
+      let sparks = [];
+      const PALETTE = {
+        primary: '#e91e63', pink: '#ff7a9e', purple: '#9d4edd',
+        lilac: '#c8b6ff', gold: '#d4a574', lightPink: '#f472b6', rose: '#fb7185', paleGold: '#fcd34d'
+      };
+      const colors = [PALETTE.primary, PALETTE.pink, PALETTE.purple, PALETTE.lilac, PALETTE.gold, PALETTE.lightPink, PALETTE.rose, PALETTE.paleGold];
 
-    <script>
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
 
-/* === main.js === */
-// ===== متغيرات عامة =====
-let audioContext = null;
-let bgMusic = null;
-
-// ===== عند تحميل الصفحة =====
-document.addEventListener('DOMContentLoaded', () => {
-    initLilac();
-    initParticles();
-    initTypewriter();
-    initStartButton();
-    createFallingPetals();
-});
-
-// ===== ورد الليلك =====
-function initLilac() {
-    const container = document.getElementById('lilacContainer');
-    
-    // إنشاء أزهار على الأغصان
-    const branches = document.querySelectorAll('.lilac-branch');
-    
-    branches.forEach(branch => {
-        for (let i = 0; i < 25; i++) {
-            const flower = document.createElement('div');
-            flower.className = 'lilac-flower';
-            
-            // موقع عشوائي على الغصن
-            const top = 20 + Math.random() * 70;
-            const left = 30 + Math.random() * 40;
-            const delay = Math.random() * 3;
-            const size = 8 + Math.random() * 8;
-            
-            flower.style.cssText = `
-                top: ${top}%;
-                left: ${left}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-delay: ${delay}s;
-            `;
-            
-            branch.appendChild(flower);
+      class Firework {
+        constructor(tx, ty) {
+          this.x = Math.random() * W;
+          this.y = H;
+          this.tx = tx || Math.random() * W;
+          this.ty = ty || H * 0.2 + Math.random() * H * 0.3;
+          this.vx = (this.tx - this.x) / 80;
+          this.vy = (this.ty - H) / 80 - 3;
+          this.life = 80;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.exploded = false;
         }
-    });
-}
-
-// ===== بتلات متساقطة =====
-function createFallingPetals() {
-    setInterval(() => {
-        const petal = document.createElement('div');
-        petal.className = 'falling-petal';
-        
-        const startX = Math.random() * window.innerWidth;
-        const duration = 5 + Math.random() * 5;
-        const size = 6 + Math.random() * 6;
-        
-        petal.style.cssText = `
-            left: ${startX}px;
-            top: -20px;
-            width: ${size}px;
-            height: ${size}px;
-            animation-duration: ${duration}s;
-        `;
-        
-        document.querySelector('.live-background').appendChild(petal);
-        
-        setTimeout(() => petal.remove(), duration * 1000);
-    }, 1500);
-}
-
-// ===== جزيئات العطر =====
-function initParticles() {
-    const container = document.getElementById('particles');
-    
-    setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const x = Math.random() * window.innerWidth;
-        const y = window.innerHeight - Math.random() * 200;
-        const delay = Math.random() * 2;
-        
-        particle.style.cssText = `
-            left: ${x}px;
-            top: ${y}px;
-            animation-delay: ${delay}s;
-        `;
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 6000);
-    }, 800);
-}
-
-// ===== تأثير الكتابة =====
-function initTypewriter() {
-    const text = "في كل نبضة قلب... أنتِ";
-    const element = document.getElementById('typewriterText');
-    let index = 0;
-    
-    function type() {
-        if (index < text.length) {
-            element.textContent += text.charAt(index);
-            index++;
-            setTimeout(type, 150);
-        } else {
-            setTimeout(() => {
-                element.textContent = '';
-                index = 0;
-                type();
-            }, 4000);
+        update() {
+          if (this.exploded) return true;
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vy += 0.08;
+          this.life--;
+          if (this.life <= 0 || this.vy >= 0) {
+            this.explode();
+            return true;
+          }
+          return false;
         }
-    }
-    
-    setTimeout(type, 1500);
-}
-
-// ===== زر البداية =====
-function initStartButton() {
-    const btn = document.getElementById('startBtn');
-    
-    btn.addEventListener('click', async () => {
-        // تشغيل الموسيقى
-        await initAudio();
-        
-        // تأثير القلوب الطائرة
-        createBurstHearts();
-        
-        // الانتقال للصفحة التالية
-        setTimeout(() => {
-            window.location.href = 'hero.html';
-        }, 2000);
-    });
-}
-
-// ===== تشغيل الصوت =====
-async function initAudio() {
-    bgMusic = document.getElementById('bgMusic');
-    
-    try {
-        await bgMusic.play();
-        bgMusic.volume = 0.3;
-    } catch (e) {
-        console.log('Audio autoplay blocked:', e);
-    }
-}
-
-// ===== انفجار قلوب =====
-function createBurstHearts() {
-    const container = document.getElementById('floatingHearts');
-    const colors = ['💜', '💖', '💕', '💗', '🪻', '✨'];
-    
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.textContent = colors[Math.floor(Math.random() * colors.length)];
-        
-        const x = 30 + Math.random() * 40;
-        const delay = Math.random() * 1;
-        
-        heart.style.cssText = `
-            left: ${x}%;
-            bottom: 20%;
-            animation-delay: ${delay}s;
-            font-size: ${15 + Math.random() * 20}px;
-        `;
-        
-        container.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 5000);
-    }
-}
-
-// ===== أداة مساعدة: عداد الوقت =====
-function getTimeSince(date) {
-    const now = new Date();
-    const diff = now - new Date(date);
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    return { days, hours, minutes, seconds };
-}
-
-// ===== أداة مساعدة: تنسيق الأرقام =====
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
-
-/* === countdown.js === */
-// ===== Vercel API Config =====
-const API_URL = '/api/wishes';
-
-// ===== إعدادات العد التنازلي =====
-const BIRTHDAY = new Date('2026-11-01T00:00:00');
-
-const dailyMessages = [
-    "باقي أيام قليلة ونحتفل بأجمل يوم في حياتي",
-    "كل يوم يمر يزيد شوقي ليوم ميلادك",
-    "أنتِ أجمل هدية حصلت عليها في حياتي",
-    "يوم ميلادك = بداية سنة جديدة من السعادة",
-    "لا يوجد شيء أجمل من الاحتفال بكِ",
-    "قلبي يخفق بسرعة كلما اقترب موعد فرحتنا",
-    "أعدكِ بأجمل يوم ميلاد في حياتكِ",
-    "أنتِ تستحقين كل الحب في هذا العالم"
-];
-
-// ===== عند التحميل =====
-document.addEventListener('DOMContentLoaded', () => {
-    initCountdown();
-    initDailyMessage();
-    initWishes();
-    initThoughtCounter();
-    initLilac();
-    initParticles();
-});
-
-// ===== العد التنازلي =====
-function initCountdown() {
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-}
-
-function updateCountdown() {
-    const now = new Date();
-    const diff = BIRTHDAY - now;
-    
-    if (diff <= 0) {
-        document.getElementById('days').textContent = '00';
-        document.getElementById('hours').textContent = '00';
-        document.getElementById('minutes').textContent = '00';
-        document.getElementById('seconds').textContent = '00';
-        document.querySelector('.page-title').textContent = '🎉 اليوم هو يومكِ يا ملكتي!';
-        return;
-    }
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    const daysEl = document.getElementById('days');
-    const hoursEl = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-    
-    if (daysEl) daysEl.textContent = pad(days);
-    if (hoursEl) hoursEl.textContent = pad(hours);
-    if (minutesEl) minutesEl.textContent = pad(minutes);
-    if (secondsEl) secondsEl.textContent = pad(seconds);
-    
-    const totalSeconds = Math.floor(diff / 1000);
-    const maxSeconds = 30 * 24 * 60 * 60;
-    const percentage = Math.max(0, Math.min(100, (totalSeconds / maxSeconds) * 100));
-    
-    const sandTop = document.getElementById('sandTop');
-    const sandBottom = document.getElementById('sandBottom');
-    
-    if (sandTop && sandBottom) {
-        sandTop.style.height = percentage + '%';
-        sandBottom.style.height = (100 - percentage) + '%';
-    }
-}
-
-// ===== الرسالة اليومية =====
-function initDailyMessage() {
-    const dayIndex = new Date().getDate() % dailyMessages.length;
-    const message = dailyMessages[dayIndex];
-    
-    const textElement = document.getElementById('messageText');
-    if (!textElement) return;
-    
-    let index = 0;
-    textElement.textContent = '';
-    
-    function typeMessage() {
-        if (index < message.length) {
-            textElement.textContent += message.charAt(index);
-            index++;
-            setTimeout(typeMessage, 80);
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = this.color;
+          ctx.fill();
+          ctx.shadowBlur = 0;
         }
-    }
-    
-    setTimeout(typeMessage, 500);
-}
-
-// ===== صندوق الرسائل (JSONBin — شات جماعي) =====
-async function initWishes() {
-    const wishesList = document.getElementById('wishesList');
-    const wishInput = document.getElementById('wishInput');
-    const wishBtn = document.getElementById('wishBtn');
-    
-    if (!wishesList || !wishInput || !wishBtn) return;
-    
-    await loadWishes();
-    setInterval(loadWishes, 3000);
-    
-    wishBtn.addEventListener('click', () => {
-        const text = wishInput.value.trim();
-        if (text) {
-            addWish(text);
-            wishInput.value = '';
-            createMiniConfetti(wishBtn);
+        explode() {
+          const count = 40 + Math.floor(Math.random() * 30);
+          for (let i = 0; i < count; i++) {
+            const a = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+            const v = 2 + Math.random() * 4;
+            sparks.push({
+              x: this.x, y: this.y,
+              vx: Math.cos(a) * v,
+              vy: Math.sin(a) * v,
+              life: 1,
+              decay: 0.008 + Math.random() * 0.012,
+              color: this.color,
+              size: 2 + Math.random() * 2,
+              gravity: 0.03
+            });
+          }
         }
-    });
-    
-    wishInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') wishBtn.click();
-    });
-}
+      }
 
-async function loadWishes() {
-    try {
-        const response = await fetch(API_URL + '/latest', {
-            headers: { 'X-Master-Key': JSONBIN_API_KEY }
-        });
-        
-        if (!response.ok) throw new Error('Failed to load');
-        
-        const data = await response.json();
-        const wishes = data.record.wishes || [];
-        
-        const wishesList = document.getElementById('wishesList');
-        if (!wishesList) return;
-        
-        if (wishesList.children.length !== wishes.length) {
-            wishesList.innerHTML = '';
-            wishes.forEach(wish => addWishToDOM(wish));
-            wishesList.scrollTop = wishesList.scrollHeight;
+      function launchFirework(x, y) {
+        fireworks.push(new Firework(x, y));
+      }
+
+      canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        launchFirework(e.clientX - rect.left, e.clientY - rect.top);
+      });
+
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        launchFirework(touch.clientX, touch.clientY);
+      });
+
+      setInterval(() => {
+        if (Math.random() < 0.4) launchFirework();
+      }, 800);
+
+      function animate() {
+        ctx.fillStyle = 'rgba(250, 240, 244, 0.15)';
+        ctx.fillRect(0, 0, W, H);
+
+        for (let i = fireworks.length - 1; i >= 0; i--) {
+          if (fireworks[i].update()) fireworks.splice(i, 1);
+          else fireworks[i].draw();
         }
-        
-    } catch (e) {
-        console.log('JSONBin error:', e);
-    }
-}
 
-async function addWish(text) {
-    const wishData = {
-        text: text,
-        date: new Date().toLocaleDateString('ar-SA'),
-        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
-        timestamp: new Date().toISOString()
-    };
-    
-    try {
-        const getResponse = await fetch(API_URL + '/latest', {
-            headers: { 'X-Master-Key': JSONBIN_API_KEY }
-        });
-        
-        if (!getResponse.ok) throw new Error('Failed to get');
-        
-        const data = await getResponse.json();
-        const wishes = data.record.wishes || [];
-        wishes.push(wishData);
-        
-        const putResponse = await fetch(API_URL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': JSONBIN_API_KEY
-            },
-            body: JSON.stringify({ wishes: wishes })
-        });
-        
-        if (!putResponse.ok) throw new Error('Failed to save');
-        
-        await loadWishes();
-        
-    } catch (e) {
-        console.error('Save error:', e);
-    }
-}
-
-function addWishToDOM(wish) {
-    const list = document.getElementById('wishesList');
-    if (!list) return;
-    
-    const item = document.createElement('div');
-    item.className = 'wish-item chat-message';
-    item.setAttribute('data-id', wish.id || wish.timestamp);
-    
-    item.innerHTML = `
-        <div class="message-content">
-            <span class="message-text">${escapeHtml(wish.text)}</span>
-            <span class="message-time">${wish.time || ''}</span>
-        </div>
-    `;
-    
-    list.appendChild(item);
-    list.scrollTop = list.scrollHeight;
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// ===== عداد التفكير =====
-function initThoughtCounter() {
-    const counter = document.getElementById('thoughtCount');
-    const fill = document.getElementById('thoughtFill');
-    
-    if (!counter) return;
-    
-    let count = parseInt(localStorage.getItem('thoughtCount') || '0');
-    
-    updateThoughtDisplay(count);
-    
-    setInterval(() => {
-        count++;
-        localStorage.setItem('thoughtCount', count);
-        updateThoughtDisplay(count);
-    }, 3000);
-}
-
-function updateThoughtDisplay(count) {
-    const counter = document.getElementById('thoughtCount');
-    const fill = document.getElementById('thoughtFill');
-    
-    if (counter) counter.textContent = count.toLocaleString('ar-SA');
-    if (fill) fill.style.width = Math.min(100, (count % 100)) + '%';
-}
-
-// ===== confetti =====
-function createMiniConfetti(element) {
-    const rect = element.getBoundingClientRect();
-    const colors = ['#C8A2C8', '#E6E6FA', '#FFD700', '#FF69B4'];
-    
-    for (let i = 0; i < 15; i++) {
-        const confetti = document.createElement('div');
-        confetti.style.cssText = `
-            position: fixed;
-            left: ${rect.left + rect.width / 2}px;
-            top: ${rect.top}px;
-            width: 8px;
-            height: 8px;
-            background: ${colors[Math.floor(Math.random() * colors.length)]};
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
-        `;
-        
-        document.body.appendChild(confetti);
-        
-        const angle = (Math.random() - 0.5) * Math.PI * 2;
-        const velocity = 50 + Math.random() * 100;
-        const vx = Math.cos(angle) * velocity;
-        const vy = Math.sin(angle) * velocity - 100;
-        
-        let x = 0, y = 0;
-        let opacity = 1;
-        
-        function animate() {
-            x += vx * 0.016;
-            y += vy * 0.016 + 50 * 0.016 * 0.016;
-            opacity -= 0.02;
-            
-            confetti.style.transform = `translate(${x}px, ${y}px)`;
-            confetti.style.opacity = opacity;
-            
-            if (opacity > 0) requestAnimationFrame(animate);
-            else confetti.remove();
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const s = sparks[i];
+          s.x += s.vx;
+          s.y += s.vy;
+          s.vy += s.gravity;
+          s.vx *= 0.98;
+          s.life -= s.decay;
+          ctx.globalAlpha = Math.max(0, s.life);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+          ctx.fillStyle = s.color;
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = s.color;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          if (s.life <= 0) sparks.splice(i, 1);
         }
-        
+        ctx.globalAlpha = 1;
         requestAnimationFrame(animate);
-    }
-}
-
-// ===== أداة مساعدة =====
-function pad(num) {
-    return num.toString().padStart(2, '0');
-}
-
-// ===== CSS للشات =====
-const chatStyle = document.createElement('style');
-chatStyle.textContent = `
-    @keyframes slideInRight {
-        from { opacity: 0; transform: translateX(20px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    
-    .chat-message {
-        background: rgba(200, 162, 200, 0.15) !important;
-        border-radius: 15px 15px 15px 5px !important;
-        margin-bottom: 8px !important;
-        padding: 12px 15px !important;
-        border-right: 3px solid var(--lilac-main) !important;
-        animation: slideInRight 0.3s ease-out;
-    }
-    
-    .message-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .message-text {
-        flex: 1;
-        word-break: break-word;
-    }
-    
-    .message-time {
-        font-size: 0.7rem;
-        color: rgba(200, 162, 200, 0.6);
-        white-space: nowrap;
-    }
-`;
-document.head.appendChild(chatStyle);
-</script>
+      }
+      animate();
+    })();
+  </script>
 </body>
 </html>
