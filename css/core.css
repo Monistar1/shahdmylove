@@ -160,10 +160,10 @@
     --color-bg-dark: #2d1f2f;
     --color-bg-dark-rgb: 45, 31, 47;
 
-    --bg-primary: #faf0f4;
-    --bg-secondary: #f5e6ed;
+    --bg-primary: #cf99d7;
+    --bg-secondary: #f7bdff;
     --bg-tertiary: #f0e0e8;
-    --bg-cool: #f0e8f5;
+    --bg-cool: #f6e9ff;
 
     --surface-10: rgba(255, 255, 255, 0.1);
     --surface-25: rgba(255, 255, 255, 0.25);
@@ -1269,35 +1269,7 @@
    @LAYER PAGES
    ========================================================== */
 @layer pages {
-  [data-palette="lilac"] {
-    --bg-primary: #f8f0fc;
-    --bg-secondary: #f0e0f8;
-    --text-primary: #4a0e4e;
-    --text-secondary: #6b2d6e;
-  }
-
-  [data-palette="rose"] {
-    --bg-primary: #faf0f4;
-    --bg-secondary: #f5e6ed;
-    --text-primary: #4a0e2e;
-    --text-secondary: #7b2d4a;
-  }
-
-  [data-palette="warm"] {
-    --bg-primary: #fff8f5;
-    --bg-secondary: #ffe8e0;
-    --text-primary: #4a2a0e;
-    --text-secondary: #6b4a2d;
-  }
-
-  [data-palette="dark"] {
-    --bg-primary: #2d1f2f;
-    --bg-secondary: #3d2a3f;
-    --bg-tertiary: #4a3548;
-    --text-primary: #f5e6ed;
-    --text-secondary: #d4a5b8;
-    --text-muted: #a08690;
-  }
+  /* Pages use the global :root palette for full consistency */
 }
 
 /* ==========================================================

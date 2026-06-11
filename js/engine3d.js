@@ -19,7 +19,7 @@
     lightPink:  0xf472b6,
     palePink:   0xfbcfe8,
     paleLilac:  0xe9d5ff,
-    bgPrimary:  0xfaf0f4,  // --bg-primary
+    bgPrimary:  0xcf99d7,  // --bg-primary
     ambient:    0xfff0f5,
     warmWhite:  0xfff5f8
   };

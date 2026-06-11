@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/core.css">
+   <link rel="stylesheet" href="css/core.css">
   <style>
     /* ── Countdown Grid ── */
     .countdown-grid {
@@ -75,6 +75,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      animation: hourglassFlip 60s linear infinite;
+      transform-origin: center center;
     }
 
     .hourglass-svg {
@@ -83,9 +85,59 @@
       overflow: visible;
     }
 
-    #sandTop,
+    @keyframes hourglassFlip {
+      0%, 91.666% { transform: rotate(0deg); }
+      95% { transform: rotate(180deg); }
+      100% { transform: rotate(180deg); }
+    }
+
+    #sandTop {
+      animation: sandTopDrain 60s linear infinite;
+    }
+
     #sandBottom {
-      transition: all 1s linear;
+      animation: sandBottomFill 60s linear infinite;
+    }
+
+    @keyframes sandTopDrain {
+      0% { height: 62px; y: 10px; }
+      91.666% { height: 0px; y: 72px; }
+      100% { height: 0px; y: 72px; }
+    }
+
+    @keyframes sandBottomFill {
+      0% { height: 0px; y: 140px; }
+      91.666% { height: 62px; y: 78px; }
+      100% { height: 62px; y: 78px; }
+    }
+
+    #sandStream {
+      animation: streamVisibility 60s linear infinite;
+    }
+
+    @keyframes streamVisibility {
+      0%, 90% { opacity: 0.65; }
+      91.666%, 100% { opacity: 0; }
+    }
+
+    #sandStream circle {
+      animation: grainFall 0.7s linear infinite;
+      opacity: 0;
+    }
+
+    #sandStream circle:nth-child(1) { animation-delay: 0s; }
+    #sandStream circle:nth-child(2) { animation-delay: 0.09s; }
+    #sandStream circle:nth-child(3) { animation-delay: 0.18s; }
+    #sandStream circle:nth-child(4) { animation-delay: 0.27s; }
+    #sandStream circle:nth-child(5) { animation-delay: 0.36s; }
+    #sandStream circle:nth-child(6) { animation-delay: 0.45s; }
+    #sandStream circle:nth-child(7) { animation-delay: 0.54s; }
+    #sandStream circle:nth-child(8) { animation-delay: 0.63s; }
+
+    @keyframes grainFall {
+      0% { transform: translateY(0); opacity: 1; }
+      85% { opacity: 1; }
+      100% { transform: translateY(48px); opacity: 0; }
     }
 
     .hourglass-glow {
@@ -355,7 +407,8 @@
       }
 
       .hourglass-wrap {
-        transform: scale(0.88);
+        width: 105px;
+        height: 158px;
       }
 
       .chat-section {
@@ -364,7 +417,7 @@
     }
   </style>
 </head>
-<body data-page="countdown" data-palette="rose">
+<body data-page="countdown">
   <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
 
   <div class="luxury-bg" aria-hidden="true"></div>
@@ -410,34 +463,45 @@
             <stop offset="100%" style="stop-color:var(--accent-purple)"/>
           </linearGradient>
           <clipPath id="topBulb">
-            <path d="M10 10 L90 10 L90 20 Q90 60 50 75 Q10 60 10 20 Z"/>
+            <path d="M12 10 L88 10 L88 20 Q88 56 50 72 Q12 56 12 20 Z"/>
           </clipPath>
           <clipPath id="bottomBulb">
-            <path d="M10 140 L90 140 L90 130 Q90 90 50 75 Q10 90 10 130 Z"/>
+            <path d="M12 140 L88 140 L88 130 Q88 94 50 78 Q12 94 12 130 Z"/>
           </clipPath>
         </defs>
 
         <!-- Ambient glow -->
-        <ellipse cx="50" cy="75" rx="60" ry="75" fill="var(--rose-300)" opacity="0.06" style="filter:blur(20px)"/>
+        <ellipse cx="50" cy="75" rx="55" ry="70" fill="var(--rose-300)" opacity="0.06" style="filter:blur(18px)"/>
 
         <!-- Caps -->
-        <rect x="5" y="2" width="90" height="8" rx="4" fill="none" stroke="var(--rose-300)" stroke-width="2" opacity="0.4"/>
-        <rect x="5" y="140" width="90" height="8" rx="4" fill="none" stroke="var(--rose-300)" stroke-width="2" opacity="0.4"/>
+        <rect x="8" y="4" width="84" height="7" rx="3.5" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.4"/>
+        <rect x="8" y="139" width="84" height="7" rx="3.5" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.4"/>
 
         <!-- Glass outlines -->
-        <path d="M10 10 L90 10 L90 20 Q90 60 50 75 Q10 60 10 20 Z" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.35"/>
-        <path d="M10 140 L90 140 L90 130 Q90 90 50 75 Q10 90 10 130 Z" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.35"/>
+        <path d="M12 10 L88 10 L88 20 Q88 56 50 72 Q12 56 12 20 Z" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.35"/>
+        <path d="M12 140 L88 140 L88 130 Q88 94 50 78 Q12 94 12 130 Z" fill="none" stroke="var(--rose-300)" stroke-width="1.5" opacity="0.35"/>
+
+        <!-- Center neck lines -->
+        <line x1="48" y1="72" x2="48" y2="78" stroke="var(--rose-300)" stroke-width="1" opacity="0.3"/>
+        <line x1="52" y1="72" x2="52" y2="78" stroke="var(--rose-300)" stroke-width="1" opacity="0.3"/>
 
         <!-- Top sand -->
-        <rect id="sandTop" x="10" y="10" width="80" height="65" fill="url(#sandGrad)" opacity="0.82" clip-path="url(#topBulb)"/>
+        <rect id="sandTop" x="10" y="10" width="80" height="62" fill="url(#sandGrad)" opacity="0.85" clip-path="url(#topBulb)"/>
 
         <!-- Bottom sand -->
-        <rect id="sandBottom" x="10" y="75" width="80" height="0" fill="url(#sandGrad)" opacity="0.82" clip-path="url(#bottomBulb)"/>
+        <rect id="sandBottom" x="10" y="140" width="80" height="0" fill="url(#sandGrad)" opacity="0.85" clip-path="url(#bottomBulb)"/>
 
-        <!-- Sand stream -->
-        <line x1="50" y1="75" x2="50" y2="105" stroke="var(--accent-rose)" stroke-width="1.5" opacity="0.5" stroke-dasharray="3 2">
-          <animate attributeName="stroke-dashoffset" values="0;5" dur="0.4s" repeatCount="indefinite"/>
-        </line>
+        <!-- Falling sand grains -->
+        <g id="sandStream">
+          <circle cx="49" cy="73" r="1" fill="var(--accent-rose)"/>
+          <circle cx="50" cy="73" r="1.2" fill="var(--accent-rose)"/>
+          <circle cx="51" cy="73" r="0.9" fill="var(--accent-rose)"/>
+          <circle cx="49.5" cy="73" r="0.8" fill="var(--accent-purple)"/>
+          <circle cx="50.5" cy="73" r="1.1" fill="var(--accent-purple)"/>
+          <circle cx="50" cy="73" r="0.7" fill="var(--accent-rose)"/>
+          <circle cx="49" cy="73" r="0.9" fill="var(--accent-purple)"/>
+          <circle cx="51" cy="73" r="1" fill="var(--accent-rose)"/>
+        </g>
       </svg>
     </div>
 
@@ -575,21 +639,7 @@
         if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
         if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
 
-        const totalSeconds = Math.floor(diff / 1000);
-        const maxSeconds = 30 * 24 * 60 * 60;
-        const percentage = Math.max(0, Math.min(100, (totalSeconds / maxSeconds) * 100));
-
-        const sandTop = document.getElementById('sandTop');
-        const sandBottom = document.getElementById('sandBottom');
-
-        if (sandTop && sandBottom) {
-          const maxH = 65;
-          const topH = Math.max(0.1, maxH * (percentage / 100));
-          const bottomH = Math.max(0.1, maxH * ((100 - percentage) / 100));
-          sandTop.setAttribute('height', topH);
-          sandBottom.setAttribute('height', bottomH);
-          sandBottom.setAttribute('y', 140 - bottomH);
-        }
+        /* Hourglass sand animation is handled by CSS (60s cycle) */
       }
 
       /* ── Daily Message ── */

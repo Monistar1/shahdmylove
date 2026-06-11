@@ -30,7 +30,7 @@
     stem: '#4a7a52',
 
     // Scene background
-    bg: '#faf5ff',
+    bg: '#cf99d7',
 
     // Shader accent colors (RGB 0-1 for GLSL)
     subsurface: { r: 0.15, g: 0.05, b: 0.12 },
