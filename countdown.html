@@ -388,6 +388,44 @@
       z-index: 1000;
     }
 
+    /* ── Back Button ── */
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--accent-rose);
+      text-decoration: none;
+      background: color-mix(in srgb, var(--rose-100) 40%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-rose) 20%, transparent);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-rose) 10%, transparent);
+      transition: transform var(--duration-fast), background var(--duration-fast), box-shadow var(--duration-fast);
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+      background: color-mix(in srgb, var(--rose-100) 60%, transparent);
+      box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-rose) 18%, transparent);
+    }
+
+    .back-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 640px) {
       .countdown-grid {
         gap: var(--space-2);
@@ -418,6 +456,10 @@
   </style>
 </head>
 <body data-page="countdown">
+  <a href="index.html" class="back-btn" aria-label="رجوع للرئيسية">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    <span>رجوع</span>
+  </a>
   <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
 
   <div class="luxury-bg" aria-hidden="true"></div>
