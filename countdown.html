@@ -752,132 +752,208 @@
 
   <!-- Firebase Realtime Chat -->
   <script type="module">
-    import { pushWish, onWishUpdate, createSkeleton } from './js/firebase.js';
+    (async function initShodiChat() {
+      'use strict';
 
-    const wishesList = document.getElementById('wishesList');
-    const wishInput = document.getElementById('wishInput');
-    const wishBtn = document.getElementById('wishBtn');
-    const chatError = document.getElementById('chatError');
+      const wishesList = document.getElementById('wishesList');
+      const wishInput = document.getElementById('wishInput');
+      const wishBtn = document.getElementById('wishBtn');
+      const chatError = document.getElementById('chatError');
+      const BTN_ORIGINAL_TEXT = wishBtn ? wishBtn.textContent.trim() : 'أرسل';
+      let isSending = false;
 
-    function showSkeleton() {
-      if (!wishesList) return;
-      wishesList.innerHTML = '';
-      const skeleton = createSkeleton('text', 5);
-      skeleton.className = 'chat-skeleton';
-      wishesList.appendChild(skeleton);
-    }
-
-    function removeSkeleton() {
-      const skeleton = wishesList?.querySelector('.chat-skeleton');
-      if (skeleton) skeleton.remove();
-    }
-
-    function showError(msg) {
-      if (!chatError) return;
-      chatError.textContent = msg;
-      chatError.classList.add('show');
-      setTimeout(() => chatError.classList.remove('show'), 3500);
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function addWishToDOM(wish, optimistic = false) {
-      if (!wishesList) return;
-
-      const id = optimistic ? (wish._id || wish.timestamp) : wish.id;
-      if (!id || document.querySelector(`[data-id="${id}"]`)) return;
-
-      // If confirmed, remove optimistic twin by timestamp
-      if (!optimistic && wish.timestamp) {
-        const optimisticEls = wishesList.querySelectorAll('.optimistic');
-        optimisticEls.forEach(el => {
-          const ts = el.getAttribute('data-timestamp');
-          if (ts && parseInt(ts) === wish.timestamp) el.remove();
-        });
+      function showError(msg) {
+        if (!chatError) return;
+        chatError.textContent = msg;
+        chatError.classList.add('show');
+        setTimeout(() => chatError.classList.remove('show'), 4000);
       }
 
-      const item = document.createElement('div');
-      item.className = 'wish-item' + (optimistic ? ' optimistic' : '');
-      item.setAttribute('data-id', id);
-      if (optimistic) item.setAttribute('data-timestamp', wish.timestamp);
+      function setLoading(loading) {
+        isSending = loading;
+        if (!wishBtn) return;
+        wishBtn.disabled = loading;
+        wishBtn.textContent = loading ? 'جاري الإرسال...' : BTN_ORIGINAL_TEXT;
+        wishBtn.style.opacity = loading ? '0.8' : '';
+        wishBtn.style.cursor = loading ? 'wait' : '';
+      }
 
-      const time = wish.time || new Date(wish.timestamp).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-      const status = optimistic ? ' · جاري الإرسال' : '';
-
-      item.innerHTML = `
-        <div class="message-content">
-          <span class="message-text">${escapeHtml(wish.text)}</span>
-          <span class="message-time">${time}${status}</span>
-        </div>
-      `;
-
-      wishesList.appendChild(item);
-      wishesList.scrollTop = wishesList.scrollHeight;
-    }
-
-    function loadWishesRealtime() {
-      if (!wishesList) return;
-      showSkeleton();
-
-      onWishUpdate((wishes, { isFirstLoad, error }) => {
-        removeSkeleton();
-        if (error) {
-          showError('خطأ في الاتصال بالمحادثة');
-          return;
+      function validateInput(text) {
+        const trimmed = (text || '').trim();
+        if (!trimmed) {
+          showError('اكتب رسالة قبل الإرسال');
+          return false;
         }
-        if (isFirstLoad) {
-          wishesList.innerHTML = '';
-          wishes.forEach(wish => addWishToDOM(wish));
-        } else {
-          wishes.forEach(wish => addWishToDOM(wish));
+        if (trimmed.length > 100) {
+          showError('الرسالة طويلة جداً (الحد الأقصى 100 حرف)');
+          return false;
         }
-      });
-    }
+        return true;
+      }
 
-    async function addWishRealtime(text) {
-      const wishData = {
-        text: text,
-        timestamp: Date.now(),
-        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
-      };
-
+      // Load Firebase module with error handling
+      let firebaseApi;
       try {
-        await pushWish(wishData, {
-          onOptimistic: (data) => addWishToDOM(data, true),
-          onSuccess: () => {
-            wishInput.value = '';
-            if (window.createMiniConfetti) createMiniConfetti(wishBtn);
-          },
-          onError: (err) => {
-            showError(err.message);
-            // Fade out optimistic item
-            const optimisticEls = wishesList.querySelectorAll('.optimistic');
-            optimisticEls.forEach(el => { el.style.opacity = '0.4'; });
+        firebaseApi = await import('./js/firebase.js');
+      } catch (err) {
+        console.error('Failed to load Firebase module:', err);
+        showError('تعذر تحميل نظام الرسائل. تأكد من اتصالك بالإنترنت.');
+        return;
+      }
+
+      const { pushWish, onWishUpdate, createSkeleton, initConnectionIndicator } = firebaseApi;
+
+      function showSkeleton() {
+        if (!wishesList) return;
+        wishesList.innerHTML = '';
+        const skeleton = createSkeleton('text', 5);
+        skeleton.className = 'chat-skeleton';
+        wishesList.appendChild(skeleton);
+      }
+
+      function removeSkeleton() {
+        const skeleton = wishesList?.querySelector('.chat-skeleton');
+        if (skeleton) skeleton.remove();
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function addWishToDOM(wish, optimistic = false) {
+        if (!wishesList) return;
+
+        const id = optimistic ? (wish._id || wish.timestamp) : wish.id;
+        if (!id || document.querySelector(`[data-id="${id}"]`)) return;
+
+        // If confirmed, remove optimistic twin by timestamp
+        if (!optimistic && wish.timestamp) {
+          const optimisticEls = wishesList.querySelectorAll('.optimistic');
+          optimisticEls.forEach(el => {
+            const ts = el.getAttribute('data-timestamp');
+            if (ts && parseInt(ts) === wish.timestamp) el.remove();
+          });
+        }
+
+        const item = document.createElement('div');
+        item.className = 'wish-item' + (optimistic ? ' optimistic' : '');
+        item.setAttribute('data-id', id);
+        if (optimistic) item.setAttribute('data-timestamp', wish.timestamp);
+
+        const time = wish.time || new Date(wish.timestamp).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+        const status = optimistic ? ' · جاري الإرسال' : '';
+
+        item.innerHTML = `
+          <div class="message-content">
+            <span class="message-text">${escapeHtml(wish.text)}</span>
+            <span class="message-time">${time}${status}</span>
+          </div>
+        `;
+
+        wishesList.appendChild(item);
+        wishesList.scrollTop = wishesList.scrollHeight;
+      }
+
+      function loadWishesRealtime() {
+        if (!wishesList) return;
+        showSkeleton();
+
+        onWishUpdate((wishes, { isFirstLoad, error }) => {
+          removeSkeleton();
+          if (error) {
+            showError('خطأ في الاتصال بالمحادثة. تأكد من اتصالك بالإنترنت.');
+            return;
+          }
+          if (isFirstLoad) {
+            wishesList.innerHTML = '';
+            wishes.forEach(wish => addWishToDOM(wish));
+          } else {
+            wishes.forEach(wish => addWishToDOM(wish));
           }
         });
-      } catch (err) {
-        showError(err.message);
       }
-    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      if (wishesList) loadWishesRealtime();
-
-      if (wishBtn && wishInput) {
-        wishBtn.addEventListener('click', () => {
-          const text = wishInput.value.trim();
-          if (text) addWishRealtime(text);
-        });
-
-        wishInput.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') wishBtn.click();
-        });
+      function handleSendError(err) {
+        console.error('Firebase send error:', err);
+        let message = 'تعذر إرسال الرسالة';
+        if (err && err.message) {
+          const m = err.message.toLowerCase();
+          if (m.includes('permission') || m.includes('denied')) {
+            message = 'لا يوجد صلاحية لإرسال الرسائل';
+          } else if (m.includes('network') || m.includes('connection') || m.includes('offline')) {
+            message = 'خطأ في الاتصال بالإنترنت';
+          } else if (m.includes('rate')) {
+            message = err.message;
+          } else if (m.includes('empty') || m.includes('too long')) {
+            message = err.message;
+          }
+        }
+        showError(message);
+        // Fade out optimistic items
+        const optimisticEls = wishesList?.querySelectorAll('.optimistic');
+        optimisticEls?.forEach(el => { el.style.opacity = '0.4'; });
       }
-    });
+
+      async function addWishRealtime(text) {
+        if (isSending || !validateInput(text)) return;
+
+        const wishData = {
+          text: text.trim(),
+          timestamp: Date.now(),
+          time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+        };
+
+        setLoading(true);
+
+        try {
+          await pushWish(wishData, {
+            onOptimistic: (data) => addWishToDOM(data, true),
+            onSuccess: () => {
+              wishInput.value = '';
+              if (window.createMiniConfetti) createMiniConfetti(wishBtn);
+              setLoading(false);
+            },
+            onError: (err) => {
+              handleSendError(err);
+              setLoading(false);
+            }
+          });
+        } catch (err) {
+          handleSendError(err);
+          setLoading(false);
+        }
+      }
+
+      function initConnectionDot() {
+        const chatSection = document.querySelector('.chat-section');
+        const title = chatSection?.querySelector('h2');
+        if (!title || typeof initConnectionIndicator !== 'function') return;
+
+        const wrapper = document.createElement('span');
+        wrapper.id = 'chatConnectionDotWrapper';
+        wrapper.style.cssText = 'display:inline-flex; align-items:center; vertical-align:middle; margin-right:8px;';
+        title.appendChild(wrapper);
+
+        initConnectionIndicator('chatConnectionDotWrapper');
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (wishesList) loadWishesRealtime();
+        initConnectionDot();
+
+        if (wishBtn && wishInput) {
+          wishBtn.addEventListener('click', () => {
+            addWishRealtime(wishInput.value);
+          });
+
+          wishInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') wishBtn.click();
+          });
+        }
+      });
+    })();
   </script>
 </body>
 </html>
