@@ -5,7 +5,7 @@
    ========================================================== */
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getDatabase, ref, push, onValue, off, enableIndexedDbPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+import { getDatabase, ref, push, onValue } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAENc3TUjTBl47xSmIfuGYjBKxBWaMOVnE",
@@ -20,15 +20,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const wishesRef = ref(db, 'wishes');
-
-// Enable offline persistence
-enableIndexedDbPersistence(db).catch(err => {
-  if (err.code === 'failed-precondition') {
-    console.warn('Firebase persistence failed: multiple tabs open');
-  } else if (err.code === 'unimplemented') {
-    console.warn('Firebase persistence not supported');
-  }
-});
 
 /* ==========================================================
    RATE LIMITING
@@ -168,7 +159,7 @@ function initConnectionIndicator(containerId) {
     dot.setAttribute('aria-label', connected ? 'متصل' : 'غير متصل');
   });
 
-  return () => { off(connectedRef, 'value', unsubscribe); };
+  return unsubscribe;
 }
 
 /* ==========================================================

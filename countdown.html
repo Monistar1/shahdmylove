@@ -863,7 +863,14 @@
         onWishUpdate((wishes, { isFirstLoad, error }) => {
           removeSkeleton();
           if (error) {
-            showError('خطأ في الاتصال بالمحادثة. تأكد من اتصالك بالإنترنت.');
+            const e = (error || '').toLowerCase();
+            if (e.includes('permission') || e.includes('denied') || e.includes('unauthorized')) {
+              showError('لا يوجد صلاحية لقراءة الرسائل.');
+            } else if (e.includes('network') || e.includes('connection') || e.includes('offline') || e.includes('timeout')) {
+              showError('خطأ في الاتصال بالمحادثة. تأكد من اتصالك بالإنترنت.');
+            } else {
+              showError('تعذر تحميل الرسائل. حاول مرة أخرى.');
+            }
             return;
           }
           if (isFirstLoad) {
@@ -939,7 +946,7 @@
         initConnectionIndicator('chatConnectionDotWrapper');
       }
 
-      document.addEventListener('DOMContentLoaded', () => {
+      function initChat() {
         if (wishesList) loadWishesRealtime();
         initConnectionDot();
 
@@ -952,7 +959,13 @@
             if (e.key === 'Enter') wishBtn.click();
           });
         }
-      });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChat);
+      } else {
+        initChat();
+      }
     })();
   </script>
 </body>
