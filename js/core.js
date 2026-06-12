@@ -38,8 +38,8 @@
     initScrollProgress();
     initAudioHelper();
     initActiveNav();
-    initMobileNavScroll();
     initNavScroll();
+    initMobileNavScroll();
     initPetals();
     initServiceWorker();
     initPrefetch();
@@ -335,18 +335,6 @@
   }
 
   /* ==========================================================
-     MOBILE NAV SCROLL (Scroll active link into view)
-     ========================================================== */
-  function initMobileNavScroll() {
-    if (!state.isMobile) return;
-    const nav = document.querySelector('.cinematic-nav');
-    const activeLink = nav && nav.querySelector('.nav-link.active');
-    if (nav && activeLink) {
-      activeLink.scrollIntoView({ inline: 'center', behavior: 'auto', block: 'nearest' });
-    }
-  }
-
-  /* ==========================================================
      NAV SCROLL DETECTION (Enhanced Navigation)
      ========================================================== */
   function initNavScroll() {
@@ -362,6 +350,29 @@
         nav.classList.toggle('scrolled', scrolled);
         ticking = false;
       });
+    }, { passive: true });
+  }
+
+  /* ==========================================================
+     MOBILE NAV HORIZONTAL SCROLL (Touch drag)
+     ========================================================== */
+  function initMobileNavScroll() {
+    if (!state.isMobile) return;
+    const nav = document.querySelector('.cinematic-nav');
+    if (!nav) return;
+
+    let startX = 0;
+    let scrollStart = 0;
+
+    nav.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      scrollStart = nav.scrollLeft;
+    }, { passive: true });
+
+    nav.addEventListener('touchmove', (e) => {
+      const x = e.touches[0].clientX;
+      const walk = startX - x;
+      nav.scrollLeft = scrollStart + walk;
     }, { passive: true });
   }
 

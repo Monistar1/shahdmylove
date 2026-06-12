@@ -1638,11 +1638,12 @@
   }
 
   body[data-page="gift"] .gift-container {
-    transform: translateX(0) !important;
-    width: 260px !important;
-    max-width: 90vw !important;
     padding: var(--space-md) var(--space-sm) !important;
     animation: none !important;
+  }
+
+  body[data-page="gift"] .romantic-note {
+    font-size: clamp(1.15rem, 5vw, 1.5rem);
   }
 
   body[data-page="gift"] .romantic-note br {
