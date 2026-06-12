@@ -1477,6 +1477,63 @@
     height: 2px;
   }
 
+  /* ── Mobile background cleanup: keep only one animated background ── */
+  body[data-page="index"] #bg3d,
+  body[data-page="pin"] #bg3d,
+  body[data-page="hero"] #bg3d,
+  body[data-page="hero"] #petalsCanvas,
+  body[data-page="letters"] #bg3d,
+  body[data-page="letters"] #petalsCanvas,
+  body[data-page="letters"] .paper-texture,
+  body[data-page="gallery"] #bg3d,
+  body[data-page="gallery"] #petalsCanvas,
+  body[data-page="countdown"] #bg3d,
+  body[data-page="countdown"] #petalsCanvas,
+  body[data-page="countdown1"] #bg3d,
+  body[data-page="countdown1"] #petalsCanvas,
+  body[data-page="music"] #bg3d,
+  body[data-page="music"] #petalsCanvas,
+  body[data-page="lily"] #bg3d,
+  body[data-page="footer"] #bg3d,
+  body[data-page="footer"] #petalsCanvas,
+  body[data-page="gift"] #bg3d,
+  body[data-page="gift"] #petalsCanvas,
+  body[data-page="gift"] #giftParticles,
+  body[data-page="fireworks"] .luxury-bg,
+  body[data-page="balloons"] .luxury-bg {
+    display: none !important;
+  }
+
+  /* ── Cinematic nav mobile usability improvements ── */
+  html body .cinematic-nav {
+    min-height: var(--nav-height);
+    touch-action: pan-x;
+    padding:
+      var(--space-2)
+      calc(var(--space-3) + env(safe-area-inset-right, 0px))
+      calc(var(--space-3) + var(--safe-bottom))
+      calc(var(--space-3) + env(safe-area-inset-left, 0px)) !important;
+  }
+
+  /* Normalize fireworks inline nav override on mobile */
+  html body[data-page="fireworks"] .cinematic-nav {
+    background: linear-gradient(
+      to top,
+      rgba(250, 240, 244, 0.98) 0%,
+      rgba(250, 240, 244, 0.92) 50%,
+      rgba(250, 240, 244, 0.7) 80%,
+      transparent 100%
+    ) !important;
+    backdrop-filter: blur(20px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.3) !important;
+    z-index: var(--z-nav) !important;
+  }
+
+  /* ── Modals: breathable padding on small screens ── */
+  .modal-box {
+    padding: var(--space-md);
+  }
+
   /* ── Page wrapper padding adjusted for smaller nav ── */
   body .page-wrapper {
     padding:
@@ -1484,6 +1541,10 @@
       var(--space-4)
       calc(var(--space-12) + var(--nav-height) + var(--safe-bottom));
     gap: var(--space-8);
+  }
+
+  body[data-page="countdown1"] .page-wrapper {
+    padding-bottom: calc(var(--space-6) + var(--safe-bottom));
   }
 
   /* ── Display typography: cap largest sizes to avoid overflow ── */
@@ -1597,8 +1658,9 @@
   }
 
   body[data-page="countdown"] .chat-input-row .btn {
-    flex: 0 0 auto;
-    min-width: 72px;
+    flex: 1 1 100%;
+    width: 100%;
+    min-height: 48px;
   }
 
   body[data-page="countdown"] .chat-section {
@@ -1606,7 +1668,7 @@
   }
 
   body[data-page="countdown"] .chat-messages {
-    max-height: 220px;
+    max-height: min(220px, 35vh);
   }
 
   /* ── Gallery page ── */

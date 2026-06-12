@@ -68,6 +68,17 @@
       background: linear-gradient(90deg, transparent, var(--accent-rose), transparent);
       margin: var(--space-sm) auto;
     }
+
+    @media (max-width: 480px) {
+      .days-counter {
+        font-size: clamp(2.5rem, 14vw, 4rem);
+        overflow-wrap: break-word;
+        min-height: auto;
+      }
+      .signature {
+        margin-bottom: var(--space-6);
+      }
+    }
   </style>
 </head>
 <body data-page="footer">

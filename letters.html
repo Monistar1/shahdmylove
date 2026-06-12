@@ -309,6 +309,8 @@
     @media (max-width: 480px) {
       .letter-paper-open {
         padding: var(--space-6);
+        max-height: min(82vh, calc(100dvh - var(--space-12) - var(--nav-height) - var(--safe-bottom)));
+        overflow-y: auto;
       }
     }
 

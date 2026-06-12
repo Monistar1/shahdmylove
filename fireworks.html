@@ -14,13 +14,20 @@
   <style>
     html, body {
       margin: 0;
-      overflow: hidden;
       background: radial-gradient(
         circle at top,
         #f7bdff,
         #cf99d7,
         #f0e0e8
       );
+    }
+
+    @media (min-width: 769px) {
+      html, body { overflow: hidden; }
+    }
+
+    @media (max-width: 768px) {
+      html, body { overflow-x: hidden; overflow-y: auto; }
     }
 
     .fireworks-canvas {
@@ -79,6 +86,14 @@
       white-space: nowrap;
       transform: translate(-50%, 0);
       animation: floatFade 5s ease-in-out forwards;
+    }
+
+    @media (max-width: 768px) {
+      .memory-text {
+        font-size: 17px;
+        white-space: normal;
+        max-width: 80vw;
+      }
     }
 
     @keyframes floatFade {
@@ -329,8 +344,12 @@
         const el = document.createElement('div');
         el.className = 'memory-text';
         el.textContent = memories[Math.floor(Math.random() * memories.length)];
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const minX = Math.min(80, vw * 0.2);
+        const maxX = Math.max(vw - 80, vw * 0.8);
+        el.style.left = Math.max(minX, Math.min(x, maxX)) + 'px';
+        el.style.top = Math.min(Math.max(y, 60), vh * 0.85) + 'px';
         memoryContainer.appendChild(el);
         setTimeout(() => {
           if (el.parentNode) el.parentNode.removeChild(el);

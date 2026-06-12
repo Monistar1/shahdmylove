@@ -122,9 +122,17 @@
     }
 
     @media (max-width: 640px) {
+      .entry-page { gap: var(--space-5); }
       .entry-heart { width: 120px; height: 120px; }
+      .entry-title { font-size: clamp(1.9rem, 9vw, 2.75rem); }
+      .entry-cta { width: 100%; padding: 0 var(--space-4); }
+      .entry-cta .btn { width: 100%; max-width: 280px; }
       .entry-nav-link span { display: none; }
       .entry-nav-link svg { width: 20px; height: 20px; opacity: 1; }
+      .entry-nav {
+        padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+        padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+      }
     }
   </style>
 </head>

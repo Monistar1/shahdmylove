@@ -198,10 +198,12 @@
         balloons.push(b);
       }
 
-      canvas.addEventListener('click', (e) => {
+      function handleCanvasTap(e) {
         const rect = canvas.getBoundingClientRect();
-        const mx = e.clientX - rect.left;
-        const my = e.clientY - rect.top;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const mx = clientX - rect.left;
+        const my = clientY - rect.top;
         for (let i = balloons.length - 1; i >= 0; i--) {
           if (balloons[i].contains(mx, my)) {
             createPopParticles(balloons[i].x, balloons[i].y, balloons[i].color);
@@ -211,7 +213,13 @@
             break;
           }
         }
-      });
+      }
+
+      canvas.addEventListener('click', handleCanvasTap);
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.target === canvas) e.preventDefault();
+        handleCanvasTap(e);
+      }, { passive: false });
 
       function animate() {
         ctx.clearRect(0, 0, W, H);

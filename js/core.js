@@ -39,7 +39,6 @@
     initAudioHelper();
     initActiveNav();
     initNavScroll();
-    initMobileNavScroll();
     initPetals();
     initServiceWorker();
     initPrefetch();
@@ -312,14 +311,23 @@
     if (!currentPage) return;
 
     // Legacy cinematic-nav (bottom nav)
+    let activeCinematicLink = null;
     document.querySelectorAll('.cinematic-nav .nav-link').forEach(link => {
       const href = link.getAttribute('href');
       if (href && href.includes(currentPage)) {
         link.classList.add('active');
+        activeCinematicLink = link;
       } else {
         link.classList.remove('active');
       }
     });
+
+    // On mobile, scroll the active cinematic-nav item into view so the indicator is never off-screen
+    if (state.isMobile && activeCinematicLink) {
+      setTimeout(() => {
+        activeCinematicLink.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
 
     // Enhanced main-nav (top nav)
     document.querySelectorAll('.main-nav .nav-menu-link').forEach(link => {
@@ -354,36 +362,17 @@
   }
 
   /* ==========================================================
-     MOBILE NAV HORIZONTAL SCROLL (Touch drag)
-     ========================================================== */
-  function initMobileNavScroll() {
-    if (!state.isMobile) return;
-    const nav = document.querySelector('.cinematic-nav');
-    if (!nav) return;
-
-    let startX = 0;
-    let scrollStart = 0;
-
-    nav.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      scrollStart = nav.scrollLeft;
-    }, { passive: true });
-
-    nav.addEventListener('touchmove', (e) => {
-      const x = e.touches[0].clientX;
-      const walk = startX - x;
-      nav.scrollLeft = scrollStart + walk;
-    }, { passive: true });
-  }
-
-  /* ==========================================================
      FLOATING PETALS AUTO-INIT
      ========================================================== */
   function initPetals() {
     const canvas = document.getElementById('petalsCanvas');
-    if (canvas && window.FloatingPetalsEngine) {
-      window._petalsEngine = new FloatingPetalsEngine(canvas);
+    if (!canvas || !window.FloatingPetalsEngine) return;
+    // Skip petals canvas on mobile to keep a single lightweight background
+    if (state.isMobile) {
+      canvas.style.display = 'none';
+      return;
     }
+    window._petalsEngine = new FloatingPetalsEngine(canvas);
   }
 
   /* ==========================================================

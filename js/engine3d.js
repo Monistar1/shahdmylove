@@ -115,6 +115,14 @@
       return;
     }
 
+    // Skip heavy 3D background on mobile to save battery/GPU
+    isMobile = window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window || !window.matchMedia('(pointer: fine)').matches;
+    if (isMobile) {
+      const canvas = document.getElementById('bg3d');
+      if (canvas) canvas.style.display = 'none';
+      return;
+    }
+
     detectCapabilities();
     const container = document.getElementById('bg3d');
     if (!container) return;
