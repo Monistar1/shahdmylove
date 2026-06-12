@@ -655,6 +655,12 @@
       startTime = null;
       render();
 
+      // Visibility handler
+      document.addEventListener('visibilitychange', () => {
+        isActive = !document.hidden;
+        if (isActive && !animId) render();
+      });
+
       // Resize handler
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;

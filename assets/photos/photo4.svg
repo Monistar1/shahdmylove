@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="50%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#e91e63"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g4)"/>
+  <path d="M140 200 Q170 140 200 200 Q230 140 260 200 Q230 260 200 200 Q170 260 140 200" fill="rgba(255,255,255,0.4)"/>
+  <text x="200" y="360" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" fill="rgba(255,255,255,0.95)">وقت جميل</text>
+</svg>

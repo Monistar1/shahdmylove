@@ -140,11 +140,13 @@
     --purple-700: #7e22ce;
 
     --lilac-50: #fbf7ff;
+    --lilac-50-rgb: 251, 247, 255;
     --lilac-100: #f5eeff;
     --lilac-200: #ede0fe;
     --lilac-300: #decafe;
     --lilac-400: #c9a8f8;
     --lilac-500: #b47cf0;
+    --lily-purple-rgb: 157, 78, 221;
 
     --gold-100: #fef3c7;
     --gold-200: #fde68a;
@@ -199,6 +201,7 @@
     --text-4xl: clamp(3.5rem, 7vw + 0.5rem, 5.5rem);
 
     /* ── 8px Grid Spacing (φ-adjusted) ── */
+    --space-xs: 0.125rem; /*  2px */
     --space-1: 0.25rem;   /*  4px */
     --space-2: 0.5rem;    /*  8px */
     --space-3: 0.75rem;   /* 12px */
@@ -774,15 +777,25 @@
     position: fixed;
     inset: 0;
     z-index: var(--z-modal);
-    background: var(--bg-primary);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(233, 30, 99, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 80%, rgba(157, 78, 221, 0.1) 0%, transparent 55%),
+      var(--bg-primary);
     pointer-events: none;
     opacity: 0;
-    transition: opacity var(--duration-slow) var(--ease-smooth);
+    transform: scale(1.08);
+    filter: blur(0px);
+    transition:
+      opacity var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth),
+      filter var(--duration-slow) var(--ease-smooth);
   }
 
   .page-transition-overlay.active {
     opacity: 1;
     pointer-events: all;
+    transform: scale(1);
+    filter: blur(0px);
   }
 
   /* ── Modal ── */
@@ -1230,8 +1243,8 @@
   }
 
   @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.2); }
-    50% { box-shadow: 0 0 40px rgba(var(--color-primary-rgb), 0.35), 0 0 80px rgba(var(--color-primary-rgb), 0.15); }
+    0%, 100% { transform: scale(1) translateZ(0); opacity: 1; }
+    50% { transform: scale(1.06) translateZ(0); opacity: 0.92; }
   }
 
   @keyframes ringExpand {
@@ -1352,6 +1365,47 @@
 
   .contain-layout-paint {
     contain: layout paint;
+  }
+
+  /* Self-evolving quality levels */
+  .quality-low .luxury-bg,
+  .quality-low .atmosphere-orb,
+  .quality-low .reveal-rays,
+  .quality-low .reveal-grain,
+  .quality-low .cinematic-grain {
+    display: none !important;
+  }
+  .quality-low .glass-card,
+  .quality-low .cinematic-nav,
+  .quality-low .modal-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .quality-medium .reveal-grain,
+  .quality-medium .cinematic-grain,
+  .quality-medium .reveal-rays {
+    opacity: 0.5 !important;
+  }
+  .quality-medium .glass-card,
+  .quality-medium .cinematic-nav {
+    backdrop-filter: blur(12px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+  }
+  .page-hidden * {
+    animation-play-state: paused !important;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-card, .cinematic-nav, .modal-overlay, .nav-mobile-overlay {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .glass-card, .cinematic-nav, .modal-overlay, .nav-mobile-overlay, .hero-badge {
+      backdrop-filter: blur(12px) saturate(1.2) !important;
+      -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+    }
   }
 
   /* ── Visibility Enforcement ── */

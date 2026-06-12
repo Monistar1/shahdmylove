@@ -250,6 +250,44 @@
       color: var(--text-muted);
     }
 
+    /* ── Back Button ── */
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--accent-rose);
+      text-decoration: none;
+      background: color-mix(in srgb, var(--rose-100) 40%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-rose) 20%, transparent);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-rose) 10%, transparent);
+      transition: transform var(--duration-fast), background var(--duration-fast), box-shadow var(--duration-fast);
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+      background: color-mix(in srgb, var(--rose-100) 60%, transparent);
+      box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-rose) 18%, transparent);
+    }
+
+    .back-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 640px) {
       .pin-card {
         padding: var(--space-8) var(--space-5);
@@ -268,6 +306,10 @@
   </style>
 </head>
 <body data-page="pin">
+  <a href="index.html" class="back-btn" aria-label="رجوع للرئيسية">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    <span>رجوع</span>
+  </a>
   <a href="#main-content" class="skip-link">تخطى الى المحتوى</a>
 
   <div class="luxury-bg" aria-hidden="true"></div>
@@ -322,18 +364,18 @@
 
       <!-- Keypad -->
       <div class="pin-keypad reveal reveal-delay-3" id="pinKeypad">
-        <button class="pin-btn" data-key="1" type="button" aria-label="١">١</button>
-        <button class="pin-btn" data-key="2" type="button" aria-label="٢">٢</button>
-        <button class="pin-btn" data-key="3" type="button" aria-label="٣">٣</button>
-        <button class="pin-btn" data-key="4" type="button" aria-label="٤">٤</button>
-        <button class="pin-btn" data-key="5" type="button" aria-label="٥">٥</button>
-        <button class="pin-btn" data-key="6" type="button" aria-label="٦">٦</button>
-        <button class="pin-btn" data-key="7" type="button" aria-label="٧">٧</button>
-        <button class="pin-btn" data-key="8" type="button" aria-label="٨">٨</button>
-        <button class="pin-btn" data-key="9" type="button" aria-label="٩">٩</button>
-        <button class="pin-btn pin-action" data-action="clear" type="button">مسح</button>
-        <button class="pin-btn" data-key="0" type="button" aria-label="٠">٠</button>
-        <button class="pin-btn pin-action" data-action="back" type="button" aria-label="حذف">
+        <button class="pin-btn" data-key="1" type="button" aria-label="1">1</button>
+        <button class="pin-btn" data-key="2" type="button" aria-label="2">2</button>
+        <button class="pin-btn" data-key="3" type="button" aria-label="3">3</button>
+        <button class="pin-btn" data-key="4" type="button" aria-label="4">4</button>
+        <button class="pin-btn" data-key="5" type="button" aria-label="5">5</button>
+        <button class="pin-btn" data-key="6" type="button" aria-label="6">6</button>
+        <button class="pin-btn" data-key="7" type="button" aria-label="7">7</button>
+        <button class="pin-btn" data-key="8" type="button" aria-label="8">8</button>
+        <button class="pin-btn" data-key="9" type="button" aria-label="9">9</button>
+        <button class="pin-btn pin-action" data-action="clear" type="button">Delete</button>
+        <button class="pin-btn" data-key="0" type="button" aria-label="0">0</button>
+        <button class="pin-btn pin-action" data-action="back" type="button" aria-label="Delete">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12H8M4 12l4-4M4 12l4 4"/></svg>
         </button>
       </div>
@@ -350,9 +392,11 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/self-evolve.js"></script>
   <script src="js/engine3d.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/narrative.js"></script>
   <script src="js/fps.js"></script>
   <script>FPSMonitor.init();</script>
   <script>

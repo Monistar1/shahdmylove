@@ -20,107 +20,128 @@
       --safe-left: env(safe-area-inset-left, 0px);
     }
 
-    /* ── Film Frame ── */
-    .film-section {
-      width: 100%;
-      max-width: 700px;
-      text-align: center;
-    }
-
-    .film-frame {
+    /* ── Cinematic Video Frame ── */
+    .cinematic-video-frame {
+      width: 90%;
+      max-width: 800px;
+      margin: var(--space-lg) auto;
       position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: color-mix(in srgb, var(--accent-pink) 10%, transparent);
-      border: 2px solid color-mix(in srgb, var(--accent-pink) 25%, transparent);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      cursor: pointer;
-      transition: border-color var(--duration-base), box-shadow var(--duration-base);
+      background: #0a0a0a;
+      box-shadow: 0 12px 48px color-mix(in srgb, var(--accent-rose) 16%, transparent),
+                  0 0 0 1px color-mix(in srgb, var(--accent-pink) 20%, transparent) inset;
+      border: 1px solid color-mix(in srgb, var(--accent-pink) 25%, transparent);
+      transition: box-shadow var(--duration-base), transform var(--duration-base);
     }
 
-    .film-frame:hover {
-      border-color: color-mix(in srgb, var(--accent-pink) 50%, transparent);
-      box-shadow: 0 0 40px color-mix(in srgb, var(--accent-rose) 20%, transparent);
+    .cinematic-video-frame:hover {
+      box-shadow: 0 16px 56px color-mix(in srgb, var(--accent-rose) 24%, transparent),
+                  0 0 0 1px color-mix(in srgb, var(--accent-pink) 35%, transparent) inset;
+      transform: translateY(-2px);
     }
 
-    .film-photo {
+    .cinematic-video {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      display: block;
+      background: #0a0a0a;
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.22);
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: opacity var(--duration-base) var(--ease-smooth),
+                  background var(--duration-base) var(--ease-smooth);
+      cursor: pointer;
     }
 
-    .film-placeholder {
-      text-align: center;
-      color: var(--accent-purple);
-      font-size: var(--text-base);
+    .cinematic-video-frame.playing .video-overlay {
+      opacity: 0;
+      pointer-events: none;
+      background: transparent;
     }
 
-    .film-placeholder span { display: block; margin-top: var(--space-2); }
-
-    .film-play-icon {
-      width: 64px;
-      height: 64px;
+    .video-play-btn {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      background: color-mix(in srgb, var(--accent-pink) 15%, transparent);
-      border: 2px solid color-mix(in srgb, var(--accent-pink) 30%, transparent);
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto var(--space-2);
-      transition: transform var(--duration-base), background var(--duration-base);
+      cursor: pointer;
+      transition: transform var(--duration-base) var(--ease-out-expo),
+                  background var(--duration-base),
+                  border-color var(--duration-base);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
-    .film-frame:hover .film-play-icon {
+    .video-play-btn:hover {
+      transform: scale(1.12);
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .video-play-btn svg {
+      width: 30px;
+      height: 30px;
+      fill: #fff;
+      margin-right: -3px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    /* ── Fullscreen Exit Button ── */
+    .video-exit-btn {
+      position: absolute;
+      top: var(--space-4);
+      left: var(--space-4);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--duration-base) var(--ease-smooth),
+                  visibility var(--duration-base),
+                  background var(--duration-base),
+                  transform var(--duration-base);
+      z-index: 10;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .cinematic-video-frame.is-fullscreen .video-exit-btn,
+    .cinematic-video-frame:fullscreen .video-exit-btn,
+    .cinematic-video-frame:-webkit-full-screen .video-exit-btn {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .video-exit-btn:hover {
+      background: rgba(0, 0, 0, 0.55);
+      border-color: rgba(255, 255, 255, 0.45);
       transform: scale(1.1);
-      background: color-mix(in srgb, var(--accent-pink) 25%, transparent);
     }
 
-    .film-play-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: var(--accent-rose);
-      margin-right: -2px;
-    }
-
-    .film-overlay {
-      position: absolute;
-      inset: 0;
-      background: color-mix(in srgb, var(--bg-primary) 50%, transparent);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 1;
-      transition: opacity var(--duration-base);
-    }
-
-    .film-frame.playing .film-overlay {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .film-vintage {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle, transparent 50%, color-mix(in srgb, var(--text-muted) 8%, transparent) 100%),
-        repeating-linear-gradient(0deg, transparent, transparent 2px, color-mix(in srgb, var(--text-muted) 2%, transparent) 2px, color-mix(in srgb, var(--text-muted) 2%, transparent) 4px);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity var(--duration-base);
-    }
-
-    .film-frame.playing .film-vintage {
-      opacity: 1;
-      animation: vintageFlicker var(--duration-base) ease-in-out infinite;
-    }
-
-    @keyframes vintageFlicker {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 1; }
+    .video-exit-btn svg {
+      width: 20px;
+      height: 20px;
     }
 
     /* ── Masonry Gallery ── */
@@ -143,12 +164,15 @@
       cursor: zoom-in;
       background: color-mix(in srgb, var(--accent-pink) 8%, transparent);
       border: 1px solid color-mix(in srgb, var(--accent-pink) 18%, transparent);
-      transition: transform var(--duration-base) var(--ease-out-expo),
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-smooth), transform var(--duration-base) var(--ease-out-expo),
                   border-color var(--duration-base),
                   box-shadow var(--duration-base);
-      will-change: transform;
+      will-change: transform, opacity;
       contain: layout paint;
     }
+
+    .gallery-item.revealed { opacity: 1; }
 
     .gallery-item:hover {
       transform: translateY(-6px) scale(1.015);
@@ -275,96 +299,63 @@
   <div id="bg3d" aria-hidden="true"></div>
   <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
 
-   <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+     <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
     <a href="index.html" class="nav-link" aria-label="الرئيسية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9.5z"/><path d="M9 22V12h6v10"/></svg><span>الرئيسية</span></a>
     <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14"/><path d="M5 21h14"/><path d="M5 3c0 4 2.5 6.5 7 9 4.5-2.5 7-5 7-9"/><path d="M19 21c0-4-2.5-6.5-7-9-4.5 2.5-7 5-7 9"/></svg><span>العد</span></a>
     <a href="hero.html" class="nav-link" aria-label="ملكتي">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2z"/><path d="M4 18l2-8 3 5 3-8 3 8 3-5 2 8"/></svg><span>ملكتي</span></a>
     <a href="lily.html" class="nav-link" aria-label="اليلك">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V10"/><path d="M12 10c-3-1-5-4-5-7 1.5 0 3 1.5 4 3.5"/><path d="M12 10c3-1 5-4 5-7-1.5 0-3 1.5-4 3.5"/><path d="M12 10c-1.5-2-1.5-5 0-8"/><path d="M12 10c1.5-2 1.5-5 0-8"/></svg><span>اليلك</span></a>
     <a href="gallery.html" class="nav-link" aria-label="الذكريات">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 8h18"/><path d="M3 16h18"/><path d="M6 5v14"/><path d="M18 5v14"/></svg><span>الذكريات</span></a>
     <a href="balloons.html" class="nav-link" aria-label="البالونات">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15c-2.5 0-4.5-2-4.5-5S6.5 5 9 5s4.5 2 4.5 5-2 5-4.5 5z"/><path d="M9 15v4"/><path d="M17 13c-2 0-3.5-1.5-3.5-4S15 5 17 5s3.5 1.5 3.5 4-1.5 4-3.5 4z"/><path d="M17 13v4"/></svg><span>البالونات</span></a>
     <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12V6"/><path d="M12 12l5-3"/><path d="M12 12l5 3"/><path d="M12 12v6"/><path d="M12 12l-5 3"/><path d="M12 12l-5-3"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg><span>ألعاب نارية</span></a>
     <a href="gift.html" class="nav-link" aria-label="الهدية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
-     <a href="letters.html" class="nav-link" aria-label="الرسائل">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
-      <a href="music.html" class="nav-link" aria-label="الموسيقى">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
-  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
-</nav>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+    <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span>الرسائل</span></a>
+    <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="16" r="2.5"/></svg><span>الموسيقى</span></a>
+    <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>الخاتمة</span></a>
+  </nav>
 
   <main id="main-content" class="page-wrapper">
     <h1 class="display-title display-title--1 text-gradient-purple reveal">ذكرياتنا الجميلة</h1>
 
-    <!-- Film Frame -->
-    <div class="film-section reveal reveal-delay-1">
-      <div class="film-frame" id="filmFrame">
-        <div class="film-photo">
-          <div class="film-overlay">
-            <div class="film-play-icon">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <div class="film-placeholder">
-              <strong>فيديو الذكريات</strong>
-              <span>اضغط للتشغيل</span>
-            </div>
-          </div>
-        </div>
-        <div class="film-vintage"></div>
+    <!-- Cinematic Video Frame -->
+    <div class="cinematic-video-frame reveal reveal-delay-1" id="cinematicVideoFrame">
+      <video
+        id="cinematicVideo"
+        class="cinematic-video"
+        playsinline
+        preload="metadata"
+        poster="assets/photos/shody.png"
+        aria-label="فيديو شودي"
+      >
+        <source src="assets/photos/shody.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+      <div class="video-overlay" id="videoOverlay">
+        <button class="video-play-btn" id="videoPlayBtn" aria-label="تشغيل الفيديو">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
       </div>
+      <button class="video-exit-btn" id="videoExitBtn" aria-label="خروج من الشاشة الكاملة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
 
     <!-- Masonry Gallery -->
-    <div class="gallery-masonry reveal reveal-delay-2" id="galleryMasonry">
-      <div class="gallery-item" data-caption="أول لقاء">
-        <img src="assets/photos/photo1.jpg" alt="أول لقاء" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
-        <div class="item-caption">
-          <span class="item-caption-title">أول لقاء</span>
-          <span class="item-caption-date">يناير 2026</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-caption="يوم مميز">
-        <img src="assets/photos/photo2.jpg" alt="يوم مميز" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
-        <div class="item-caption">
-          <span class="item-caption-title">يوم مميز</span>
-          <span class="item-caption-date">فبراير 2026</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-caption="لحظة سعيدة">
-        <img src="assets/photos/photo3.jpg" alt="لحظة سعيدة" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
-        <div class="item-caption">
-          <span class="item-caption-title">لحظة سعيدة</span>
-          <span class="item-caption-date">مارس 2026</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-caption="وقت جميل">
-        <img src="assets/photos/photo4.jpg" alt="وقت جميل" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
-        <div class="item-caption">
-          <span class="item-caption-title">وقت جميل</span>
-          <span class="item-caption-date">أبريل 2026</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-caption="ذكرى لا تُنسى">
-        <img src="assets/photos/photo5.jpg" alt="ذكرى لا تُنسى" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
-        <div class="item-caption">
-          <span class="item-caption-title">ذكرى لا تُنسى</span>
-          <span class="item-caption-date">مايو 2026</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-caption="أجمل يوم">
-        <img src="assets/photos/photo6.jpg" alt="أجمل يوم" loading="lazy" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
-        <div class="item-caption">
-          <span class="item-caption-title">أجمل يوم</span>
-          <span class="item-caption-date">يونيو 2026</span>
-        </div>
-      </div>
+    <div class="gallery-masonry reveal reveal-delay-2" id="galleryMasonry" data-random-gallery>
+      <!-- Photos are injected randomly via JavaScript -->
     </div>
   </main>
 
@@ -378,12 +369,15 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/self-evolve.js"></script>
   <script src="js/engine3d.js"></script>
   <script src="js/petals.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/narrative.js"></script>
   <script src="js/fps.js"></script>
   <script>FPSMonitor.init();</script>
+
   <script>
     (function() {
       'use strict';
@@ -392,24 +386,75 @@
       /* ── Auth Guard ── */
       if (window.AuthSystem) AuthSystem.guard();
 
+      /* ── Random Photo Gallery ── */
+      const photos = [
+        { src: 'assets/photos/shody.png', alt: 'شودي', caption: 'شودي', date: 'ذاكرة جميلة' },
+        { src: 'assets/photos/shody1.png', alt: 'شودي', caption: 'شودي', date: 'لحظة سعيدة' },
+        { src: 'assets/photos/shody2.png', alt: 'شودي', caption: 'شودي', date: 'ابتسامة دافئة' },
+        { src: 'assets/photos/shody3.png', alt: 'شودي', caption: 'شودي', date: 'يوم مميز' },
+        { src: 'assets/photos/shody4.png', alt: 'شودي', caption: 'شودي', date: 'ذكرى لا تُنسى' },
+        { src: 'assets/photos/shody5.png', alt: 'شودي', caption: 'شودي', date: 'أجمل يوم' }
+      ];
+
+      function shuffle(array) {
+        const items = array.slice();
+        for (let i = items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [items[i], items[j]] = [items[j], items[i]];
+        }
+        return items;
+      }
+
+      function renderGallery() {
+        const container = document.getElementById('galleryMasonry');
+        if (!container) return;
+        const shuffled = shuffle(photos);
+        container.innerHTML = shuffled.map(photo => `
+          <div class="gallery-item" data-caption="${photo.caption}">
+            <img src="${photo.src}" alt="${photo.alt}" loading="lazy" class="img-blur" onload="this.classList.add('img-loaded'); this.classList.remove('img-blur');">
+            <div class="item-caption">
+              <span class="item-caption-title">${photo.caption}</span>
+              <span class="item-caption-date">${photo.date}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderGallery();
+
+      /* ── Staggered reveal ── */
+      (function revealItems() {
+        const container = document.getElementById('galleryMasonry');
+        if (!container) return;
+        const items = container.querySelectorAll('.gallery-item');
+        items.forEach((item, i) => {
+          setTimeout(() => item.classList.add('revealed'), i * 60);
+        });
+        items.forEach(item => {
+          const img = item.querySelector('img');
+          if (img && img.complete) {
+            img.classList.add('img-loaded');
+            img.classList.remove('img-blur');
+          }
+        });
+      })();
+
       /* ── Lightbox ── */
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightboxImg');
       const lightboxCaption = document.getElementById('lightboxCaption');
       const lightboxClose = document.getElementById('lightboxClose');
 
-      document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const img = item.querySelector('img');
-          if (!img) return;
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt || '';
-          lightboxCaption.textContent = item.dataset.caption || '';
-          lightbox.classList.add('show');
-          lightbox.setAttribute('aria-hidden', 'false');
-          document.body.style.overflow = 'hidden';
-        });
-      });
+      function openLightbox(item) {
+        const img = item.querySelector('img');
+        if (!img) return;
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || '';
+        lightboxCaption.textContent = item.dataset.caption || '';
+        lightbox.classList.add('show');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
 
       function closeLightbox() {
         lightbox.classList.remove('show');
@@ -418,15 +463,134 @@
         setTimeout(() => { lightboxImg.src = ''; }, 300);
       }
 
+      document.getElementById('galleryMasonry').addEventListener('click', (e) => {
+        const item = e.target.closest('.gallery-item');
+        if (item) openLightbox(item);
+      });
+
       lightboxClose.addEventListener('click', closeLightbox);
       lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
-      /* ── Lazy image blur-up ── */
-      document.querySelectorAll('.gallery-item img').forEach(img => {
-        img.classList.add('img-blur');
-        if (img.complete) img.classList.add('img-loaded');
-      });
+      /* ── Cinematic Video Player ── */
+      const cinematicVideoFrame = document.getElementById('cinematicVideoFrame');
+      const cinematicVideo = document.getElementById('cinematicVideo');
+      const videoPlayBtn = document.getElementById('videoPlayBtn');
+      const videoOverlay = document.getElementById('videoOverlay');
+
+      function enterFullscreen(element) {
+        const target = element || cinematicVideoFrame;
+        if (target.requestFullscreen) {
+          return target.requestFullscreen();
+        }
+        if (target.webkitRequestFullscreen) {
+          return target.webkitRequestFullscreen();
+        }
+        if (target.msRequestFullscreen) {
+          return target.msRequestFullscreen();
+        }
+        if (cinematicVideo && cinematicVideo.webkitEnterFullscreen) {
+          cinematicVideo.webkitEnterFullscreen();
+          return Promise.resolve();
+        }
+        return Promise.reject('Fullscreen not supported');
+      }
+
+      function isFullscreen() {
+        return !!(document.fullscreenElement ||
+                  document.webkitFullscreenElement ||
+                  document.msFullscreenElement);
+      }
+
+      function playVideo() {
+        if (!cinematicVideo || !cinematicVideoFrame) return;
+        cinematicVideo.play().then(() => {
+          cinematicVideoFrame.classList.add('playing');
+          return enterFullscreen(cinematicVideoFrame).catch(() => {
+            // Fullscreen blocked or unsupported, but video still plays
+          });
+        }).catch(err => {
+          console.warn('Video playback failed:', err);
+        });
+      }
+
+      function pauseVideo() {
+        if (!cinematicVideo) return;
+        cinematicVideo.pause();
+        cinematicVideoFrame.classList.remove('playing');
+      }
+
+      if (videoPlayBtn && videoOverlay && cinematicVideo) {
+        videoPlayBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          playVideo();
+        });
+
+        videoOverlay.addEventListener('click', () => {
+          if (cinematicVideo.paused) {
+            playVideo();
+          } else {
+            pauseVideo();
+          }
+        });
+      }
+
+      if (cinematicVideo) {
+        cinematicVideo.addEventListener('click', () => {
+          if (cinematicVideo.paused) {
+            playVideo();
+          } else {
+            pauseVideo();
+          }
+        });
+
+        cinematicVideo.addEventListener('play', () => {
+          cinematicVideoFrame.classList.add('playing');
+        });
+
+        cinematicVideo.addEventListener('pause', () => {
+          cinematicVideoFrame.classList.remove('playing');
+        });
+
+        cinematicVideo.addEventListener('ended', () => {
+          cinematicVideoFrame.classList.remove('playing');
+        });
+      }
+
+      function updateFullscreenUI() {
+        if (cinematicVideoFrame) {
+          cinematicVideoFrame.classList.toggle('is-fullscreen', isFullscreen());
+        }
+      }
+
+      function exitFullscreen() {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+
+      function handleFullscreenChange() {
+        updateFullscreenUI();
+        if (!isFullscreen() && cinematicVideo && !cinematicVideo.paused) {
+          pauseVideo();
+        }
+      }
+
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+      if (videoExitBtn) {
+        videoExitBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          exitFullscreen();
+          pauseVideo();
+        });
+      }
 
       /* ── Reveals ── */
       document.querySelectorAll('.reveal').forEach((el, i) => {

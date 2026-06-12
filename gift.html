@@ -13,6 +13,105 @@
   <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/core.css">
   <style>
+    html, body {
+      margin: 0;
+      overflow-x: hidden;
+      background: radial-gradient(
+        circle at top,
+        #f7bdff,
+        #cf99d7,
+        #f0e0e8
+      );
+    }
+
+    .gift-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .gift-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: calc(100% + 26px);
+      left: 0 ;
+      right: 0 ;
+      width: max-content;
+       
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 50px 25px;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 25px;
+      border: 4px solid rgba(232, 113, 248, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      transform: translateX(60px);
+      animation: floatGift 6s ease-in-out infinite;
+      text-align: center;
+    }
+
+    @keyframes floatGift {
+      0%, 100% { transform: translateX(160px) translateY(0); }
+      50% { transform: translateX(160px) translateY(-15px); }
+    }
+
+    .luxury-btn {
+      background: linear-gradient(135deg, #cf99d7, #f7bdff);
+      border: none;
+      padding: 15px 32px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      font-family: var(--font-body, 'Cairo', sans-serif);
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      transition: 0.3s ease;
+      margin-top: 24px;
+    }
+
+    .luxury-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .luxury-btn:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    .romantic-note {
+      font-family: var(--font-display);
+      direction: rtl;
+      font-size: 30px;
+      color: rgba(255, 240, 250, 0.95);
+      text-shadow: 0 0 10px rgba(255, 150, 200, 0.35);
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .romantic-heart {
+      font-size: 26px;
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .romantic-note br {
+      display: none;
+    }
+
     .gift-stage {
       position: relative;
       width: 280px;
@@ -22,71 +121,102 @@
       cursor: pointer;
     }
 
+    /* Floating gift wrapper */
+    .gift-object {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 60px auto 0;
+      animation: floatLuxury 5s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+
+    /* Luxury cinematic gift box */
     .gift-box {
       position: relative;
-      width: 160px;
-      height: 160px;
-      margin: 60px auto 0;
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, #f7bdff, #cf99d7);
+      border-radius: 22px;
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.18),
+        inset 0 2px 12px rgba(255, 255, 255, 0.5),
+        0 0 40px rgba(255, 180, 220, 0.35);
+      transform: perspective(800px) rotateX(5deg);
       transform-style: preserve-3d;
       transition: transform 0.6s var(--ease-out-expo);
+      animation: giftGlow 3s ease-in-out infinite;
+      overflow: hidden;
     }
 
-    .gift-box:hover { transform: scale(1.05); }
+    .gift-box:hover { transform: perspective(800px) rotateX(5deg) scale(1.05); }
 
-    .gift-face {
-      position: absolute;
-      width: 160px;
-      height: 160px;
-      background: linear-gradient(135deg, var(--color-primary), var(--accent-pink));
-      border: 2px solid rgba(255,255,255,0.3);
-    }
-
-    .gift-face.front { transform: translateZ(80px); }
-    .gift-face.back { transform: rotateY(180deg) translateZ(80px); }
-    .gift-face.right { transform: rotateY(90deg) translateZ(80px); }
-    .gift-face.left { transform: rotateY(-90deg) translateZ(80px); }
-    .gift-face.top { transform: rotateX(90deg) translateZ(80px); height: 160px; }
-    .gift-face.bottom { transform: rotateX(-90deg) translateZ(80px); height: 160px; }
-
+    /* Premium glass ribbon */
     .gift-ribbon-v {
       position: absolute;
       top: 0; left: 50%;
       transform: translateX(-50%);
-      width: 24px; height: 100%;
-      background: linear-gradient(180deg, var(--accent-gold), color-mix(in srgb, var(--accent-gold), white 32%), var(--accent-gold));
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+      width: 26px; height: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.15), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.3);
+      z-index: 2;
     }
 
     .gift-ribbon-h {
       position: absolute;
       top: 50%; left: 0;
       transform: translateY(-50%);
-      width: 100%; height: 24px;
-      background: linear-gradient(90deg, var(--accent-gold), color-mix(in srgb, var(--accent-gold), white 32%), var(--accent-gold));
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+      width: 100%; height: 26px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.55), rgba(255,255,255,0.15), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.3);
+      z-index: 2;
     }
 
+    /* Premium light reflection */
+    .gift-box::after {
+      content: "";
+      position: absolute;
+      top: -25%; left: -25%;
+      width: 150%; height: 150%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: rotate(25deg);
+      animation: shine 4s infinite;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Luxury lid */
     .gift-lid {
       position: absolute;
-      top: -20px; left: -10px;
-      width: 180px; height: 40px;
-      background: linear-gradient(135deg, var(--rose-700), var(--color-primary));
-      border: 2px solid rgba(255,255,255,0.3);
-      transform-origin: back;
+      top: -20px; left: 50%;
+      transform: translateX(-50%);
+      width: 192px; height: 46px;
+      background: linear-gradient(135deg, #ff9ec8, #e91e63);
+      border-radius: 16px 16px 8px 8px;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow:
+        0 10px 25px rgba(0,0,0,0.15),
+        inset 0 2px 10px rgba(255,255,255,0.35);
+      transform-origin: center bottom;
       transition: transform 1s var(--ease-out-back);
       transform-style: preserve-3d;
       z-index: 10;
     }
 
     .gift-lid.unwrapped {
-      transform: rotateX(-110deg) translateZ(80px);
+      transform: translateX(-50%) rotateX(-110deg) translateZ(80px);
     }
 
+    /* Premium bow */
     .gift-bow {
       position: absolute;
-      top: -30px; left: 50%;
+      top: -24px; left: 50%;
       transform: translateX(-50%);
-      width: 60px; height: 40px;
+      width: 72px; height: 46px;
       z-index: 20;
       transition: all 0.5s var(--ease-out-expo);
     }
@@ -95,29 +225,41 @@
       content: '';
       position: absolute;
       top: 0;
-      width: 30px; height: 40px;
-      background: linear-gradient(135deg, var(--accent-gold), color-mix(in srgb, var(--accent-gold), white 32%));
+      width: 36px; height: 46px;
+      background: linear-gradient(135deg, #ffd700, #ffecb3, #d4a574);
       border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
 
-    .gift-bow::before { left: 0; transform: rotate(-20deg); }
-    .gift-bow::after { right: 0; transform: rotate(20deg) scaleX(-1); }
+    .gift-bow::before { left: 0; transform: rotate(-25deg); }
+    .gift-bow::after { right: 0; transform: rotate(25deg) scaleX(-1); }
 
     .gift-bow.unwrapped {
-      transform: translateX(-50%) translateY(-40px) scale(0.5);
+      transform: translateX(-50%) translateY(-55px) scale(0.5);
       opacity: 0;
     }
 
+    /* Luxury message card */
     .gift-message {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%) scale(0);
+      width: 240px;
+      padding: 25px;
+      box-sizing: border-box;
       text-align: center;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
       opacity: 0;
       transition: all 0.8s 0.5s var(--ease-out-back);
       z-index: 5;
       pointer-events: none;
+      font-family: "Cairo", "Amiri", "Noto Kufi Arabic", sans-serif;
+      direction: rtl;
     }
 
     .gift-message.show {
@@ -126,16 +268,17 @@
     }
 
     .gift-message h2 {
-      font-family: var(--font-display);
-      font-size: var(--text-2xl);
-      color: var(--text-primary);
-      margin-bottom: var(--space-sm);
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 180, 220, 0.6);
     }
 
     .gift-message p {
-      font-size: var(--text-base);
-      color: var(--text-secondary);
-      line-height: 2;
+      font-size: 20px;
+      color: rgba(255, 240, 250, 0.95);
+      text-shadow: 0 0 12px rgba(255, 150, 200, 0.4);
+      line-height: 1.8;
     }
 
     .gift-glow {
@@ -150,6 +293,31 @@
 
     .gift-stage:hover .gift-glow { opacity: 1; }
 
+    @keyframes floatLuxury {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    @keyframes giftGlow {
+      0%, 100% {
+        box-shadow:
+          0 25px 60px rgba(0,0,0,0.18),
+          inset 0 2px 12px rgba(255,255,255,0.5),
+          0 0 40px rgba(255, 180, 220, 0.35);
+      }
+      50% {
+        box-shadow:
+          0 30px 70px rgba(0,0,0,0.22),
+          inset 0 2px 14px rgba(255,255,255,0.55),
+          0 0 60px rgba(255, 180, 220, 0.6);
+      }
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(25deg); }
+      100% { transform: translateX(100%) rotate(25deg); }
+    }
+
     @media (max-width: 640px) {
       .gift-stage { transform: scale(0.8); }
     }
@@ -161,30 +329,30 @@
   <div id="bg3d" aria-hidden="true"></div>
   <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
 
-   <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+     <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
     <a href="index.html" class="nav-link" aria-label="الرئيسية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9.5z"/><path d="M9 22V12h6v10"/></svg><span>الرئيسية</span></a>
     <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14"/><path d="M5 21h14"/><path d="M5 3c0 4 2.5 6.5 7 9 4.5-2.5 7-5 7-9"/><path d="M19 21c0-4-2.5-6.5-7-9-4.5 2.5-7 5-7 9"/></svg><span>العد</span></a>
     <a href="hero.html" class="nav-link" aria-label="ملكتي">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2z"/><path d="M4 18l2-8 3 5 3-8 3 8 3-5 2 8"/></svg><span>ملكتي</span></a>
     <a href="lily.html" class="nav-link" aria-label="اليلك">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V10"/><path d="M12 10c-3-1-5-4-5-7 1.5 0 3 1.5 4 3.5"/><path d="M12 10c3-1 5-4 5-7-1.5 0-3 1.5-4 3.5"/><path d="M12 10c-1.5-2-1.5-5 0-8"/><path d="M12 10c1.5-2 1.5-5 0-8"/></svg><span>اليلك</span></a>
     <a href="gallery.html" class="nav-link" aria-label="الذكريات">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 8h18"/><path d="M3 16h18"/><path d="M6 5v14"/><path d="M18 5v14"/></svg><span>الذكريات</span></a>
     <a href="balloons.html" class="nav-link" aria-label="البالونات">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15c-2.5 0-4.5-2-4.5-5S6.5 5 9 5s4.5 2 4.5 5-2 5-4.5 5z"/><path d="M9 15v4"/><path d="M17 13c-2 0-3.5-1.5-3.5-4S15 5 17 5s3.5 1.5 3.5 4-1.5 4-3.5 4z"/><path d="M17 13v4"/></svg><span>البالونات</span></a>
     <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12V6"/><path d="M12 12l5-3"/><path d="M12 12l5 3"/><path d="M12 12v6"/><path d="M12 12l-5 3"/><path d="M12 12l-5-3"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg><span>ألعاب نارية</span></a>
     <a href="gift.html" class="nav-link" aria-label="الهدية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
-     <a href="letters.html" class="nav-link" aria-label="الرسائل">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
-      <a href="music.html" class="nav-link" aria-label="الموسيقى">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
-  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
-</nav>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+    <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span>الرسائل</span></a>
+    <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="16" r="2.5"/></svg><span>الموسيقى</span></a>
+    <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>الخاتمة</span></a>
+  </nav>
 
   <!-- Small Flowers Decoration -->
   <div class="small-flower-eco" aria-hidden="true">
@@ -195,38 +363,44 @@
     <div class="small-flower sf-5 sf-pink"><svg viewBox="0 0 24 24" fill="var(--petal-pink)"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg></div>
   </div>
 
+  <canvas id="giftParticles" class="gift-particles" aria-hidden="true"></canvas>
+
   <main id="main-content" class="page-wrapper">
     <h1 class="display-title display-title--1 text-gradient-rose reveal">هديتكِ يا شودي</h1>
 
-    <div class="gift-stage reveal reveal-delay-1" id="giftStage" role="button" tabindex="0" aria-label="صندوق الهدية، اضغط لفتحه">
+    <div class="gift-stage" id="giftStage" role="button" tabindex="0" aria-label="صندوق الهدية، اضغط لفتحه">
       <div class="gift-glow"></div>
-      <div class="gift-box" id="giftBox">
+      <div class="gift-object">
         <div class="gift-lid" id="giftLid">
+          <div class="gift-bow" id="giftBow"></div>
+        </div>
+        <div class="gift-box" id="giftBox">
           <div class="gift-ribbon-v"></div>
           <div class="gift-ribbon-h"></div>
         </div>
-        <div class="gift-bow" id="giftBow"></div>
-        <div class="gift-face front"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
-        <div class="gift-face back"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
-        <div class="gift-face right"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
-        <div class="gift-face left"><div class="gift-ribbon-v"></div><div class="gift-ribbon-h"></div></div>
-        <div class="gift-face top"></div>
-        <div class="gift-face bottom"></div>
+        <div class="gift-container reveal reveal-delay-1">
+          <div class="romantic-note">
+            إلى شودي…<br>
+            كل هذا الجمال لا يكتمل إلا بوجودك <br>
+            أنتِ لستِ مجرد لحظة… أنتِ إحساس لا ينتهي
+          </div>
+          <div class="romantic-heart">💖</div>
+        </div>
       </div>
       <div class="gift-message" id="giftMessage">
         <h2>كل عام وأنتِ بخير</h2>
         <p>أنتِ أجمل هدية<br>حصلت عليها في حياتي</p>
       </div>
     </div>
-
-    <p class="reveal reveal-delay-2" style="text-align:center;color:var(--text-muted);font-size:var(--text-sm);">اضغط على الصندوق لفتحه</p>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/self-evolve.js"></script>
   <script src="js/engine3d.js"></script>
   <script src="js/petals.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/narrative.js"></script>
   <script src="js/fps.js"></script>
   <script>FPSMonitor.init();</script>
   <script>
@@ -248,6 +422,7 @@
       const lid = document.getElementById('giftLid');
       const bow = document.getElementById('giftBow');
       const msg = document.getElementById('giftMessage');
+      const openBtn = document.getElementById('openGiftBtn');
       let opened = false;
 
       function openGift() {
@@ -256,6 +431,10 @@
         lid.classList.add('unwrapped');
         bow.classList.add('unwrapped');
         msg.classList.add('show');
+        if (openBtn) {
+          openBtn.disabled = true;
+          openBtn.textContent = 'مفتوحة بكل حب 💖';
+        }
         createConfetti();
       }
 
@@ -263,6 +442,7 @@
       stage.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGift(); }
       });
+      if (openBtn) openBtn.addEventListener('click', openGift);
 
       function createConfetti() {
         const colors = [PALETTE.primary, PALETTE.pink, PALETTE.purple, PALETTE.lilac, PALETTE.gold, PALETTE.lightPink];
@@ -295,6 +475,72 @@
           }, i*10);
         }
       }
+
+      // Subtle romantic light orbs background
+      (function initAmbientParticles() {
+        const pCanvas = document.getElementById('giftParticles');
+        if (!pCanvas) return;
+        const pCtx = pCanvas.getContext('2d');
+        let W, H;
+        const orbs = [];
+        const MAX_ORBS = 30;
+
+        function resizeParticles() {
+          W = pCanvas.width = window.innerWidth;
+          H = pCanvas.height = window.innerHeight;
+        }
+        resizeParticles();
+        window.addEventListener('resize', resizeParticles);
+
+        class Orb {
+          constructor() {
+            this.reset();
+            this.y = Math.random() * H;
+          }
+          reset() {
+            this.x = Math.random() * W;
+            this.y = H + Math.random() * 60;
+            this.size = Math.random() * 5 + 2;
+            this.speed = Math.random() * 0.4 + 0.2;
+            this.alpha = Math.random() * 0.15 + 0.08;
+            this.hue = Math.random() * 40 + 300;
+          }
+          update() {
+            this.y -= this.speed;
+            if (this.y < -30) this.reset();
+          }
+          draw() {
+            pCtx.globalAlpha = this.alpha;
+            pCtx.fillStyle = `hsl(${this.hue}, 85%, 85%)`;
+            pCtx.beginPath();
+            pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            pCtx.fill();
+          }
+        }
+
+        for (let i = 0; i < MAX_ORBS; i++) orbs.push(new Orb());
+
+        let pRafId;
+        function loop() {
+          pCtx.clearRect(0, 0, W, H);
+          pCtx.globalCompositeOperation = 'lighter';
+          for (let i = 0; i < orbs.length; i++) {
+            orbs[i].update();
+            orbs[i].draw();
+          }
+          pCtx.globalAlpha = 1;
+          pRafId = requestAnimationFrame(loop);
+        }
+        loop();
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            cancelAnimationFrame(pRafId);
+          } else {
+            loop();
+          }
+        });
+      })();
     })();
   </script>
 </body>

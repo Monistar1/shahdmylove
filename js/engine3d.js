@@ -119,8 +119,10 @@
     const container = document.getElementById('bg3d');
     if (!container) return;
 
-    const count = isLowPower ? CONFIG.particleCount.low
-      : (isMobile ? CONFIG.particleCount.mobile : CONFIG.particleCount.desktop);
+    const qualityClass = document.body.classList.contains('quality-low') ? 'low'
+      : document.body.classList.contains('quality-medium') ? 'medium' : 'high';
+    const count = qualityClass === 'low' || isLowPower ? CONFIG.particleCount.low
+      : (isMobile || qualityClass === 'medium' ? CONFIG.particleCount.mobile : CONFIG.particleCount.desktop);
 
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(TOKENS.bgPrimary, 0.018);
@@ -279,6 +281,8 @@
   function animate() {
     animId = requestAnimationFrame(animate);
     if (!isActive) { animId = null; return; }
+    if (document.hidden) return; // pause when tab hidden
+    if (window.__FIREWORKS_ACTIVE__) return; // yield main thread to fireworks
 
     time += 0.016;
     const dt = 0.016;

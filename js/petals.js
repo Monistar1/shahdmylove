@@ -26,7 +26,10 @@
 
       this.ctx = this.canvas.getContext('2d');
       this.petals = [];
-      this.maxPetals = 18;
+      // Adapt density to quality level
+      const qualityClass = document.body.classList.contains('quality-low') ? 'low'
+        : document.body.classList.contains('quality-medium') ? 'medium' : 'high';
+      this.maxPetals = qualityClass === 'low' ? 6 : qualityClass === 'medium' ? 12 : 18;
       this.mouse = { x: -1000, y: -1000 };
       this.isActive = true;
       this.dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -127,8 +130,10 @@
 
     loop() {
       if (!this.isActive) { this.rafId = null; return; }
-      this.update();
-      this.draw();
+      if (!window.__FIREWORKS_ACTIVE__) {
+        this.update();
+        this.draw();
+      }
       this.rafId = requestAnimationFrame(() => this.loop());
     }
 

@@ -90,8 +90,8 @@
 
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute('href');
-      if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-      if (href.endsWith('.mp3') || href.endsWith('.png') || href.endsWith('.jpg')) return;
+      if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+      if (/\.(mp3|mp4|png|jpg|jpeg|webp|gif|svg|pdf|zip)(\?.*)?$/i.test(href)) return;
 
       link.addEventListener('click', (e) => {
         if (e.ctrlKey || e.metaKey || e.shiftKey) return;
@@ -166,6 +166,9 @@
   function initCursorFollower() {
     if (state.isMobile || state.reducedMotion) return;
 
+    // Disable on the fireworks page to avoid competing with the canvas loop
+    if (document.body.dataset.page === 'fireworks') return;
+
     const follower = document.createElement('div');
     follower.className = 'cursor-follower';
     follower.setAttribute('aria-hidden', 'true');
@@ -181,7 +184,17 @@
       state.cursorTargetY = -100;
     }, { passive: true });
 
+    let frameCount = 0;
+    let isInteractive = false;
+    let cursorRafId = null;
+    let isCursorActive = true;
+
     function updateCursor() {
+      if (!isCursorActive || document.hidden) {
+        cursorRafId = null;
+        return;
+      }
+
       // Spring physics
       const ax = (state.cursorTargetX - state.cursorX) * 0.08;
       const ay = (state.cursorTargetY - state.cursorY) * 0.08;
@@ -194,9 +207,13 @@
 
       follower.style.transform = `translate(${state.cursorX}px, ${state.cursorY}px) translate(-50%, -50%) translateZ(0)`;
 
-      // Scale on interactive elements
-      const el = document.elementFromPoint(state.cursorTargetX, state.cursorTargetY);
-      const isInteractive = el && (el.tagName === 'A' || el.tagName === 'BUTTON' || el.closest('a') || el.closest('button'));
+      // Hit-test interactive elements only every 5 frames (expensive)
+      frameCount++;
+      if (frameCount % 5 === 0) {
+        const el = document.elementFromPoint(state.cursorTargetX, state.cursorTargetY);
+        isInteractive = el && (el.tagName === 'A' || el.tagName === 'BUTTON' || el.closest('a') || el.closest('button'));
+      }
+
       follower.style.width = isInteractive ? '40px' : '20px';
       follower.style.height = isInteractive ? '40px' : '20px';
       const primaryRGB = '233, 30, 99';
@@ -204,10 +221,21 @@
         ? `radial-gradient(circle, rgba(${primaryRGB}, 0.3), transparent 70%)`
         : `radial-gradient(circle, rgba(${primaryRGB}, 0.15), transparent 70%)`;
 
-      requestAnimationFrame(updateCursor);
+      cursorRafId = requestAnimationFrame(updateCursor);
     }
 
-    requestAnimationFrame(updateCursor);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        isCursorActive = false;
+        if (cursorRafId) cancelAnimationFrame(cursorRafId);
+        cursorRafId = null;
+      } else if (!cursorRafId) {
+        isCursorActive = true;
+        cursorRafId = requestAnimationFrame(updateCursor);
+      }
+    });
+
+    cursorRafId = requestAnimationFrame(updateCursor);
   }
 
   /* ==========================================================
@@ -340,10 +368,10 @@
   function initServiceWorker() {
     if ('serviceWorker' in navigator) {
       // Only register if sw.js exists — prevents console errors
-      fetch('/sw.js', { method: 'HEAD', cache: 'no-store' })
+      fetch('./sw.js', { method: 'HEAD', cache: 'no-store' })
         .then(res => {
           if (res.ok) {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('./sw.js')
               .catch(() => {}); // Silently fail
           }
         })

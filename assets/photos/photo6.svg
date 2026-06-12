@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdf2f8"/>
+      <stop offset="50%" stop-color="#f9a8d4"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g6)"/>
+  <path d="M200 130c-10 20-30 40-50 50 20 10 40 30 50 50 10-20 30-40 50-50-20-10-40-30-50-50z" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="200" cy="260" r="30" fill="rgba(255,255,255,0.25)"/>
+  <text x="200" y="360" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" fill="rgba(255,255,255,0.95)">أجمل يوم</text>
+</svg>

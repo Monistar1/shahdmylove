@@ -44,6 +44,7 @@ function checkRateLimit() {
    ========================================================== */
 function validateWish(wishData) {
   const errors = [];
+  const result = {};
   if (!wishData || typeof wishData !== 'object') {
     errors.push('Invalid data');
     return { valid: false, errors };
@@ -55,17 +56,15 @@ function validateWish(wishData) {
     if (text.length < 1) errors.push('Message cannot be empty');
     if (text.length > 500) errors.push('Message too long (max 500 chars)');
     // Sanitize: remove HTML tags
-    wishData.text = text.replace(/<[^>]*>/g, '');
+    result.text = text.replace(/<[^>]*>/g, '');
   }
   if (wishData.name && typeof wishData.name === 'string') {
     const name = wishData.name.trim();
     if (name.length > 50) errors.push('Name too long');
-    wishData.name = name.replace(/<[^>]*>/g, '');
+    result.name = name.replace(/<[^>]*>/g, '');
   }
-  if (!wishData.timestamp) {
-    wishData.timestamp = Date.now();
-  }
-  return { valid: errors.length === 0, errors, data: wishData };
+  result.timestamp = wishData.timestamp || Date.now();
+  return { valid: errors.length === 0, errors, data: result };
 }
 
 /* ==========================================================
@@ -105,9 +104,17 @@ function pushWish(wishData, { onOptimistic, onSuccess, onError } = {}) {
     });
 }
 
+const NON_RETRYABLE_CODES = new Set([
+  'PERMISSION_DENIED',
+  'INVALID_DATA',
+  'QUOTA_EXCEEDED',
+  'UNAVAILABLE' // often transient, but retrying usually doesn't help quickly
+]);
+
 function pushWithRetry(data, maxRetries, attempt = 1) {
   return push(wishesRef, data).catch(err => {
-    if (attempt >= maxRetries) throw err;
+    const code = err && err.code ? err.code : '';
+    if (attempt >= maxRetries || NON_RETRYABLE_CODES.has(code)) throw err;
     const delay = Math.min(1000 * Math.pow(2, attempt), 8000);
     return new Promise(resolve => setTimeout(resolve, delay))
       .then(() => pushWithRetry(data, maxRetries, attempt + 1));
@@ -136,7 +143,7 @@ function onWishUpdate(callback) {
     callback([], { error: err.message, isFirstLoad: false });
   });
 
-  return unsubscribe;
+  return trackSubscription(unsubscribe);
 }
 
 /* ==========================================================
@@ -159,7 +166,7 @@ function initConnectionIndicator(containerId) {
     dot.setAttribute('aria-label', connected ? 'متصل' : 'غير متصل');
   });
 
-  return unsubscribe;
+  return trackSubscription(unsubscribe);
 }
 
 /* ==========================================================
@@ -184,4 +191,28 @@ function createSkeleton(type = 'text', count = 1) {
   return wrapper;
 }
 
-export { db, wishesRef, pushWish, onWishUpdate, initConnectionIndicator, createSkeleton };
+/* ==========================================================
+   SUBSCRIPTION REGISTRY & CLEANUP
+   ========================================================== */
+const subscriptions = [];
+
+function trackSubscription(unsubscribe) {
+  if (typeof unsubscribe === 'function') {
+    subscriptions.push(unsubscribe);
+  }
+  return unsubscribe;
+}
+
+function cleanupFirebase() {
+  subscriptions.forEach(unsub => {
+    try { unsub(); } catch (e) { /* ignore */ }
+  });
+  subscriptions.length = 0;
+}
+
+// Auto-cleanup on page hide/unload to prevent memory leaks
+if (typeof window !== 'undefined') {
+  window.addEventListener('pagehide', cleanupFirebase, { passive: true });
+}
+
+export { db, wishesRef, pushWish, onWishUpdate, initConnectionIndicator, createSkeleton, cleanupFirebase };

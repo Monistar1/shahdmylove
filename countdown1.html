@@ -77,6 +77,8 @@
       justify-content: center;
       animation: hourglassFlip 60s linear infinite;
       transform-origin: center center;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     .hourglass-svg {
@@ -593,10 +595,12 @@
 
   <!-- Three.js & Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/self-evolve.js"></script>
   <script src="js/engine3d.js"></script>
   <script src="js/petals.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/narrative.js"></script>
 
   <!-- Page Logic -->
   <script>

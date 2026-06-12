@@ -43,7 +43,14 @@
 
   function generateToken() {
     const arr = new Uint8Array(32);
-    crypto.getRandomValues(arr);
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+      crypto.getRandomValues(arr);
+    } else {
+      // Fallback for non-secure contexts
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 256);
+      }
+    }
     return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('');
   }
 

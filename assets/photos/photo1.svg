@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5eaff"/>
+      <stop offset="50%" stop-color="#d8b4fe"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g1)"/>
+  <path d="M200 280c-40-30-80-60-80-110 0-35 25-60 60-60 25 0 45 15 55 35 10-20 30-35 55-35 35 0 60 25 60 60 0 50-40 80-80 110-15 12-35 20-35 20s-20-8-35-20z" fill="rgba(255,255,255,0.55)"/>
+  <text x="200" y="360" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" fill="rgba(255,255,255,0.9)">أول لقاء</text>
+</svg>

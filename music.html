@@ -12,23 +12,94 @@
   <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/core.css">
   <style>
-    .vinyl-player {
-      position: relative;
-      width: 260px;
-      height: 260px;
+    html {
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
+    body { overflow-x: hidden; }
+
+    .music-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xl);
+      width: 100%;
+      max-width: 540px;
       margin: 0 auto;
     }
 
-    .vinyl-record {
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 50%, color-mix(in srgb, black, white 10%) 8%, transparent 10%),
-        repeating-radial-gradient(circle at 50% 50%, color-mix(in srgb, black, white 13%) 0px, color-mix(in srgb, black, white 7%) 2px, color-mix(in srgb, black, white 13%) 3px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 4px rgba(255,255,255,0.1);
+    .vinyl-player {
       position: relative;
-      animation: vinylSpin 4s linear infinite paused;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto;
+      filter: drop-shadow(0 24px 48px rgba(0,0,0,0.35));
+    }
+
+    .vinyl-record {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      position: relative;
+      background:
+        /* center hole */
+        radial-gradient(circle at 50% 50%, rgba(20,20,25,0.95) 0%, rgba(20,20,25,0.95) 4.2%, transparent 4.4%),
+        /* label */
+        radial-gradient(circle at 50% 50%, transparent 28%, var(--accent-purple) 28.5%, var(--accent-rose) 31%, var(--accent-purple) 33%, transparent 33.5%),
+        /* grooves */
+        repeating-radial-gradient(circle at 50% 50%,
+          rgba(255,255,255,0.06) 0px,
+          rgba(255,255,255,0.02) 1px,
+          rgba(0,0,0,0.15) 2px,
+          rgba(255,255,255,0.04) 3px,
+          rgba(255,255,255,0.01) 4px
+        ),
+        /* base disc */
+        conic-gradient(from 180deg, #1a1a1f, #2a2a32, #1a1a1f, #2a2a32, #1a1a1f);
+      box-shadow:
+        0 0 0 6px rgba(255,255,255,0.06),
+        0 0 0 7px rgba(0,0,0,0.2),
+        0 20px 50px rgba(0,0,0,0.45),
+        0 0 60px rgba(157,78,221,0.18);
+      animation: vinylSpin 5s linear infinite paused;
+      transform: translateZ(0);
+      will-change: transform;
+      overflow: hidden;
+    }
+
+    .vinyl-record::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 45deg,
+        rgba(255,255,255,0.12) 0deg,
+        rgba(255,255,255,0.02) 30deg,
+        rgba(255,255,255,0) 60deg,
+        rgba(255,255,255,0.06) 90deg,
+        rgba(255,255,255,0) 120deg,
+        rgba(255,255,255,0.1) 150deg,
+        rgba(255,255,255,0) 180deg,
+        rgba(255,255,255,0.04) 210deg,
+        rgba(255,255,255,0) 240deg,
+        rgba(255,255,255,0.08) 270deg,
+        rgba(255,255,255,0) 300deg,
+        rgba(255,255,255,0.12) 330deg,
+        rgba(255,255,255,0.02) 360deg
+      );
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .vinyl-record::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.18), transparent 45%);
+      pointer-events: none;
     }
 
     .vinyl-record.playing { animation-play-state: running; }
@@ -42,50 +113,221 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 90px; height: 90px;
+      width: 88px; height: 88px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-rose), var(--accent-purple));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow:
+        inset 0 2px 10px rgba(0,0,0,0.25),
+        0 0 0 2px rgba(255,255,255,0.08);
+      z-index: 2;
     }
 
     .vinyl-label span {
       font-family: var(--font-display);
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-on-accent);
       font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
 
     .vinyl-arm {
       position: absolute;
-      top: 20px; right: 20px;
-      width: 80px; height: 4px;
-      background: linear-gradient(90deg, color-mix(in srgb, var(--accent-gold), white 20%), color-mix(in srgb, var(--accent-gold), black 30%));
-      border-radius: 2px;
+      top: 18px; right: 18px;
+      width: 92px; height: 5px;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--accent-gold), white 30%), color-mix(in srgb, var(--accent-gold), black 25%));
+      border-radius: 3px;
       transform-origin: right center;
-      transform: rotate(-30deg);
+      transform: rotate(-32deg);
       transition: transform 0.8s var(--ease-out-expo);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      z-index: 3;
     }
 
-    .vinyl-arm.playing { transform: rotate(8deg); }
+    .vinyl-arm::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .vinyl-arm.playing { transform: rotate(10deg); }
 
     .visualizer {
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      gap: 4px;
-      height: 60px;
+      gap: 5px;
+      height: 64px;
       margin-top: var(--space-lg);
     }
 
     .viz-bar {
       width: 6px;
       background: linear-gradient(180deg, var(--accent-rose), var(--accent-purple));
-      border-radius: 3px;
+      border-radius: 4px;
       transition: height 0.1s ease;
-      opacity: 0.6;
+      opacity: 0.75;
+      box-shadow: 0 0 8px rgba(157,78,221,0.25);
+    }
+
+    .player-card {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .player-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    .track-info {
+      text-align: center;
+      min-height: 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .track-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .track-artist {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+
+    .control-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+    }
+
+    .control-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+      color: var(--text-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out-expo);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(4px);
+    }
+
+    .control-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+      box-shadow: var(--shadow-md);
+    }
+
+    .control-btn:active { transform: translateY(0) scale(0.97); }
+
+    .control-btn--small { width: 44px; height: 44px; }
+    .control-btn--main {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-purple));
+      color: var(--text-on-accent);
+      box-shadow: 0 8px 24px rgba(157,78,221,0.35);
+    }
+
+    .control-btn--main:hover {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-rose));
+      box-shadow: 0 12px 30px rgba(157,78,221,0.45);
+    }
+
+    .control-btn svg { width: 22px; height: 22px; fill: currentColor; }
+    .control-btn--main svg { width: 28px; height: 28px; }
+
+    .progress-area {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      direction: ltr;
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .progress-bar {
+      flex: 1;
+      direction: ltr;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(0,0,0,0.12);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-purple));
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: transform var(--duration-fast);
+    }
+
+    .progress-bar::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+    .progress-bar::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-purple));
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+      cursor: pointer;
+    }
+
+    .progress-bar::-webkit-slider-runnable-track {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-rose), var(--accent-purple)) 0% 0% / var(--progress, 0%) 100% no-repeat, rgba(0,0,0,0.12);
+    }
+
+    .progress-bar::-moz-range-track {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(0,0,0,0.12);
+    }
+
+    .progress-bar::-moz-range-progress {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-rose), var(--accent-purple));
     }
 
     .song-list {
@@ -101,29 +343,31 @@
       align-items: center;
       gap: var(--space-md);
       padding: var(--space-md) var(--space-lg);
-      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
-      border: 1px solid rgba(255,255,255,0.5);
+      background: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(255,255,255,0.38));
+      border: 1px solid rgba(255,255,255,0.55);
       border-radius: var(--radius-lg);
       cursor: pointer;
       transition: all var(--duration-fast) var(--ease-out-expo);
+      box-shadow: 0 1px 3px rgba(74, 14, 46, 0.05);
     }
 
     .song-item:hover {
       transform: translateX(-4px);
-      background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.58));
       box-shadow: var(--shadow-md);
     }
 
     .song-item.active {
-      background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.1), rgba(var(--lily-purple-rgb), 0.08));
-      border-color: rgba(var(--color-primary-rgb), 0.3);
+      background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.14), rgba(var(--lily-purple-rgb), 0.1));
+      border-color: rgba(var(--color-primary-rgb), 0.4);
+      box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.12);
     }
 
     .song-num {
       font-family: var(--font-mono);
       font-size: var(--text-xs);
       color: var(--text-muted);
-      width: 24px;
+      width: 26px;
     }
 
     .song-info { flex: 1; }
@@ -131,7 +375,7 @@
     .song-artist { font-size: var(--text-xs); color: var(--text-muted); }
 
     .song-play {
-      width: 36px; height: 36px;
+      width: 38px; height: 38px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink));
       display: flex;
@@ -140,10 +384,11 @@
       color: var(--text-on-accent);
       flex-shrink: 0;
       transition: transform var(--duration-fast);
+      box-shadow: 0 4px 12px rgba(233,30,99,0.25);
     }
 
-    .song-play:hover { transform: scale(1.1); }
-    .song-play svg { width: 14px; height: 14px; fill: currentColor; margin-right: -1px; }
+    .song-play:hover { transform: scale(1.12); }
+    .song-play svg { width: 15px; height: 15px; fill: currentColor; margin-inline-end: -1px; }
 
     .lyrics-box {
       text-align: center;
@@ -152,6 +397,8 @@
       align-items: center;
       justify-content: center;
       padding: var(--space-md);
+      width: 100%;
+      max-width: 500px;
     }
 
     .lyrics-text {
@@ -162,8 +409,29 @@
       transition: opacity 0.5s;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .vinyl-card { padding: var(--space-xl); }
+
     @media (max-width: 640px) {
-      .vinyl-player { transform: scale(0.85); }
+      .vinyl-player { transform: scale(0.82); }
+      .music-stage { gap: var(--space-lg); }
+    }
+
+    @media (max-width: 480px) {
+      .vinyl-card { padding: var(--space-lg) var(--space-md); }
+      .player-controls { padding: var(--space-md) var(--space-sm); }
+      .vinyl-player { transform: scale(0.74); }
+      .control-btn--small { width: 40px; height: 40px; }
+      .control-btn--main { width: 56px; height: 56px; }
     }
   </style>
 </head>
@@ -173,81 +441,117 @@
   <div id="bg3d" aria-hidden="true"></div>
   <canvas id="petalsCanvas" class="floating-petals-canvas" aria-hidden="true"></canvas>
 
-   <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
+  <nav class="cinematic-nav" aria-label="التنقل الرئيسي">
     <a href="index.html" class="nav-link" aria-label="الرئيسية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>الرئيسية</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9.5z"/><path d="M9 22V12h6v10"/></svg><span>الرئيسية</span></a>
     <a href="countdown.html" class="nav-link" aria-label="العد التنازلي">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>العد</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14"/><path d="M5 21h14"/><path d="M5 3c0 4 2.5 6.5 7 9 4.5-2.5 7-5 7-9"/><path d="M19 21c0-4-2.5-6.5-7-9-4.5 2.5-7 5-7 9"/></svg><span>العد</span></a>
     <a href="hero.html" class="nav-link" aria-label="ملكتي">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>ملكتي</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2z"/><path d="M4 18l2-8 3 5 3-8 3 8 3-5 2 8"/></svg><span>ملكتي</span></a>
     <a href="lily.html" class="nav-link" aria-label="اليلك">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>اليلك</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V10"/><path d="M12 10c-3-1-5-4-5-7 1.5 0 3 1.5 4 3.5"/><path d="M12 10c3-1 5-4 5-7-1.5 0-3 1.5-4 3.5"/><path d="M12 10c-1.5-2-1.5-5 0-8"/><path d="M12 10c1.5-2 1.5-5 0-8"/></svg><span>اليلك</span></a>
     <a href="gallery.html" class="nav-link" aria-label="الذكريات">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>الذكريات</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 8h18"/><path d="M3 16h18"/><path d="M6 5v14"/><path d="M18 5v14"/></svg><span>الذكريات</span></a>
     <a href="balloons.html" class="nav-link" aria-label="البالونات">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>البالونات</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15c-2.5 0-4.5-2-4.5-5S6.5 5 9 5s4.5 2 4.5 5-2 5-4.5 5z"/><path d="M9 15v4"/><path d="M17 13c-2 0-3.5-1.5-3.5-4S15 5 17 5s3.5 1.5 3.5 4-1.5 4-3.5 4z"/><path d="M17 13v4"/></svg><span>البالونات</span></a>
     <a href="fireworks.html" class="nav-link" aria-label="ألعاب نارية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C10 4 6 7 6 11c0 3.5 2.5 6 6 9 3.5-3 6-5.5 6-9 0-4-4-7-6-9z"/></svg><span>ألعاب نارية</span></a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12V6"/><path d="M12 12l5-3"/><path d="M12 12l5 3"/><path d="M12 12v6"/><path d="M12 12l-5 3"/><path d="M12 12l-5-3"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg><span>ألعاب نارية</span></a>
     <a href="gift.html" class="nav-link" aria-label="الهدية">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
-     <a href="letters.html" class="nav-link" aria-label="الرسائل">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="12" cy="21" r="3" fill="currentColor" stroke="none" opacity="0.25"/><path d="M12 18v3"/></svg><span>الرسائل</span></a>
-      <a href="music.html" class="nav-link" aria-label="الموسيقى">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>الموسيقى</span></a>
-  <a href="footer.html" class="nav-link" aria-label="الخاتمة">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><path d="M2 12c2.5 2 5.5 2 8 0s5.5-2 8 0 5.5 2 6 0" opacity="0.4"/></svg><span>الخاتمة</span></a>
-</nav>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><span>الهدية</span></a>
+    <a href="letters.html" class="nav-link" aria-label="الرسائل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span>الرسائل</span></a>
+    <a href="music.html" class="nav-link" aria-label="الموسيقى">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="16" r="2.5"/></svg><span>الموسيقى</span></a>
+    <a href="footer.html" class="nav-link" aria-label="الخاتمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>الخاتمة</span></a>
+  </nav>
 
   <main id="main-content" class="page-wrapper">
     <h1 class="display-title display-title--1 text-gradient-purple reveal">أغنياتنا</h1>
 
-    <div class="glass-card reveal reveal-delay-1" style="padding: var(--space-xl); max-width: 400px;">
-      <div class="vinyl-player">
-        <div class="vinyl-record" id="vinylRecord">
-          <div class="vinyl-label"><span>شودي</span></div>
+    <div class="music-stage">
+      <div class="glass-card vinyl-card reveal reveal-delay-1" style="width: 100%;">
+        <div class="vinyl-player" aria-hidden="true">
+          <div class="vinyl-record" id="vinylRecord">
+            <div class="vinyl-label"><span>شودي</span></div>
+          </div>
+          <div class="vinyl-arm" id="vinylArm"></div>
         </div>
-        <div class="vinyl-arm" id="vinylArm"></div>
+        <div class="visualizer" id="visualizer" aria-hidden="true"></div>
       </div>
-      <div class="visualizer" id="visualizer" aria-hidden="true"></div>
-    </div>
 
-    <div class="lyrics-box glass-card reveal reveal-delay-2" style="max-width: 500px; width: 100%;">
-      <p class="lyrics-text" id="lyricsText">اختر أغنية للاستماع</p>
-    </div>
+      <div class="glass-card player-card reveal reveal-delay-2">
+        <div class="player-controls">
+          <div class="track-info">
+            <div class="track-title" id="trackTitle">اختر أغنية</div>
+            <div class="track-artist" id="trackArtist">—</div>
+          </div>
 
-    <div class="song-list reveal reveal-delay-3">
-      <div class="song-item" data-song="0" data-lyric="أنتِ الحبيبة التي لا تُضاهى">
-        <span class="song-num">01</span>
-        <div class="song-info">
-          <div class="song-title">أغنيتنا</div>
-          <div class="song-artist">لشودي</div>
+          <audio id="audioPlayer" preload="metadata"></audio>
+
+          <div class="progress-area">
+            <div class="progress-row">
+              <span id="currentTime">0:00</span>
+              <input type="range" id="progressBar" class="progress-bar" value="0" min="0" max="100" step="0.1" aria-label="تقدم الأغنية">
+              <span id="duration">0:00</span>
+            </div>
+          </div>
+
+          <div class="control-buttons">
+            <button type="button" class="control-btn control-btn--small" id="prevBtn" aria-label="السابق">
+              <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button type="button" class="control-btn control-btn--main" id="playPauseBtn" aria-label="تشغيل">
+              <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+              <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <button type="button" class="control-btn control-btn--small" id="nextBtn" aria-label="التالي">
+              <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+          </div>
         </div>
-        <div class="song-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
-      <div class="song-item" data-song="1" data-lyric="في كل نبضة قلب أذكركِ">
-        <span class="song-num">02</span>
-        <div class="song-info">
-          <div class="song-title">قلبي لكِ</div>
-          <div class="song-artist">لشودي</div>
-        </div>
-        <div class="song-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+
+      <div class="lyrics-box glass-card reveal reveal-delay-2">
+        <p class="lyrics-text" id="lyricsText">اختر أغنية للاستماع</p>
       </div>
-      <div class="song-item" data-song="2" data-lyric="إلى الأبد يا حبيبتي">
-        <span class="song-num">03</span>
-        <div class="song-info">
-          <div class="song-title">إلى الأبد</div>
-          <div class="song-artist">لشودي</div>
+
+      <div class="song-list reveal reveal-delay-3">
+        <div class="song-item" data-song="0" data-src="assets/bdaya.mp3" data-lyric="أنتِ الحبيبة التي لا تُضاهى">
+          <span class="song-num">01</span>
+          <div class="song-info">
+            <div class="song-title">أغنيتنا</div>
+            <div class="song-artist">لشودي</div>
+          </div>
+          <div class="song-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         </div>
-        <div class="song-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="song-item" data-song="1" data-src="assets/mia-sebastians-theme.mp3" data-lyric="في كل نبضة قلب أذكركِ">
+          <span class="song-num">02</span>
+          <div class="song-info">
+            <div class="song-title">قلبي لكِ</div>
+            <div class="song-artist">لشودي</div>
+          </div>
+          <div class="song-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="song-item" data-song="2" data-src="assets/bdaya.mp3" data-lyric="إلى الأبد يا حبيبتي">
+          <span class="song-num">03</span>
+          <div class="song-info">
+            <div class="song-title">إلى الأبد</div>
+            <div class="song-artist">لشودي</div>
+          </div>
+          <div class="song-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
       </div>
     </div>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/self-evolve.js"></script>
   <script src="js/engine3d.js"></script>
   <script src="js/petals.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/narrative.js"></script>
   <script src="js/fps.js"></script>
   <script>FPSMonitor.init();</script>
   <script>
@@ -264,55 +568,250 @@
       const arm = document.getElementById('vinylArm');
       const lyrics = document.getElementById('lyricsText');
       const viz = document.getElementById('visualizer');
+      const audio = document.getElementById('audioPlayer');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const playIcon = document.getElementById('playIcon');
+      const pauseIcon = document.getElementById('pauseIcon');
+      const progressBar = document.getElementById('progressBar');
+      const currentTimeEl = document.getElementById('currentTime');
+      const durationEl = document.getElementById('duration');
+      const trackTitle = document.getElementById('trackTitle');
+      const trackArtist = document.getElementById('trackArtist');
+      const songItems = Array.from(document.querySelectorAll('.song-item'));
+
+      let currentIndex = -1;
       let playing = false;
       let vizInterval = null;
+      let rafId = null;
+      let isSeeking = false;
+      let transitioning = false;
+
+      // Initialize progress bar fill
+      progressBar.style.setProperty('--progress', '0%');
 
       // Build visualizer bars
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 22; i++) {
         const bar = document.createElement('div');
         bar.className = 'viz-bar';
         bar.style.height = '4px';
         viz.appendChild(bar);
       }
 
-      document.querySelectorAll('.song-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const lyric = item.getAttribute('data-lyric');
-          const isActive = item.classList.contains('active');
-          document.querySelectorAll('.song-item').forEach(s => s.classList.remove('active'));
-          if (!isActive) {
-            item.classList.add('active');
-            playSong(lyric);
-          } else {
-            pauseSong();
-          }
-        });
-      });
+      function formatTime(seconds) {
+        if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return m + ':' + (s < 10 ? '0' + s : s);
+      }
 
-      function playSong(lyric) {
-        playing = true;
-        vinyl.classList.add('playing');
-        arm.classList.add('playing');
+      function updatePlayIcon(isPlaying) {
+        if (isPlaying) {
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
+          playPauseBtn.setAttribute('aria-label', 'إيقاف مؤقت');
+        } else {
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+          playPauseBtn.setAttribute('aria-label', 'تشغيل');
+        }
+      }
+
+      function setActiveSong(index) {
+        songItems.forEach((s, i) => {
+          s.classList.toggle('active', i === index);
+        });
+      }
+
+      function loadSong(index) {
+        if (index < 0) index = songItems.length - 1;
+        if (index >= songItems.length) index = 0;
+        currentIndex = index;
+        transitioning = true;
+
+        const item = songItems[index];
+        const src = item.getAttribute('data-src');
+        const lyric = item.getAttribute('data-lyric');
+        const title = item.querySelector('.song-title').textContent;
+        const artist = item.querySelector('.song-artist').textContent;
+
+        // Reset progress UI before new source loads
+        progressBar.value = 0;
+        progressBar.style.setProperty('--progress', '0%');
+        currentTimeEl.textContent = '0:00';
+        durationEl.textContent = '0:00';
+
+        audio.src = src;
+        audio.load();
+        setActiveSong(index);
+        trackTitle.textContent = title;
+        trackArtist.textContent = artist;
+
         lyrics.style.opacity = '0';
         setTimeout(() => {
           lyrics.textContent = lyric;
           lyrics.style.opacity = '1';
         }, 300);
+
+        // Clear transition guard after source swap settles
+        setTimeout(() => { transitioning = false; }, 80);
+      }
+
+      function playCurrent() {
+        if (currentIndex === -1) {
+          loadSong(0);
+        }
+        const playPromise = audio.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.catch(() => {
+            // Auto-play blocked; UI stays ready for user gesture
+          });
+        }
+      }
+
+      function pauseCurrent() {
+        audio.pause();
+      }
+
+      function startVisualizer() {
         if (vizInterval) clearInterval(vizInterval);
         vizInterval = setInterval(() => {
           viz.querySelectorAll('.viz-bar').forEach(bar => {
-            bar.style.height = (4 + Math.random() * 50) + 'px';
+            bar.style.height = (4 + Math.random() * 52) + 'px';
           });
         }, 100);
       }
 
-      function pauseSong() {
-        playing = false;
-        vinyl.classList.remove('playing');
-        arm.classList.remove('playing');
+      function stopVisualizer() {
         if (vizInterval) { clearInterval(vizInterval); vizInterval = null; }
         viz.querySelectorAll('.viz-bar').forEach(bar => { bar.style.height = '4px'; });
       }
+
+      function onPlay() {
+        playing = true;
+        vinyl.classList.add('playing');
+        arm.classList.add('playing');
+        updatePlayIcon(true);
+        startVisualizer();
+        startProgressLoop();
+      }
+
+      function onPause() {
+        if (transitioning) return;
+        playing = false;
+        vinyl.classList.remove('playing');
+        arm.classList.remove('playing');
+        updatePlayIcon(false);
+        stopVisualizer();
+        stopProgressLoop();
+      }
+
+      function updateProgress() {
+        if (!audio.duration || isSeeking) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = pct;
+        progressBar.style.setProperty('--progress', pct + '%');
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+        durationEl.textContent = formatTime(audio.duration);
+      }
+
+      function startProgressLoop() {
+        stopProgressLoop();
+        function loop() {
+          updateProgress();
+          rafId = requestAnimationFrame(loop);
+        }
+        loop();
+      }
+
+      function stopProgressLoop() {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      }
+
+      function seek(value) {
+        if (!audio.duration) return;
+        const time = (value / 100) * audio.duration;
+        audio.currentTime = time;
+      }
+
+      songItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          if (currentIndex === index && playing) {
+            pauseCurrent();
+          } else if (currentIndex === index && !playing) {
+            playCurrent();
+          } else {
+            loadSong(index);
+            playCurrent();
+          }
+        });
+      });
+
+      playPauseBtn.addEventListener('click', () => {
+        if (currentIndex === -1) {
+          loadSong(0);
+          playCurrent();
+        } else if (playing) {
+          pauseCurrent();
+        } else {
+          playCurrent();
+        }
+      });
+
+      prevBtn.addEventListener('click', () => {
+        const wasPlaying = playing;
+        loadSong(currentIndex - 1);
+        if (wasPlaying) playCurrent();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const wasPlaying = playing;
+        loadSong(currentIndex + 1);
+        if (wasPlaying) playCurrent();
+      });
+
+      audio.addEventListener('play', onPlay);
+      audio.addEventListener('pause', onPause);
+      audio.addEventListener('ended', () => {
+        loadSong(currentIndex + 1);
+        playCurrent();
+      });
+      audio.addEventListener('timeupdate', updateProgress);
+      audio.addEventListener('loadedmetadata', updateProgress);
+      audio.addEventListener('durationchange', updateProgress);
+      audio.addEventListener('error', () => {
+        transitioning = false;
+        trackTitle.textContent = 'تعذر تحميل الأغنية';
+        trackArtist.textContent = 'تأكد من وجود الملف';
+        onPause();
+      });
+
+      progressBar.addEventListener('input', () => {
+        isSeeking = true;
+        progressBar.style.setProperty('--progress', progressBar.value + '%');
+        if (audio.duration) {
+          currentTimeEl.textContent = formatTime((progressBar.value / 100) * audio.duration);
+        }
+      });
+
+      progressBar.addEventListener('change', () => {
+        seek(progressBar.value);
+        isSeeking = false;
+      });
+
+      progressBar.addEventListener('mouseup', () => { isSeeking = false; });
+      progressBar.addEventListener('touchend', () => { isSeeking = false; });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+          e.preventDefault();
+          playPauseBtn.click();
+        }
+        if (e.code === 'ArrowRight') { nextBtn.click(); }
+        if (e.code === 'ArrowLeft') { prevBtn.click(); }
+      });
     })();
   </script>
 </body>
