@@ -38,6 +38,7 @@
     initScrollProgress();
     initAudioHelper();
     initActiveNav();
+    initMobileNavScroll();
     initNavScroll();
     initPetals();
     initServiceWorker();
@@ -331,6 +332,18 @@
         link.removeAttribute('aria-current');
       }
     });
+  }
+
+  /* ==========================================================
+     MOBILE NAV SCROLL (Scroll active link into view)
+     ========================================================== */
+  function initMobileNavScroll() {
+    if (!state.isMobile) return;
+    const nav = document.querySelector('.cinematic-nav');
+    const activeLink = nav && nav.querySelector('.nav-link.active');
+    if (nav && activeLink) {
+      activeLink.scrollIntoView({ inline: 'center', behavior: 'auto', block: 'nearest' });
+    }
   }
 
   /* ==========================================================
