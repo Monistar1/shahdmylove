@@ -1425,6 +1425,44 @@
    ========================================================== */
 
 @media (max-width: 768px) {
+  /* ── Mobile viewport lock: prevent zoom-out and horizontal overflow ── */
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100dvh;
+  }
+
+  body .page-wrapper {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  img, video, canvas, svg, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── Force animated background to stay visible on mobile ── */
+  body.quality-low .luxury-bg,
+  body.quality-medium .luxury-bg,
+  body.quality-high .luxury-bg {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .luxury-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: var(--z-bg);
+    pointer-events: none;
+  }
+
   /* ── Tighten generous spacing variables on phones/tablets ── */
   :root {
     --space-md: 1rem;
@@ -1577,6 +1615,7 @@
 
   body .btn {
     white-space: normal;
+    max-width: 100%;
   }
 
   /* ── Glass cards never exceed viewport ── */
