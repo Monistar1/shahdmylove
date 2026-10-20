@@ -356,8 +356,7 @@
         <span class="pin-dot" data-i="3"></span>
         <span class="pin-dot" data-i="4"></span>
         <span class="pin-dot" data-i="5"></span>
-        <span class="pin-dot" data-i="6"></span>
-      </div>
+         </div>
 
       <p class="pin-error" id="pinError">الرقم غير صحيح</p>
       <p class="pin-lockout" id="pinLockout"></p>
@@ -498,10 +497,10 @@
 
       function handleKey(key) {
         if (AuthSystem.checkLockout()) return;
-        if (pin.length < 7) {
+        if (pin.length < 6) {
           pin += key;
           updatePinUI();
-          if (pin.length === 7) {
+          if (pin.length === 6) {
             unlockHeart();
           }
         }
