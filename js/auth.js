@@ -210,7 +210,7 @@
       if (!pin || pin.length < 4) return { success: false };
 
       const hash = await sha256(pin);
-      if (!cachedExpectedHash) cachedExpectedHash = await sha256('1093109');
+      if (!cachedExpectedHash) cachedExpectedHash = await sha256('112026');
 
       if (hash !== cachedExpectedHash) {
         failedAttempts++;
